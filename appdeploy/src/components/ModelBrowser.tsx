@@ -211,9 +211,8 @@ export function ModelResults({
   /** 첫 페이지 응답에 많이 쓰인 태그가 있으면 알려 준다 */
   onTags?: (tags: TagCount[]) => void;
 }) {
-  const { items, hasMore, loading, firstLoading, error, loadMore, sentinel, first } = useInfiniteList<ModelCardData>(
-    `/api/models${query ? `?${query}` : ''}`,
-  );
+  const { items, hasMore, loading, firstLoading, error, errorText, loadMore, sentinel, first } =
+    useInfiniteList<ModelCardData>(`/api/models${query ? `?${query}` : ''}`);
 
   useEffect(() => {
     const tags = (first as ModelListResponse | null)?.tags;
@@ -227,7 +226,7 @@ export function ModelResults({
       return (
         <div className="card flex flex-col items-center gap-3 px-6 py-16 text-center">
           <p className="text-lg font-bold">모델 목록을 불러오지 못했어요</p>
-          <p className="text-sm text-muted">잠시 후 다시 시도해 주세요.</p>
+          <p className="text-sm text-muted">{errorText ?? '잠시 후 다시 시도해 주세요.'}</p>
           <button type="button" className="btn btn-secondary mt-2" onClick={loadMore} disabled={loading}>
             다시 시도
           </button>

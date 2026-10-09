@@ -45,6 +45,8 @@ export function ImageCard({
       aria-label={m.prompt ? `이미지: ${m.prompt.slice(0, 60)}` : '이미지 크게 보기'}
       onClick={() => (hidden ? onReveal() : onOpen())}
       onKeyDown={(e) => {
+        // 안쪽 버튼(프롬프트 복사·정보)에서 누른 키는 그 버튼이 처리한다
+        if (e.target !== e.currentTarget) return;
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           if (hidden) onReveal();
@@ -107,7 +109,14 @@ export function ImageCard({
                   <Chip label="Seed" value={m.seed} />
                 </div>
                 {m.prompt && (
-                  <div className="pointer-events-auto pt-0.5">
+                  // 오버레이가 보일 때만 누를 수 있다 (안 보이는 버튼을 눌러 복사되지 않게)
+                  <div
+                    className={`pt-0.5 ${
+                      showInfo
+                        ? 'pointer-events-auto'
+                        : 'pointer-events-none [@media(hover:hover)]:group-hover:pointer-events-auto'
+                    }`}
+                  >
                     <CopyButton
                       text={m.prompt}
                       label="프롬프트 복사"

@@ -31,6 +31,8 @@ body {
   color: var(--color-fg);
   font-family: var(--font-sans);
   word-break: keep-all;
+  /* 긴 모델 이름·주소처럼 끊을 곳이 없는 글자열도 줄바꿈해 가로 스크롤이 생기지 않게 */
+  overflow-wrap: anywhere;
   -webkit-font-smoothing: antialiased;
 }
 

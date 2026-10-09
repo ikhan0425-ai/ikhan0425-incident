@@ -44,9 +44,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const user = auth.isSignedIn() ? await auth.getUser() : null;
         const profile = user ? await loadMe() : null;
         if (alive) setMe(profile);
-      } catch {
-        // 로그인이 풀린 것이 아니라 불러오기만 실패했다. 로그아웃 상태로 두고 알린다
-        if (alive) setNotice('로그인 정보를 불러오지 못했어요. 새로고침해 주세요.');
+      } catch (e) {
+        // 로그인이 풀린 것이 아니라 불러오기만 실패했다. 로그아웃 상태로 두고 알린다 (요청 과다는 서버 안내 그대로)
+        if (alive)
+          setNotice(
+            e instanceof ApiError && e.code === 'rate_limited'
+              ? e.message
+              : '로그인 정보를 불러오지 못했어요. 새로고침해 주세요.',
+          );
       } finally {
         if (alive) setReady(true);
       }

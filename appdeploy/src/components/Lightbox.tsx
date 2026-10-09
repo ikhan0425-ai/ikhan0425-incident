@@ -2,15 +2,19 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 import { apiGet } from '../lib/api';
+import { isUrlFresh } from '../lib/signed-url';
 import { formatDate } from '../shared/format';
 import type { ImageCardData, ImageDetailData } from '../shared/types';
 import { Avatar } from './Avatar';
 import { TypeBadge } from './Badges';
 import { GenerationInfo } from './GenerationInfo';
 import { LikeButton } from './LikeButton';
+import { OriginalDownloadButton } from './OriginalDownloadButton';
 import { ChevronLeftIcon, ChevronRightIcon, DownloadIcon, ExternalLinkIcon, EyeIcon, XIcon } from './icons';
 
 type LikeState = { likedByMe: boolean; likes: number };
+/** 상세 정보 + 원본 URL 을 받은 시각. url 이 null 이면 만료되어 새로 받는 중 */
+type Detail = Omit<ImageDetailData, 'url'> & { url: string | null; fetchedAt: number };
 
 function FullImage({ thumbUrl, url, alt }: { thumbUrl: string; url: string | null; alt: string }) {
   const [loaded, setLoaded] = useState(false);
@@ -59,7 +63,7 @@ export function Lightbox({
   const hasPrev = index > 0;
   const hasNext = index < items.length - 1;
   // 상세 API 로 받은 원본 URL·전체 생성 정보 (한 번 본 이미지는 다시 열 때 바로 보여 준다)
-  const [details, setDetails] = useState<Record<string, ImageDetailData>>({});
+  const [details, setDetails] = useState<Record<string, Detail>>({});
   // 상세 정보를 불러오는 사이에 누른 좋아요 결과 (늦게 온 응답이 덮어쓰지 않게)
   const pendingLikes = useRef(new Map<string, LikeState>());
 
@@ -67,16 +71,32 @@ export function Lightbox({
     if (!id) return;
     let alive = true;
     pendingLikes.current.delete(id);
+    // 예전에 받은 원본 URL 이 만료됐을 수 있으면 새 URL 이 올 때까지 쓰지 않는다 (썸네일로 보여 준다)
+    setDetails((d) => {
+      const cached = d[id];
+      if (!cached?.url || isUrlFresh(cached.url, cached.fetchedAt)) return d;
+      return { ...d, [id]: { ...cached, url: null } };
+    });
+    const startedAt = Date.now();
     apiGet<{ image: ImageDetailData }>(`/api/images/${encodeURIComponent(id)}`).then(
       ({ image }) => {
         // 그 사이 다른 이미지로 넘어갔으면 버린다
         if (!alive) return;
         const like = pendingLikes.current.get(id);
-        setDetails((d) => ({
-          ...d,
-          // 이미 원본을 보여 주고 있으면 URL 은 그대로 둔다 (서명 URL 이 바뀌어 다시 받지 않게)
-          [id]: { ...image, ...like, url: d[id]?.url ?? image.url },
-        }));
+        setDetails((d) => {
+          const cached = d[id];
+          // 아직 쓸 수 있는 원본 URL 을 보여 주고 있으면 그대로 둔다 (서명 URL 이 바뀌어 다시 받지 않게)
+          const keep = cached?.url && isUrlFresh(cached.url, cached.fetchedAt) ? cached : null;
+          return {
+            ...d,
+            [id]: {
+              ...image,
+              ...like,
+              url: keep?.url ?? image.url,
+              fetchedAt: keep?.fetchedAt ?? startedAt,
+            },
+          };
+        });
       },
       () => {
         // 실패하면 목록 정보와 썸네일로 계속 보여 준다
@@ -104,6 +124,7 @@ export function Lightbox({
 
   const detail = id ? details[id] : undefined;
   const image: ImageCardData | undefined = detail ?? item;
+  const fullUrl = detail?.url ?? null;
 
   const onLike = useCallback(
     (likedByMe: boolean, likes: number) => {
@@ -138,7 +159,7 @@ export function Lightbox({
               </button>
             </div>
           ) : (
-            <FullImage key={image.id} thumbUrl={item.thumbUrl} url={detail?.url ?? null} alt={alt} />
+            <FullImage key={image.id} thumbUrl={item.thumbUrl} url={fullUrl} alt={alt} />
           )}
         </div>
 
@@ -226,10 +247,16 @@ export function Lightbox({
             <Link to={`/images/${image.id}`} onClick={onClose} className="btn btn-secondary flex-1">
               <ExternalLinkIcon size={15} /> 상세 페이지
             </Link>
-            {detail ? (
-              <a href={detail.url} className="btn btn-secondary flex-1" download target="_blank" rel="noopener">
+            {detail && fullUrl ? (
+              <OriginalDownloadButton
+                key={image.id}
+                imageId={image.id}
+                url={fullUrl}
+                fetchedAt={detail.fetchedAt}
+                className="btn btn-secondary flex-1"
+              >
                 <DownloadIcon size={15} /> 원본 받기
-              </a>
+              </OriginalDownloadButton>
             ) : (
               <button type="button" className="btn btn-secondary flex-1" disabled aria-busy="true">
                 <DownloadIcon size={15} /> 원본 받기

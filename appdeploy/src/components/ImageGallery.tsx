@@ -41,10 +41,8 @@ export function ImageGallery({
   hideModelLink?: boolean;
   initial?: Paged<ImageCardData>;
 }) {
-  const { items, setItems, hasMore, loading, firstLoading, error, loadMore, sentinel } = useInfiniteList<ImageCardData>(
-    endpoint,
-    initial,
-  );
+  const { items, setItems, hasMore, loading, firstLoading, error, errorText, loadMore, sentinel } =
+    useInfiniteList<ImageCardData>(endpoint, initial);
   const lb = useLightboxState(setItems);
 
   if (firstLoading || (loading && !items.length)) return <GallerySkeleton />;
@@ -54,7 +52,7 @@ export function ImageGallery({
       return (
         <div className="card flex flex-col items-center gap-3 px-6 py-16 text-center">
           <p className="text-lg font-bold">이미지를 불러오지 못했어요</p>
-          <p className="text-sm text-muted">잠시 후 다시 시도해 주세요.</p>
+          <p className="text-sm text-muted">{errorText ?? '잠시 후 다시 시도해 주세요.'}</p>
           <button type="button" className="btn btn-secondary mt-2" onClick={loadMore}>
             다시 시도
           </button>

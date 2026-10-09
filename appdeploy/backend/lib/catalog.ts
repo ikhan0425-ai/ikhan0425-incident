@@ -150,7 +150,9 @@ export function previewOf(meta: {
 
 /** 미리보기에 잘린 뒷부분까지 검색되도록 긴 프롬프트만 따로 보관 */
 export function searchOf(prompt: string | null): string | undefined {
-  return prompt && prompt.length > PREVIEW_PROMPT ? prompt.slice(0, SEARCH_LENGTH).toLocaleLowerCase('ko-KR') : undefined;
+  return prompt && prompt.length > PREVIEW_PROMPT
+    ? prompt.slice(0, SEARCH_LENGTH).toLocaleLowerCase('ko-KR')
+    : undefined;
 }
 
 /** size·count 제한을 지키도록 묶음으로 나눈다 */
@@ -432,7 +434,11 @@ export class Catalog {
     const bumps: Op[] = [];
     for (const op of ops) {
       if (op.t === 'bumpModel' || op.t === 'bumpImage') bumps.push(op);
-      else last.set(`${op.t.endsWith('Model') ? 'm' : 'i'}:${'id' in op ? op.id : op.t === 'putModel' ? op.m.id : op.img.id}`, op);
+      else
+        last.set(
+          `${op.t.endsWith('Model') ? 'm' : 'i'}:${'id' in op ? op.id : op.t === 'putModel' ? op.m.id : op.img.id}`,
+          op,
+        );
     }
     const same = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
     const out: Op[] = [];
