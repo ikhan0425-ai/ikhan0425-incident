@@ -2,7 +2,7 @@
 
 import { auth, json, type AuthUser, type RouterContext, type RouterResponse } from '@appdeploy/sdk';
 
-export type ErrorCode = 'auth_required' | 'forbidden' | 'not_found' | 'bad_request' | 'server_error';
+export type ErrorCode = 'auth_required' | 'forbidden' | 'not_found' | 'bad_request' | 'rate_limited' | 'server_error';
 
 export class AppError extends Error {
   constructor(
@@ -24,6 +24,18 @@ export function fail(message: string, status: number, code: ErrorCode): RouterRe
 
 type Handler = (ctx: RouterContext) => Promise<RouterResponse>;
 
+function isQuotaError(e: unknown): boolean {
+  const x = e as { name?: unknown; code?: unknown; status?: unknown; statusCode?: unknown; message?: unknown } | null;
+  if (!x || typeof x !== 'object') return false;
+  return (
+    x.status === 429 ||
+    x.statusCode === 429 ||
+    x.name === 'AppDatabaseQuotaExceeded' ||
+    x.code === 'AppDatabaseQuotaExceeded' ||
+    (typeof x.message === 'string' && /AppDatabaseQuotaExceeded|quota/i.test(x.message))
+  );
+}
+
 /** 예외를 JSON 오류 응답으로 바꾼다 */
 export function handle(fn: Handler): Handler {
   return async (ctx) => {
@@ -31,6 +43,11 @@ export function handle(fn: Handler): Handler {
       return await fn(ctx);
     } catch (e) {
       if (e instanceof AppError) return fail(e.message, e.status, e.code);
+      if (isQuotaError(e)) {
+        // DB 사용량 한도: 숨기거나 재시도하지 않고 그대로 알린다
+        console.warn('[api] quota exceeded', e);
+        return fail('요청이 많아 잠시 처리할 수 없어요. 잠시 후 다시 시도해 주세요.', 429, 'rate_limited');
+      }
       console.error('[api] unexpected error', e);
       return fail('서버 오류가 발생했어요. 잠시 후 다시 시도해 주세요.', 500, 'server_error');
     }

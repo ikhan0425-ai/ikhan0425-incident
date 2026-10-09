@@ -123,10 +123,16 @@ function checkSize(records: unknown[]) {
     if (n > 256 * 1024) throw new Error(`mock db: record too large (${n} bytes > 256KiB)`);
   }
   if (records.length > 500) throw new Error('mock db: more than 500 items');
+  const total = Buffer.byteLength(JSON.stringify(records));
+  if (total > 1024 * 1024) throw new Error(`mock db: call input too large (${total} bytes > 1MiB)`);
 }
+
+// 실제 플랫폼처럼 읽기와 쓰기 사이에 다른 요청이 끼어들 수 있게 약간 지연한다
+const tick = () => new Promise((r) => setTimeout(r, Number(process.env.MOCK_DB_DELAY_MS ?? 3)));
 
 export const db = {
   async add(table: string, records: Array<Record<string, unknown>>) {
+    await tick();
     checkSize(records);
     stats.writes++;
     const t = (tables[table] ??= {});
@@ -139,6 +145,7 @@ export const db = {
     return ids;
   },
   async update(table: string, items: Array<{ id: string; record: Record<string, unknown> }>) {
+    await tick();
     checkSize(items.map((i) => i.record));
     stats.writes++;
     const t = (tables[table] ??= {});
@@ -153,11 +160,13 @@ export const db = {
     return res;
   },
   async get<T = Record<string, any>>(table: string, ids: string[]): Promise<Array<T | null>> {
+    await tick();
     stats.reads++;
     const t = tables[table] ?? {};
     return ids.map((id) => (id in t ? (clone(t[id]) as T) : null));
   },
   async list<T = Record<string, any>>(table: string, options: { filter?: Record<string, unknown>; nextToken?: string; limit?: number } = {}) {
+    await tick();
     stats.reads++;
     const all = Object.entries(tables[table] ?? {});
     const start = options.nextToken ? Number(options.nextToken) : 0;
@@ -170,6 +179,7 @@ export const db = {
     return { items, nextToken: next };
   },
   async delete(table: string, ids: string[]) {
+    await tick();
     stats.writes++;
     const t = tables[table] ?? {};
     const res = ids.map((id) => (id in t ? (delete t[id], true) : false));

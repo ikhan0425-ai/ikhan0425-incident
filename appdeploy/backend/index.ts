@@ -5,7 +5,7 @@ import { createHash, randomUUID } from 'node:crypto';
 import { LIMITS, PAGE_SIZE } from './shared/constants';
 import { parseImageFilters, parseModelFilters, parsePage, periodStart } from './shared/filters';
 import type { ModelOption, Profile } from './shared/types';
-import { previewOf, type ImageSummary, type ModelSummary } from './lib/catalog';
+import { byteSize, previewOf, searchOf, type ImageSummary, type ModelSummary } from './lib/catalog';
 import { badRequest, bodyOf, forbidden, handle, notFound, optionalUser, userOf } from './lib/http';
 import { isSeedId, seedProfileNames } from './lib/seed';
 import {
@@ -28,7 +28,6 @@ import {
   type VersionRecord,
   type World,
 } from './lib/service';
-import { bump, emptyCounter } from './lib/time';
 import {
   decodeBase64,
   MIME,
@@ -167,6 +166,7 @@ function imageSummaryOf(id: string, rec: ImageRecord, ownerName: string): ImageS
     createdAt: rec.createdAt,
     meta: previewOf(rec.meta),
     source: rec.source,
+    ...(searchOf(rec.meta.prompt) ? { search: searchOf(rec.meta.prompt) } : {}),
   };
 }
 
@@ -228,26 +228,54 @@ function summaryOf(id: string, rec: ModelRecord): ModelSummary {
   };
 }
 
+/** 이미지 레코드·파일 삭제 (DB 호출당 500개 제한에 맞춰 나눈다. 이미 없는 것은 건너뛴다) */
 async function deleteStoredImages(ids: string[]): Promise<void> {
   const userIds = ids.filter((id) => !isSeedId(id));
-  if (!userIds.length) return;
-  const recs = await db.get<ImageRecord>('images', userIds);
-  const paths = recs.flatMap((r) => (r ? [r.file, r.thumb] : [])).filter((p) => p.startsWith('u/'));
-  if (paths.length) await storage.delete(paths);
-  await db.delete('images', userIds);
+  for (let i = 0; i < userIds.length; i += 500) {
+    const part = userIds.slice(i, i + 500);
+    const recs = await db.get<ImageRecord>('images', part);
+    const paths = recs.flatMap((r) => (r ? [r.file, r.thumb] : [])).filter((p) => p.startsWith('u/'));
+    for (let j = 0; j < paths.length; j += 100) await storage.delete(paths.slice(j, j + 100));
+    await db.delete('images', part);
+  }
 }
 
-/** 좋아요 기록은 likes:<userId> 테이블에 { k: 'm'|'i', target, at }. (id 는 DB 가 붙이는 레코드 ID 라 쓰지 않는다) */
-async function toggleLike(userId: string, kind: 'm' | 'i', target: string): Promise<{ liked: boolean; at: number }> {
+/**
+ * 좋아요 설정. 기록은 likes:<userId> 테이블에 { k: 'm'|'i', target, at } (id 는 DB 가 붙이는 레코드 ID 라 쓰지 않는다).
+ * desired 를 주면 그 상태로 맞추고(여러 번 눌러도 같은 결과), 없으면 뒤집는다.
+ * changed 가 false 면 이미 그 상태였던 것이라 집계를 바꾸지 않는다.
+ */
+async function setLike(
+  userId: string,
+  kind: 'm' | 'i',
+  target: string,
+  desired: boolean | undefined,
+): Promise<{ liked: boolean; changed: boolean; at: number }> {
   const table = likesTable(userId);
   const existing = await findLike(table, kind, target);
-  if (existing) {
+  const want = desired ?? !existing;
+  if (existing && !want) {
     await db.delete(table, [existing.id]);
-    return { liked: false, at: existing.at ?? Date.now() };
+    return { liked: false, changed: true, at: existing.at ?? Date.now() };
   }
-  const at = Date.now();
-  await db.add(table, [{ k: kind, target, at }]);
-  return { liked: true, at };
+  if (!existing && want) {
+    const at = Date.now();
+    await db.add(table, [{ k: kind, target, at }]);
+    return { liked: true, changed: true, at };
+  }
+  return { liked: want, changed: false, at: Date.now() };
+}
+
+function desiredLike(ctx: RouterContext): boolean | undefined {
+  const v = bodyOf(ctx).liked;
+  return typeof v === 'boolean' ? v : undefined;
+}
+
+/** 모델 레코드 하나가 DB 레코드 한도(256KiB)를 넘지 않게 */
+const MAX_VERSIONS = 50;
+function assertModelRecordSize(rec: ModelRecord): void {
+  if (rec.versions.length > MAX_VERSIONS) throw badRequest(`버전은 ${MAX_VERSIONS}개까지 올릴 수 있어요.`);
+  if (byteSize(rec) > 230 * 1024) throw badRequest('모델 정보가 너무 커요. 설명이나 버전 메모를 줄여 주세요.');
 }
 
 // ---------------------------------------------------------------------------
@@ -341,6 +369,7 @@ export const handler = router({
         updatedAt: now,
         versions: [v],
       };
+      assertModelRecordSize(rec);
       const [id] = await db.add('models', [rec as unknown as Record<string, unknown>]);
       if (!id) throw new Error('model insert failed');
       const w = await loadWorld();
@@ -371,29 +400,18 @@ export const handler = router({
 
       const related = w.imagesByModel.get(id) ?? [];
       const own = related.filter((i) => i.ownerId === user.userId).map((i) => i.id);
-      const others = related.filter((i) => i.ownerId !== user.userId && !isSeedId(i.id));
-      await deleteStoredImages(own);
+      const others = related.filter((i) => i.ownerId !== user.userId);
+      // 1) 카탈로그에서 먼저 지운다 (목록·검색의 기준). 다른 사람 이미지는 연결만 끊는다.
       for (const imgId of own) w.cat.removeImage(imgId);
-      if (others.length) {
-        const recs = await db.get<ImageRecord>(
-          'images',
-          others.map((i) => i.id),
-        );
-        const updates = others.flatMap((img, i) => {
-          const r = recs[i];
-          return r
-            ? [{ id: img.id, record: { ...r, modelId: null, versionId: null } as unknown as Record<string, unknown> }]
-            : [];
-        });
-        if (updates.length) await db.update('images', updates);
-        for (const img of others) w.cat.putImage({ ...img, modelId: null, versionId: null });
-      }
+      for (const img of others) w.cat.putImage({ ...img, modelId: null, versionId: null });
+      w.cat.removeModel(id);
+      await w.cat.save();
+      // 2) 그다음 실제 레코드와 파일. 중간에 실패해도 화면에 남는 유령 항목은 없다.
       const [rec] = await db.get<ModelRecord>('models', [id]);
+      await deleteStoredImages(own);
       const files = (rec?.versions ?? []).flatMap((v) => (v.file ? [v.file.path] : []));
       if (files.length) await storage.delete(files);
       await db.delete('models', [id]);
-      w.cat.removeModel(id);
-      await w.cat.save();
       return json({ ok: true });
     }),
   ],
@@ -405,11 +423,11 @@ export const handler = router({
       const id = ctx.params.id;
       const w = await loadWorld();
       if (!w.modelById.has(id)) throw notFound('모델을 찾을 수 없어요.');
-      const { liked, at } = await toggleLike(user.userId, 'm', id);
-      const stat = w.cat.editModelStat(id);
-      stat.lk ??= emptyCounter();
-      bump(stat.lk, at, liked ? 1 : -1, w.now);
-      await w.cat.save();
+      const { liked, changed, at } = await setLike(user.userId, 'm', id, desiredLike(ctx));
+      if (changed) {
+        w.cat.bumpModel(id, 'lk', at, liked ? 1 : -1);
+        await w.cat.save();
+      }
       return json({ liked, likes: modelLikes(w, id) });
     }),
   ],
@@ -429,15 +447,19 @@ export const handler = router({
       if (rec.versions.some((v) => v.name === parsed.name)) throw badRequest('같은 이름의 버전이 이미 있어요.');
       const images = parseImages(body.images, user.userId, rec.nsfw, true);
       const version = await verifyModelFile(parsed);
+      const profile = await ensureProfile(ctx);
       const w = await loadWorld();
       assertFreshUploads(w, images);
       const now = Date.now();
       const v = versionRecordOf(version, now);
-      const next: ModelRecord = { ...rec, versions: [...rec.versions, v], updatedAt: now };
+      // 닉네임을 바꿨을 수 있으므로 현재 프로필 이름을 쓴다
+      const ownerName = profile.rec.displayName;
+      const next: ModelRecord = { ...rec, ownerName, versions: [...rec.versions, v], updatedAt: now };
+      assertModelRecordSize(next);
       const [ok] = await db.update('models', [{ id, record: next as unknown as Record<string, unknown> }]);
       if (!ok) throw new Error('model update failed');
       w.cat.putModel(summaryOf(id, next));
-      await insertImages(w, user.userId, rec.ownerName, images, () => ({ modelId: id, versionId: v.id }), now);
+      await insertImages(w, user.userId, ownerName, images, () => ({ modelId: id, versionId: v.id }), now);
       await w.cat.save();
       return json({ id, versionId: v.id });
     }),
@@ -456,11 +478,13 @@ export const handler = router({
         allow(`dl:${clientIp(ctx)}:${versionId}`, 1, 10 * 60 * 1000) &&
         allow(`dl:${clientIp(ctx)}`, 30, 60 * 60 * 1000)
       ) {
-        const stat = w.cat.editModelStat(id);
-        stat.dl ??= emptyCounter();
-        bump(stat.dl, w.now, 1, w.now);
-        stat.vdl = { ...(stat.vdl ?? {}), [versionId]: (stat.vdl?.[versionId] ?? 0) + 1 };
-        await w.cat.save();
+        // 집계에 실패해도 다운로드는 막지 않는다
+        try {
+          w.cat.bumpModel(id, 'dl', w.now, 1, versionId);
+          await w.cat.save();
+        } catch (e) {
+          console.warn('[download] stats not saved', e);
+        }
       }
       if (file.external) return json({ url: file.path, external: true });
       const urls = await resolveUrls([file.path]);
@@ -517,7 +541,8 @@ export const handler = router({
         if (excludeUserId && img.ownerId === excludeUserId) return false;
         if (needle) {
           const modelName = img.modelId ? (w.modelById.get(img.modelId)?.name ?? '') : '';
-          if (!lower(img.meta.prompt ?? '').includes(needle) && !lower(modelName).includes(needle)) return false;
+          const prompt = img.search ?? lower(img.meta.prompt ?? '');
+          if (!prompt.includes(needle) && !lower(modelName).includes(needle)) return false;
         }
         if (f.sort !== 'likes' && since && img.createdAt < since) return false;
         return true;
@@ -611,11 +636,11 @@ export const handler = router({
       const id = ctx.params.id;
       const w = await loadWorld();
       if (!w.imageById.has(id)) throw notFound('이미지를 찾을 수 없어요.');
-      const { liked, at } = await toggleLike(user.userId, 'i', id);
-      const stat = w.cat.editImageStat(id);
-      stat.lk ??= emptyCounter();
-      bump(stat.lk, at, liked ? 1 : -1, w.now);
-      await w.cat.save();
+      const { liked, changed, at } = await setLike(user.userId, 'i', id, desiredLike(ctx));
+      if (changed) {
+        w.cat.bumpImage(id, at, liked ? 1 : -1);
+        await w.cat.save();
+      }
       return json({ liked, likes: imageLikes(w, id) });
     }),
   ],
@@ -650,7 +675,8 @@ export const handler = router({
         const fileName = safeFileName(body.fileName);
         const data = decodeBase64(body.data, LIMITS.uploadBytes, '모델');
         const path = `u/${user.userId}/f/${randomUUID()}/${fileName}`;
-        const contentType = fileName.endsWith('.json') ? 'application/json' : 'application/octet-stream';
+        // .json 워크플로도 브라우저에서 열리지 않고 내려받아지도록 항상 octet-stream
+        const contentType = 'application/octet-stream';
         const [ok] = await storage.write([{ path, content: data.toString('base64'), contentType }]);
         if (!ok) throw new Error('storage write failed');
         return json({ path, size: data.length, sha256: createHash('sha256').update(data).digest('hex') });
