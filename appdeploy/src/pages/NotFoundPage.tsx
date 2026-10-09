@@ -52,11 +52,14 @@ interface Loaded<T> {
   key: string;
   data: T | null;
   error: unknown;
+  /** 요청을 보낸 시각 (ms). 서명 URL 이 오래됐는지 판단할 때 쓴다 */
+  fetchedAt: number;
 }
 
 /**
  * GET 한 번으로 페이지 데이터를 불러온다. url 이 바뀌면 이전 응답은 버리고 새로 불러온다 (그동안 data 는 null).
  * refreshOnSignIn: 로그인/로그아웃하면 화면은 그대로 둔 채 다시 불러온다 (좋아요 여부 등 보는 사람에 따라 다른 값).
+ * fetchedAt: 지금 data 를 요청한 시각 (ms).
  */
 export function usePageData<T>(url: string | null, { refreshOnSignIn = false }: { refreshOnSignIn?: boolean } = {}) {
   const { me, ready } = useAuth();
@@ -77,14 +80,15 @@ export function usePageData<T>(url: string | null, { refreshOnSignIn = false }: 
   useEffect(() => {
     if (url === null) return;
     let alive = true;
+    const fetchedAt = Date.now();
     apiGet<T>(url).then(
       (data) => {
-        if (alive) setLoaded({ key, data, error: null });
+        if (alive) setLoaded({ key, data, error: null, fetchedAt });
       },
       (error: unknown) => {
         if (!alive) return;
         // 조용히 다시 불러오다 실패하면 보던 화면을 그대로 둔다
-        setLoaded((prev) => (prev?.key === key && prev.data !== null ? prev : { key, data: null, error }));
+        setLoaded((prev) => (prev?.key === key && prev.data !== null ? prev : { key, data: null, error, fetchedAt }));
       },
     );
     return () => {
@@ -94,5 +98,5 @@ export function usePageData<T>(url: string | null, { refreshOnSignIn = false }: 
 
   const retry = useCallback(() => setAttempt((n) => n + 1), []);
   const current = url !== null && loaded?.key === key ? loaded : null;
-  return { data: current?.data ?? null, error: current?.error ?? null, retry };
+  return { data: current?.data ?? null, error: current?.error ?? null, fetchedAt: current?.fetchedAt ?? 0, retry };
 }

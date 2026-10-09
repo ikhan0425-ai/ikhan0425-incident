@@ -3,7 +3,7 @@
 import { auth } from '@appdeploy/client';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import type { Me } from '../shared/types';
-import { apiGet, apiPut } from './api';
+import { ApiError, apiGet, apiPut, errorMessage } from './api';
 
 interface AuthState {
   /** 로그인한 사용자 (닉네임 포함). 로그아웃 상태면 null */
@@ -22,11 +22,13 @@ interface AuthState {
 
 const AuthContext = createContext<AuthState | null>(null);
 
+/** 로그인이 풀렸으면 null. 그 밖의 오류(요청 과다, 서버·네트워크 오류 등)는 그대로 던진다 */
 async function loadMe(): Promise<Me | null> {
   try {
     return (await apiGet<{ me: Me }>('/api/me')).me;
-  } catch {
-    return null;
+  } catch (e) {
+    if (e instanceof ApiError && e.code === 'auth_required') return null;
+    throw e;
   }
 }
 
@@ -42,6 +44,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const user = auth.isSignedIn() ? await auth.getUser() : null;
         const profile = user ? await loadMe() : null;
         if (alive) setMe(profile);
+      } catch {
+        // 로그인이 풀린 것이 아니라 불러오기만 실패했다. 로그아웃 상태로 두고 알린다
+        if (alive) setNotice('로그인 정보를 불러오지 못했어요. 새로고침해 주세요.');
       } finally {
         if (alive) setReady(true);
       }
@@ -54,14 +59,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signIn = useCallback(async () => {
     try {
       await auth.signIn();
-      const profile = await loadMe();
-      setMe(profile);
-      return profile;
     } catch (e) {
       const code = (e as { code?: string })?.code;
       if (code === 'popup_blocked')
         setNotice('브라우저가 로그인 팝업을 막았어요. 팝업을 허용한 뒤 다시 시도해 주세요.');
       else if (code !== 'popup_closed') setNotice('로그인하지 못했어요. 잠시 후 다시 시도해 주세요.');
+      return null;
+    }
+    try {
+      const profile = await loadMe();
+      setMe(profile);
+      return profile;
+    } catch (e) {
+      // 프로필을 못 불러왔으면(요청 과다 등) 보던 로그인 상태는 그대로 두고 알린다
+      setNotice(errorMessage(e));
       return null;
     }
   }, []);

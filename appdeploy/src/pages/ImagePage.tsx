@@ -6,13 +6,14 @@ import { GenerationInfo } from '../components/GenerationInfo';
 import { ImageGallery } from '../components/ImageGallery';
 import { LikeButton } from '../components/LikeButton';
 import { NsfwReveal } from '../components/NsfwReveal';
+import { OriginalDownloadButton } from '../components/OriginalDownloadButton';
 import { DownloadIcon } from '../components/icons';
 import { useAuth } from '../lib/auth';
 import { formatDate } from '../shared/format';
 import type { ImageCardData, ImageDetailData, Paged } from '../shared/types';
 import { isNotFound, NotFoundPage, PageError, usePageData, usePageTitle } from './NotFoundPage';
 
-function ImageContent({ image }: { image: ImageDetailData }) {
+function ImageContent({ image, fetchedAt }: { image: ImageDetailData; fetchedAt: number }) {
   const { me } = useAuth();
   // 같은 모델(없으면 같은 사용자)의 다른 이미지
   const moreQuery = new URLSearchParams(image.model ? { modelId: image.model.id } : { userId: image.user.id });
@@ -75,9 +76,14 @@ function ImageContent({ image }: { image: ImageDetailData }) {
           </section>
 
           <div className="flex flex-wrap gap-2">
-            <a href={image.url} className="btn btn-secondary flex-1" download target="_blank" rel="noopener">
+            <OriginalDownloadButton
+              imageId={image.id}
+              url={image.url}
+              fetchedAt={fetchedAt}
+              className="btn btn-secondary flex-1"
+            >
               <DownloadIcon size={15} /> 원본 받기 ({image.width}×{image.height})
-            </a>
+            </OriginalDownloadButton>
             {me && me.id === image.user.id && (
               <DeleteButton
                 endpoint={`/api/images/${image.id}`}
@@ -103,9 +109,10 @@ function ImageContent({ image }: { image: ImageDetailData }) {
 
 export function ImagePage() {
   const { id = '' } = useParams();
-  const { data, error, retry } = usePageData<{ image: ImageDetailData }>(`/api/images/${encodeURIComponent(id)}`, {
-    refreshOnSignIn: true,
-  });
+  const { data, error, fetchedAt, retry } = usePageData<{ image: ImageDetailData }>(
+    `/api/images/${encodeURIComponent(id)}`,
+    { refreshOnSignIn: true },
+  );
   const image = data?.image ?? null;
   usePageTitle(
     image
@@ -119,7 +126,7 @@ export function ImagePage() {
   return (
     <div className="mx-auto max-w-[1600px] px-4 py-6">
       {image ? (
-        <ImageContent key={image.id} image={image} />
+        <ImageContent key={image.id} image={image} fetchedAt={fetchedAt} />
       ) : error ? (
         <PageError error={error} onRetry={retry} />
       ) : (

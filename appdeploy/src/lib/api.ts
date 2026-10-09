@@ -3,7 +3,14 @@
 
 import { api } from '@appdeploy/client';
 
-export type ApiErrorCode = 'auth_required' | 'forbidden' | 'not_found' | 'bad_request' | 'server_error' | 'network';
+export type ApiErrorCode =
+  | 'auth_required'
+  | 'forbidden'
+  | 'not_found'
+  | 'bad_request'
+  | 'rate_limited'
+  | 'server_error'
+  | 'network';
 
 export class ApiError extends Error {
   constructor(
@@ -19,6 +26,7 @@ function codeFromStatus(status: number): ApiErrorCode {
   if (status === 401) return 'auth_required';
   if (status === 403) return 'forbidden';
   if (status === 404) return 'not_found';
+  if (status === 429) return 'rate_limited';
   if (status >= 400 && status < 500) return 'bad_request';
   if (status === 0) return 'network';
   return 'server_error';
@@ -39,7 +47,9 @@ function toApiError(e: unknown): ApiError {
       ? data.error
       : status === 0
         ? '네트워크 오류가 발생했어요. 잠시 후 다시 시도해 주세요.'
-        : '요청을 처리하지 못했어요. 잠시 후 다시 시도해 주세요.';
+        : status === 429
+          ? '요청이 많아요. 잠시 후 다시 시도해 주세요.'
+          : '요청을 처리하지 못했어요. 잠시 후 다시 시도해 주세요.';
   const code =
     data && typeof data === 'object' && typeof data.code === 'string'
       ? (data.code as ApiErrorCode)
@@ -61,7 +71,9 @@ function unwrap<T>(res: { data: unknown }): T {
             ? 404
             : code === 'bad_request'
               ? 400
-              : 500;
+              : code === 'rate_limited'
+                ? 429
+                : 500;
     throw new ApiError(data.error, status, code);
   }
   return res.data as T;
