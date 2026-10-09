@@ -55,7 +55,11 @@ export function ImageCard({
       className="group relative block w-full cursor-zoom-in overflow-hidden rounded-xl bg-surface-2 ring-1 ring-line"
       style={
         fixedHeight
-          ? { height: fixedHeight, width: (fixedHeight * image.width) / image.height, backgroundColor: image.color ?? undefined }
+          ? {
+              height: fixedHeight,
+              width: (fixedHeight * image.width) / image.height,
+              backgroundColor: image.color ?? undefined,
+            }
           : { aspectRatio: `${image.width} / ${image.height}`, backgroundColor: image.color ?? undefined }
       }
     >
@@ -89,9 +93,7 @@ export function ImageCard({
           >
             {hasMeta ? (
               <div className="max-h-full space-y-1.5 overflow-hidden">
-                {m.prompt && (
-                  <p className="prompt-text line-clamp-4 text-xs leading-snug text-white">{m.prompt}</p>
-                )}
+                {m.prompt && <p className="prompt-text line-clamp-4 text-xs leading-snug text-white">{m.prompt}</p>}
                 {m.negativePrompt && (
                   <p className="prompt-text line-clamp-2 text-[11px] leading-snug text-white/65">
                     <span className="mr-1 font-bold text-[#ff8f8f]">Negative</span>

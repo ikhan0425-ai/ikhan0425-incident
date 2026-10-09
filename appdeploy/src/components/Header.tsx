@@ -29,11 +29,19 @@ export function Footer() {
   return (
     <footer className="mt-16 border-t border-line">
       <div className="mx-auto flex max-w-[1800px] flex-col gap-2 px-4 py-8 text-sm text-subtle sm:flex-row sm:items-center sm:justify-between">
-        <p>© 2026 {SITE_NAME} · {SITE_DESCRIPTION}</p>
+        <p>
+          © 2026 {SITE_NAME} · {SITE_DESCRIPTION}
+        </p>
         <nav className="flex gap-4">
-          <Link to="/" className="hover:text-fg">모델</Link>
-          <Link to="/images" className="hover:text-fg">이미지</Link>
-          <Link to="/models/new" className="hover:text-fg">모델 업로드</Link>
+          <Link to="/" className="hover:text-fg">
+            모델
+          </Link>
+          <Link to="/images" className="hover:text-fg">
+            이미지
+          </Link>
+          <Link to="/models/new" className="hover:text-fg">
+            모델 업로드
+          </Link>
         </nav>
       </div>
     </footer>

@@ -32,9 +32,10 @@ export function ModelBrowser({ filters }: { filters: ModelFilters }) {
   };
 
   // 프리셋 태그를 먼저, 그 다음 많이 쓰인 사용자 태그
-  const tagNames = [
-    ...new Set([...filters.tags, ...PRESET_TAGS.map((t) => t.name), ...tags.map((t) => t.name)]),
-  ].slice(0, 40);
+  const tagNames = [...new Set([...filters.tags, ...PRESET_TAGS.map((t) => t.name), ...tags.map((t) => t.name)])].slice(
+    0,
+    40,
+  );
   const activeCount = filters.types.length + filters.baseModels.length + filters.tags.length + (filters.q ? 1 : 0);
 
   return (
@@ -106,7 +107,9 @@ export function ModelBrowser({ filters }: { filters: ModelFilters }) {
           button={(open) => (
             <span
               className={`flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold ${
-                filters.baseModels.length ? 'border-accent bg-accent/15 text-fg' : 'border-line bg-surface text-muted hover:text-fg'
+                filters.baseModels.length
+                  ? 'border-accent bg-accent/15 text-fg'
+                  : 'border-line bg-surface text-muted hover:text-fg'
               }`}
             >
               <SlidersIcon size={14} />
@@ -235,7 +238,9 @@ export function ModelResults({
     return (
       <div className="card flex flex-col items-center gap-3 px-6 py-16 text-center">
         <p className="text-lg font-bold">조건에 맞는 모델이 없어요</p>
-        <p className="text-sm text-muted">필터를 줄이거나 다른 검색어로 찾아보세요. 직접 만든 모델이 있다면 첫 번째로 올려 주세요!</p>
+        <p className="text-sm text-muted">
+          필터를 줄이거나 다른 검색어로 찾아보세요. 직접 만든 모델이 있다면 첫 번째로 올려 주세요!
+        </p>
         <div className="mt-2 flex gap-2">
           <Link to="/" className="btn btn-secondary">
             필터 초기화

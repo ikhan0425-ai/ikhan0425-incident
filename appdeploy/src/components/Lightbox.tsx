@@ -184,7 +184,11 @@ export function Lightbox({
       {/* 정보 패널 */}
       <aside className="max-h-[55vh] w-full shrink-0 overflow-y-auto border-t border-line bg-surface lg:max-h-none lg:w-[420px] lg:border-l lg:border-t-0">
         <div className="sticky top-0 z-10 flex items-center justify-between gap-2 border-b border-line bg-surface/95 px-4 py-3 backdrop-blur">
-          <Link to={`/users/${image.user.id}`} onClick={onClose} className="flex min-w-0 items-center gap-2.5 hover:opacity-90">
+          <Link
+            to={`/users/${image.user.id}`}
+            onClick={onClose}
+            className="flex min-w-0 items-center gap-2.5 hover:opacity-90"
+          >
             <Avatar userId={image.user.id} displayName={image.user.displayName} size={34} />
             <span className="min-w-0">
               <span className="block truncate text-sm font-bold">{image.user.displayName}</span>

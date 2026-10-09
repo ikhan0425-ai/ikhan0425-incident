@@ -43,7 +43,13 @@ export function Popover({
 
   return (
     <div ref={ref} className="relative">
-      <button type="button" aria-expanded={open} aria-label={label} onClick={() => setOpen((o) => !o)} className="flex items-center">
+      <button
+        type="button"
+        aria-expanded={open}
+        aria-label={label}
+        onClick={() => setOpen((o) => !o)}
+        className="flex items-center"
+      >
         {button(open)}
       </button>
       {open && (

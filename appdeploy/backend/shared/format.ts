@@ -1,15 +1,15 @@
-const compact = new Intl.NumberFormat("ko-KR", { notation: "compact", maximumFractionDigits: 1 });
-const dateFmt = new Intl.DateTimeFormat("ko-KR", {
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-  timeZone: "Asia/Seoul",
+const compact = new Intl.NumberFormat('ko-KR', { notation: 'compact', maximumFractionDigits: 1 });
+const dateFmt = new Intl.DateTimeFormat('ko-KR', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  timeZone: 'Asia/Seoul',
 });
-const shortDateFmt = new Intl.DateTimeFormat("ko-KR", {
-  year: "2-digit",
-  month: "2-digit",
-  day: "2-digit",
-  timeZone: "Asia/Seoul",
+const shortDateFmt = new Intl.DateTimeFormat('ko-KR', {
+  year: '2-digit',
+  month: '2-digit',
+  day: '2-digit',
+  timeZone: 'Asia/Seoul',
 });
 
 /** 1234 → "1.2천", 12345 → "1.2만" */
@@ -26,8 +26,8 @@ export function formatShortDate(ms: number): string {
 }
 
 export function formatBytes(bytes: number | null | undefined): string {
-  if (!bytes && bytes !== 0) return "-";
-  const units = ["B", "KB", "MB", "GB", "TB"];
+  if (!bytes && bytes !== 0) return '-';
+  const units = ['B', 'KB', 'MB', 'GB', 'TB'];
   let v = bytes;
   let i = 0;
   while (v >= 1024 && i < units.length - 1) {

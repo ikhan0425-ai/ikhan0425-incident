@@ -79,7 +79,11 @@ function ImageContent({ image }: { image: ImageDetailData }) {
               <DownloadIcon size={15} /> 원본 받기 ({image.width}×{image.height})
             </a>
             {me && me.id === image.user.id && (
-              <DeleteButton endpoint={`/api/images/${image.id}`} redirectTo={`/users/${me.id}?tab=images`} confirmText="이 이미지를 삭제할까요?" />
+              <DeleteButton
+                endpoint={`/api/images/${image.id}`}
+                redirectTo={`/users/${me.id}?tab=images`}
+                confirmText="이 이미지를 삭제할까요?"
+              />
             )}
           </div>
         </aside>
@@ -87,7 +91,9 @@ function ImageContent({ image }: { image: ImageDetailData }) {
 
       {moreItems.length > 0 && (
         <section className="mt-12">
-          <h2 className="mb-4 text-xl font-bold">{image.model ? `${image.model.name} 의 다른 이미지` : `${image.user.displayName}님의 다른 이미지`}</h2>
+          <h2 className="mb-4 text-xl font-bold">
+            {image.model ? `${image.model.name} 의 다른 이미지` : `${image.user.displayName}님의 다른 이미지`}
+          </h2>
           <ImageGallery key={moreEndpoint} initial={{ items: moreItems, hasMore: false }} endpoint={moreEndpoint} />
         </section>
       )}

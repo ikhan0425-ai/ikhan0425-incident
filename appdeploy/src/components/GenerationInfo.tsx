@@ -1,5 +1,11 @@
 import { useState } from 'react';
-import { formatA1111, hasGenerationData, SOURCE_LABELS, type GenerationParams, type MetadataSource } from '../shared/generation';
+import {
+  formatA1111,
+  hasGenerationData,
+  SOURCE_LABELS,
+  type GenerationParams,
+  type MetadataSource,
+} from '../shared/generation';
 import { CopyButton } from './CopyButton';
 
 function PromptBlock({ label, text, negative }: { label: string; text: string; negative?: boolean }) {
@@ -8,7 +14,9 @@ function PromptBlock({ label, text, negative }: { label: string; text: string; n
   return (
     <section>
       <div className="mb-1.5 flex items-center justify-between">
-        <h4 className={`text-xs font-bold uppercase tracking-wide ${negative ? 'text-danger/90' : 'text-muted'}`}>{label}</h4>
+        <h4 className={`text-xs font-bold uppercase tracking-wide ${negative ? 'text-danger/90' : 'text-muted'}`}>
+          {label}
+        </h4>
         <CopyButton text={text} label="복사" title={`${label} 복사`} />
       </div>
       <div
@@ -19,7 +27,11 @@ function PromptBlock({ label, text, negative }: { label: string; text: string; n
         {text}
       </div>
       {long && (
-        <button type="button" onClick={() => setExpanded(!expanded)} className="mt-1 text-xs font-semibold text-accent hover:underline">
+        <button
+          type="button"
+          onClick={() => setExpanded(!expanded)}
+          className="mt-1 text-xs font-semibold text-accent hover:underline"
+        >
           {expanded ? '접기' : '더 보기'}
         </button>
       )}
@@ -27,7 +39,17 @@ function PromptBlock({ label, text, negative }: { label: string; text: string; n
   );
 }
 
-function Param({ label, value, copy, wide }: { label: string; value: string | number | null; copy?: boolean; wide?: boolean }) {
+function Param({
+  label,
+  value,
+  copy,
+  wide,
+}: {
+  label: string;
+  value: string | number | null;
+  copy?: boolean;
+  wide?: boolean;
+}) {
   if (value === null || value === '') return null;
   return (
     <div className={`rounded-lg bg-surface-2 px-3 py-2 ${wide ? 'col-span-2' : ''}`}>

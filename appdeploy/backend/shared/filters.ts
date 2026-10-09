@@ -10,19 +10,19 @@ import {
   type ImageSort,
   type ModelSort,
   type Period,
-} from "./constants";
+} from './constants';
 
 type RawParams = URLSearchParams | Record<string, string | string[] | undefined>;
 
 function get(sp: RawParams, key: string): string {
-  if (sp instanceof URLSearchParams) return sp.get(key) ?? "";
+  if (sp instanceof URLSearchParams) return sp.get(key) ?? '';
   const v = sp[key];
-  return (Array.isArray(v) ? v[0] : v) ?? "";
+  return (Array.isArray(v) ? v[0] : v) ?? '';
 }
 
 function list(sp: RawParams, key: string): string[] {
   return get(sp, key)
-    .split(",")
+    .split(',')
     .map((s) => s.trim())
     .filter(Boolean);
 }
@@ -46,44 +46,44 @@ const TYPE_VALUES = new Set<string>(MODEL_TYPES.map((t) => t.value));
 const BASE_VALUES = new Set<string>(BASE_MODELS);
 
 export function parseModelFilters(sp: RawParams): ModelFilters {
-  const sort = get(sp, "sort");
-  const period = get(sp, "period");
+  const sort = get(sp, 'sort');
+  const period = get(sp, 'period');
   return {
-    types: list(sp, "types").filter((t) => TYPE_VALUES.has(t)),
-    baseModels: list(sp, "base").filter((b) => BASE_VALUES.has(b)),
-    tags: [...new Set(list(sp, "tags").map(normalizeTag))].slice(0, 10),
-    sort: (MODEL_SORTS.some((s) => s.value === sort) ? sort : "newest") as ModelSort,
-    period: (PERIODS.some((p) => p.value === period) ? period : "all") as Period,
-    q: get(sp, "q").trim().slice(0, 100),
+    types: list(sp, 'types').filter((t) => TYPE_VALUES.has(t)),
+    baseModels: list(sp, 'base').filter((b) => BASE_VALUES.has(b)),
+    tags: [...new Set(list(sp, 'tags').map(normalizeTag))].slice(0, 10),
+    sort: (MODEL_SORTS.some((s) => s.value === sort) ? sort : 'newest') as ModelSort,
+    period: (PERIODS.some((p) => p.value === period) ? period : 'all') as Period,
+    q: get(sp, 'q').trim().slice(0, 100),
   };
 }
 
 export function modelFiltersToQuery(f: ModelFilters): string {
   const sp = new URLSearchParams();
-  if (f.q) sp.set("q", f.q);
-  if (f.types.length) sp.set("types", f.types.join(","));
-  if (f.baseModels.length) sp.set("base", f.baseModels.join(","));
-  if (f.tags.length) sp.set("tags", f.tags.join(","));
-  if (f.sort !== "newest") sp.set("sort", f.sort);
-  if (f.period !== "all") sp.set("period", f.period);
+  if (f.q) sp.set('q', f.q);
+  if (f.types.length) sp.set('types', f.types.join(','));
+  if (f.baseModels.length) sp.set('base', f.baseModels.join(','));
+  if (f.tags.length) sp.set('tags', f.tags.join(','));
+  if (f.sort !== 'newest') sp.set('sort', f.sort);
+  if (f.period !== 'all') sp.set('period', f.period);
   return sp.toString();
 }
 
 export function parseImageFilters(sp: RawParams): ImageFilters {
-  const sort = get(sp, "sort");
-  const period = get(sp, "period");
+  const sort = get(sp, 'sort');
+  const period = get(sp, 'period');
   return {
-    sort: (IMAGE_SORTS.some((s) => s.value === sort) ? sort : "newest") as ImageSort,
-    period: (PERIODS.some((p) => p.value === period) ? period : "all") as Period,
-    q: get(sp, "q").trim().slice(0, 100),
+    sort: (IMAGE_SORTS.some((s) => s.value === sort) ? sort : 'newest') as ImageSort,
+    period: (PERIODS.some((p) => p.value === period) ? period : 'all') as Period,
+    q: get(sp, 'q').trim().slice(0, 100),
   };
 }
 
 export function imageFiltersToQuery(f: ImageFilters): string {
   const sp = new URLSearchParams();
-  if (f.q) sp.set("q", f.q);
-  if (f.sort !== "newest") sp.set("sort", f.sort);
-  if (f.period !== "all") sp.set("period", f.period);
+  if (f.q) sp.set('q', f.q);
+  if (f.sort !== 'newest') sp.set('sort', f.sort);
+  if (f.period !== 'all') sp.set('period', f.period);
   return sp.toString();
 }
 
@@ -93,6 +93,6 @@ export function periodStart(period: Period, now = Date.now()): number {
 }
 
 export function parsePage(sp: RawParams): number {
-  const n = Number.parseInt(get(sp, "page"), 10);
+  const n = Number.parseInt(get(sp, 'page'), 10);
   return Number.isFinite(n) && n > 0 ? Math.min(n, 1000) : 1;
 }

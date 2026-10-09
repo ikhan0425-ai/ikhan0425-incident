@@ -61,7 +61,10 @@ function DisplayNameForm({ current }: { current: string }) {
         </button>
       </div>
       {message && (
-        <p role={message.ok ? 'status' : 'alert'} className={`mt-1.5 text-xs ${message.ok ? 'text-success' : 'text-danger'}`}>
+        <p
+          role={message.ok ? 'status' : 'alert'}
+          className={`mt-1.5 text-xs ${message.ok ? 'text-success' : 'text-danger'}`}
+        >
           {message.text}
         </p>
       )}
@@ -106,7 +109,12 @@ function ProfileContent({ profile, tab }: { profile: Profile; tab: 'models' | 'i
       </div>
 
       <div className="mt-6 flex gap-1.5" role="tablist">
-        <Link to={base} role="tab" aria-selected={tab === 'models'} className={`chip font-semibold ${tab === 'models' ? 'chip-active' : ''}`}>
+        <Link
+          to={base}
+          role="tab"
+          aria-selected={tab === 'models'}
+          className={`chip font-semibold ${tab === 'models' ? 'chip-active' : ''}`}
+        >
           모델 {profile.stats.models}
         </Link>
         <Link

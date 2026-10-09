@@ -49,3 +49,4 @@ next-env.d.ts
 /appdeploy/dist
 /appdeploy-dev/.data
 /appdeploy-dev/.dist
+/appdeploy-dev/node_modules

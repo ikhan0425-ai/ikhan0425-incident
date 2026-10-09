@@ -14,7 +14,9 @@ export function ImagesPage() {
       <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
         <div>
           <h1 className="text-2xl font-extrabold tracking-tight">이미지</h1>
-          <p className="mt-1 text-sm text-muted">마우스를 올리면 프롬프트·샘플러·시드가, 클릭하면 전체 생성 정보가 보여요.</p>
+          <p className="mt-1 text-sm text-muted">
+            마우스를 올리면 프롬프트·샘플러·시드가, 클릭하면 전체 생성 정보가 보여요.
+          </p>
         </div>
         <Link to="/images/new" className="btn btn-primary">
           <PlusIcon size={15} /> 이미지 올리기

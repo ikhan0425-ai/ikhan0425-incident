@@ -19,6 +19,8 @@ export interface PreparedImage {
 
 const PASS_THROUGH: string[] = ['image/png', 'image/jpeg', 'image/webp'];
 const THUMB_WIDTH = 480;
+// 아주 긴 이미지도 썸네일이 서버 한도(1MB)를 넘지 않게 화소 수를 제한한다
+const THUMB_MAX_PIXELS = 480 * 1440;
 // iOS Safari 캔버스 한도(약 1,670만 화소)를 넘지 않게
 const MAX_CANVAS_PIXELS = 16_777_216;
 const MIN_SIDE = 64;
@@ -40,7 +42,12 @@ function loadImageElement(file: File): Promise<Decoded> {
     const img = new Image();
     img.decoding = 'async';
     img.onload = () =>
-      resolve({ image: img, width: img.naturalWidth, height: img.naturalHeight, close: () => URL.revokeObjectURL(url) });
+      resolve({
+        image: img,
+        width: img.naturalWidth,
+        height: img.naturalHeight,
+        close: () => URL.revokeObjectURL(url),
+      });
     img.onerror = () => {
       URL.revokeObjectURL(url);
       reject(decodeError(file));
@@ -82,9 +89,11 @@ function drawScaled(src: Decoded, width: number, height: number, background?: st
   let source: CanvasImageSource = src.image;
   let sw = src.width;
   let sh = src.height;
-  while (sw / 2 >= width * 1.5 && sh / 2 >= 1) {
-    const nw = Math.max(width, Math.round(sw / 2));
-    const nh = Math.max(height, Math.round(sh / 2));
+  while (sw / 2 >= width * 1.5) {
+    // 중간 캔버스가 한도를 넘으면 한 번에 더 줄인다
+    const k = Math.min(0.5, Math.sqrt(MAX_CANVAS_PIXELS / (sw * sh)));
+    const nw = Math.max(width, Math.round(sw * k));
+    const nh = Math.max(height, Math.round(sh * k));
     const step = canvas2d(nw, nh);
     step.ctx.drawImage(source, 0, 0, sw, sh, 0, 0, nw, nh);
     source = step.canvas;
@@ -149,7 +158,7 @@ function averageColor(source: HTMLCanvasElement): string | null {
 }
 
 async function makeThumb(src: Decoded): Promise<{ blob: Blob; canvas: HTMLCanvasElement }> {
-  const scale = Math.min(1, THUMB_WIDTH / src.width);
+  const scale = Math.min(1, THUMB_WIDTH / src.width, Math.sqrt(THUMB_MAX_PIXELS / (src.width * src.height)));
   const w = Math.max(1, Math.round(src.width * scale));
   const h = Math.max(1, Math.round(src.height * scale));
   const canvas = drawScaled(src, w, h);
@@ -162,16 +171,19 @@ async function makeThumb(src: Decoded): Promise<{ blob: Blob; canvas: HTMLCanvas
 }
 
 /** 3MB 를 넘거나 지원하지 않는 형식이면 JPEG 로 다시 저장하고, 그래도 크면 조금씩 줄인다 */
-async function fitOriginal(file: File, src: Decoded): Promise<{ blob: Blob; contentType: ImageContentType; width: number; height: number }> {
+async function fitOriginal(
+  file: File,
+  src: Decoded,
+): Promise<{ blob: Blob; contentType: ImageContentType; width: number; height: number }> {
   if (file.size <= LIMITS.uploadBytes && PASS_THROUGH.includes(file.type)) {
     // 원본 그대로 (PNG 생성 정보 등 메타데이터 유지)
     return { blob: file, contentType: file.type as ImageContentType, width: src.width, height: src.height };
   }
   let scale = Math.min(1, Math.sqrt(MAX_CANVAS_PIXELS / (src.width * src.height)));
   for (let attempt = 0; attempt < 30; attempt++) {
-    const w = Math.round(src.width * scale);
-    const h = Math.round(src.height * scale);
-    if (w < MIN_SIDE || h < MIN_SIDE) break;
+    const w = Math.max(1, Math.round(src.width * scale));
+    const h = Math.max(1, Math.round(src.height * scale));
+    if (attempt > 0 && Math.min(w, h) < MIN_SIDE) break;
     const blob = await toBlob(drawScaled(src, w, h, '#ffffff'), 'image/jpeg', 0.92);
     if (blob && blob.size <= LIMITS.uploadBytes) return { blob, contentType: 'image/jpeg', width: w, height: h };
     scale *= 0.85;

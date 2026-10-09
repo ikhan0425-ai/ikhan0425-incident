@@ -59,7 +59,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return profile;
     } catch (e) {
       const code = (e as { code?: string })?.code;
-      if (code === 'popup_blocked') setNotice('브라우저가 로그인 팝업을 막았어요. 팝업을 허용한 뒤 다시 시도해 주세요.');
+      if (code === 'popup_blocked')
+        setNotice('브라우저가 로그인 팝업을 막았어요. 팝업을 허용한 뒤 다시 시도해 주세요.');
       else if (code !== 'popup_closed') setNotice('로그인하지 못했어요. 잠시 후 다시 시도해 주세요.');
       return null;
     }
@@ -79,7 +80,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const value = useMemo(
-    () => ({ me, ready, notice, clearNotice: () => setNotice(null), signIn, signOut, requireSignIn, updateDisplayName }),
+    () => ({
+      me,
+      ready,
+      notice,
+      clearNotice: () => setNotice(null),
+      signIn,
+      signOut,
+      requireSignIn,
+      updateDisplayName,
+    }),
     [me, ready, notice, signIn, signOut, requireSignIn, updateDisplayName],
   );
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

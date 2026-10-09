@@ -7,7 +7,7 @@ import { parseImageFilters, parseModelFilters, parsePage, periodStart } from './
 import type { ModelOption, Profile } from './shared/types';
 import { previewOf, type ImageSummary, type ModelSummary } from './lib/catalog';
 import { badRequest, bodyOf, forbidden, handle, notFound, optionalUser, userOf } from './lib/http';
-import { isSeedId } from './lib/seed';
+import { isSeedId, seedProfileNames } from './lib/seed';
 import {
   imageDetail,
   imageLikes,
@@ -53,18 +53,89 @@ function q(ctx: RouterContext, key: string): string {
 // 공통 도우미
 // ---------------------------------------------------------------------------
 
+/**
+ * 같은 Lambda 인스턴스 안에서의 간단한 빈도 제한 (인스턴스가 여러 개면 각각 따로 센다).
+ * 다운로드 수 부풀리기와 업로드 남용을 줄이는 용도라 완벽하지 않아도 된다.
+ */
+const hits = new Map<string, number[]>();
+function allow(key: string, max: number, windowMs: number): boolean {
+  const now = Date.now();
+  const recent = (hits.get(key) ?? []).filter((t) => now - t < windowMs);
+  if (recent.length >= max) {
+    hits.set(key, recent);
+    return false;
+  }
+  recent.push(now);
+  hits.set(key, recent);
+  if (hits.size > 5000) for (const [k, v] of hits) if (!v.some((t) => now - t < windowMs)) hits.delete(k);
+  return true;
+}
+
+function clientIp(ctx: RouterContext): string {
+  const e = ctx.event as
+    | { requestContext?: { http?: { sourceIp?: string } }; headers?: Record<string, string> }
+    | undefined;
+  return e?.requestContext?.http?.sourceIp ?? e?.headers?.['x-forwarded-for']?.split(',')[0]?.trim() ?? 'unknown';
+}
+
+const NICK_A = ['푸른', '새벽', '조용한', '반짝이는', '느긋한', '용감한', '포근한', '은빛', '노을빛', '말랑한'];
+const NICK_B = ['붓', '물감', '캔버스', '고양이', '여우', '고래', '별', '구름', '연필', '팔레트'];
+
+/** 첫 로그인 닉네임. 계정의 실명·이메일을 공개하지 않도록 무작위로 만든다 (프로필에서 바꿀 수 있다) */
+function randomNickname(userId: string): string {
+  let h = 0;
+  for (const c of userId) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  return `${NICK_A[h % NICK_A.length]} ${NICK_B[(h >>> 8) % NICK_B.length]} ${String(h % 10000).padStart(4, '0')}`;
+}
+
+/** 클라이언트가 보낸 모델 파일 정보(크기·해시)를 믿지 않고 저장된 파일로 다시 계산한다 */
+async function verifyModelFile(v: ValidVersion): Promise<ValidVersion> {
+  if (!v.file) return v;
+  const [stored] = await storage.read([v.file.path]);
+  if (!stored?.content) throw badRequest('모델 파일을 다시 올려 주세요.');
+  const buf = Buffer.from(stored.content, 'base64');
+  return { ...v, file: { ...v.file, size: buf.length, sha256: createHash('sha256').update(buf).digest('hex') } };
+}
+
+/** 이미 다른 게시물에 쓰인 업로드 경로는 다시 쓸 수 없다 */
+function assertFreshUploads(w: World, images: ValidImage[]): void {
+  const used = new Set(w.images.map((i) => i.thumb));
+  if (images.some((img) => used.has(img.thumbPath))) throw badRequest('이미지를 다시 올려 주세요.');
+}
+
+/** likes:<userId> 테이블에서 조건에 맞는 기록 찾기 (filter 는 읽은 뒤 적용되므로 페이지를 따라간다) */
+async function findLike(table: string, kind: 'm' | 'i', target: string) {
+  let nextToken: string | undefined;
+  for (let page = 0; page < 20; page++) {
+    const res = await db.list<{ k: string; target: string; at: number }>(table, {
+      filter: { k: kind, target },
+      limit: 500,
+      nextToken,
+    });
+    const found = res.items.find((x) => x.k === kind && x.target === target);
+    if (found || !res.nextToken) return found ?? null;
+    nextToken = res.nextToken;
+  }
+  return null;
+}
+
 /** 로그인 사용자의 프로필 (없으면 AppDeploy 계정 이름으로 만든다) */
 async function ensureProfile(ctx: RouterContext): Promise<{ id: string | null; rec: ProfileRecord }> {
   const user = userOf(ctx);
   const existing = await profileOf(user.userId);
   if (existing) return existing;
-  const fallback = user.name?.trim() || user.email?.split('@')[0] || '그림터 사용자';
-  const rec: ProfileRecord = { displayName: fallback.slice(0, 20), bio: '', createdAt: Date.now() };
+  const rec: ProfileRecord = { displayName: randomNickname(user.userId), bio: '', createdAt: Date.now() };
   const [id] = await db.add(profileTable(user.userId), [rec as unknown as Record<string, unknown>]);
   return { id, rec };
 }
 
-function imageRecordOf(userId: string, img: ValidImage, modelId: string | null, versionId: string | null, at: number): ImageRecord {
+function imageRecordOf(
+  userId: string,
+  img: ValidImage,
+  modelId: string | null,
+  versionId: string | null,
+  at: number,
+): ImageRecord {
   return {
     ownerId: userId,
     modelId,
@@ -146,7 +217,13 @@ function summaryOf(id: string, rec: ModelRecord): ModelSummary {
     createdAt: rec.createdAt,
     updatedAt: rec.updatedAt,
     versions: rec.versions
-      .map((v) => ({ id: v.id, name: v.name, baseModel: v.baseModel, sha10: v.file?.sha256.slice(0, 10) ?? null, createdAt: v.createdAt }))
+      .map((v) => ({
+        id: v.id,
+        name: v.name,
+        baseModel: v.baseModel,
+        sha10: v.file?.sha256.slice(0, 10) ?? null,
+        createdAt: v.createdAt,
+      }))
       .sort((a, b) => a.createdAt - b.createdAt),
   };
 }
@@ -163,8 +240,7 @@ async function deleteStoredImages(ids: string[]): Promise<void> {
 /** 좋아요 기록은 likes:<userId> 테이블에 { k: 'm'|'i', target, at }. (id 는 DB 가 붙이는 레코드 ID 라 쓰지 않는다) */
 async function toggleLike(userId: string, kind: 'm' | 'i', target: string): Promise<{ liked: boolean; at: number }> {
   const table = likesTable(userId);
-  const { items } = await db.list<{ k: string; target: string; at: number }>(table, { filter: { k: kind, target }, limit: 1000 });
-  const existing = items.find((x) => x.k === kind && x.target === target);
+  const existing = await findLike(table, kind, target);
   if (existing) {
     await db.delete(table, [existing.id]);
     return { liked: false, at: existing.at ?? Date.now() };
@@ -207,7 +283,10 @@ export const handler = router({
         list.sort((a, b) => b.createdAt - a.createdAt);
       } else {
         const score = new Map(
-          list.map((m) => [m.id, f.sort === 'downloads' ? modelDownloads(w, m.id, f.period) : modelLikes(w, m.id, f.period)]),
+          list.map((m) => [
+            m.id,
+            f.sort === 'downloads' ? modelDownloads(w, m.id, f.period) : modelLikes(w, m.id, f.period),
+          ]),
         );
         list.sort((a, b) => score.get(b.id)! - score.get(a.id)! || b.createdAt - a.createdAt);
       }
@@ -248,9 +327,10 @@ export const handler = router({
       const user = userOf(ctx);
       const body = bodyOf(ctx);
       const model = parseModel(body);
-      const version = parseVersion(body.version, user.userId);
       const images = parseImages(body.images, user.userId, model.nsfw, true);
+      const version = await verifyModelFile(parseVersion(body.version, user.userId));
       const profile = await ensureProfile(ctx);
+      assertFreshUploads(await loadWorld(), images);
       const now = Date.now();
       const v = versionRecordOf(version, now);
       const rec: ModelRecord = {
@@ -265,7 +345,14 @@ export const handler = router({
       if (!id) throw new Error('model insert failed');
       const w = await loadWorld();
       w.cat.putModel(summaryOf(id, rec));
-      await insertImages(w, user.userId, profile.rec.displayName, images, () => ({ modelId: id, versionId: v.id }), now);
+      await insertImages(
+        w,
+        user.userId,
+        profile.rec.displayName,
+        images,
+        () => ({ modelId: id, versionId: v.id }),
+        now,
+      );
       await w.cat.save();
       return json({ id, versionId: v.id });
     }),
@@ -288,10 +375,15 @@ export const handler = router({
       await deleteStoredImages(own);
       for (const imgId of own) w.cat.removeImage(imgId);
       if (others.length) {
-        const recs = await db.get<ImageRecord>('images', others.map((i) => i.id));
+        const recs = await db.get<ImageRecord>(
+          'images',
+          others.map((i) => i.id),
+        );
         const updates = others.flatMap((img, i) => {
           const r = recs[i];
-          return r ? [{ id: img.id, record: { ...r, modelId: null, versionId: null } as unknown as Record<string, unknown> }] : [];
+          return r
+            ? [{ id: img.id, record: { ...r, modelId: null, versionId: null } as unknown as Record<string, unknown> }]
+            : [];
         });
         if (updates.length) await db.update('images', updates);
         for (const img of others) w.cat.putImage({ ...img, modelId: null, versionId: null });
@@ -333,15 +425,17 @@ export const handler = router({
       const [rec] = await db.get<ModelRecord>('models', [id]);
       if (!rec) throw notFound('모델을 찾을 수 없어요.');
       if (rec.ownerId !== user.userId) throw forbidden('모델 제작자만 버전을 추가할 수 있어요.');
-      const version = parseVersion(body.version, user.userId);
-      if (rec.versions.some((v) => v.name === version.name)) throw badRequest('같은 이름의 버전이 이미 있어요.');
+      const parsed = parseVersion(body.version, user.userId);
+      if (rec.versions.some((v) => v.name === parsed.name)) throw badRequest('같은 이름의 버전이 이미 있어요.');
       const images = parseImages(body.images, user.userId, rec.nsfw, true);
+      const version = await verifyModelFile(parsed);
+      const w = await loadWorld();
+      assertFreshUploads(w, images);
       const now = Date.now();
       const v = versionRecordOf(version, now);
       const next: ModelRecord = { ...rec, versions: [...rec.versions, v], updatedAt: now };
       const [ok] = await db.update('models', [{ id, record: next as unknown as Record<string, unknown> }]);
       if (!ok) throw new Error('model update failed');
-      const w = await loadWorld();
       w.cat.putModel(summaryOf(id, next));
       await insertImages(w, user.userId, rec.ownerName, images, () => ({ modelId: id, versionId: v.id }), now);
       await w.cat.save();
@@ -357,11 +451,17 @@ export const handler = router({
       const detail = await modelDetail(w, id, new Set());
       const file = detail?.files.get(versionId);
       if (!detail || !file || !file.path) throw notFound('파일을 찾을 수 없어요.');
-      const stat = w.cat.editModelStat(id);
-      stat.dl ??= emptyCounter();
-      bump(stat.dl, w.now, 1, w.now);
-      stat.vdl = { ...(stat.vdl ?? {}), [versionId]: (stat.vdl?.[versionId] ?? 0) + 1 };
-      await w.cat.save();
+      // 같은 사람이 짧은 시간에 반복해서 받으면 다운로드 수에 넣지 않는다
+      if (
+        allow(`dl:${clientIp(ctx)}:${versionId}`, 1, 10 * 60 * 1000) &&
+        allow(`dl:${clientIp(ctx)}`, 30, 60 * 60 * 1000)
+      ) {
+        const stat = w.cat.editModelStat(id);
+        stat.dl ??= emptyCounter();
+        bump(stat.dl, w.now, 1, w.now);
+        stat.vdl = { ...(stat.vdl ?? {}), [versionId]: (stat.vdl?.[versionId] ?? 0) + 1 };
+        await w.cat.save();
+      }
       if (file.external) return json({ url: file.path, external: true });
       const urls = await resolveUrls([file.path]);
       return json({ url: urls.get(file.path) ?? file.path, external: false });
@@ -456,6 +556,7 @@ export const handler = router({
       const versionId = typeof body.versionId === 'string' && body.versionId ? body.versionId : null;
       const profile = await ensureProfile(ctx);
       const w = await loadWorld();
+      assertFreshUploads(w, images);
       let fixed: { modelId: string; versionId: string } | null = null;
       if (modelId) {
         const m = w.modelById.get(modelId);
@@ -468,7 +569,8 @@ export const handler = router({
         if (!h || !/^[0-9a-f]{8,64}$/.test(h)) return null;
         for (const m of w.models) {
           for (const v of m.versions) {
-            if (v.sha10 && (v.sha10.startsWith(h.slice(0, 10)) || h.startsWith(v.sha10))) return { modelId: m.id, versionId: v.id };
+            if (v.sha10 && (v.sha10.startsWith(h.slice(0, 10)) || h.startsWith(v.sha10)))
+              return { modelId: m.id, versionId: v.id };
           }
         }
         return null;
@@ -523,6 +625,9 @@ export const handler = router({
     requireAuth(),
     handle(async (ctx) => {
       const user = userOf(ctx);
+      if (!allow(`up:${user.userId}`, 120, 60 * 60 * 1000)) {
+        throw badRequest('업로드가 너무 많아요. 잠시 후 다시 시도해 주세요.');
+      }
       const body = bodyOf(ctx);
       if (body.kind === 'image') {
         const original = decodeBase64(body.data, LIMITS.uploadBytes, '이미지');
@@ -568,13 +673,18 @@ export const handler = router({
     requireAuth(),
     handle(async (ctx) => {
       const user = userOf(ctx);
-      const displayName = parseDisplayName(bodyOf(ctx).displayName);
+      const displayName = parseDisplayName(bodyOf(ctx).displayName, seedProfileNames());
       const profile = await ensureProfile(ctx);
       const next: ProfileRecord = { ...profile.rec, displayName };
-      if (profile.id) await db.update(profileTable(user.userId), [{ id: profile.id, record: next as unknown as Record<string, unknown> }]);
+      if (profile.id)
+        await db.update(profileTable(user.userId), [
+          { id: profile.id, record: next as unknown as Record<string, unknown> },
+        ]);
       const w = await loadWorld();
-      for (const m of w.cat.models.values()) if (m.ownerId === user.userId) w.cat.putModel({ ...m, ownerName: displayName });
-      for (const i of w.cat.images.values()) if (i.ownerId === user.userId) w.cat.putImage({ ...i, ownerName: displayName });
+      for (const m of w.cat.models.values())
+        if (m.ownerId === user.userId) w.cat.putModel({ ...m, ownerName: displayName });
+      for (const i of w.cat.images.values())
+        if (i.ownerId === user.userId) w.cat.putImage({ ...i, ownerName: displayName });
       await w.cat.save();
       return json({ me: { id: user.userId, displayName } });
     }),
@@ -599,7 +709,8 @@ export const handler = router({
           models: models.length,
           images: images.length,
           downloads: models.reduce((s, m) => s + modelDownloads(w, m.id), 0),
-          likes: models.reduce((s, m) => s + modelLikes(w, m.id), 0) + images.reduce((s, i) => s + imageLikes(w, i.id), 0),
+          likes:
+            models.reduce((s, m) => s + modelLikes(w, m.id), 0) + images.reduce((s, i) => s + imageLikes(w, i.id), 0),
         },
       };
       return json({ profile });

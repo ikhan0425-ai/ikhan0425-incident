@@ -24,7 +24,9 @@ export function BaseBadge({ base, className = '' }: { base: string; className?: 
 
 export function NsfwBadge({ className = '' }: { className?: string }) {
   return (
-    <span className={`inline-flex items-center rounded-md bg-danger px-1.5 py-0.5 text-[11px] font-bold text-white ${className}`}>
+    <span
+      className={`inline-flex items-center rounded-md bg-danger px-1.5 py-0.5 text-[11px] font-bold text-white ${className}`}
+    >
       19+
     </span>
   );

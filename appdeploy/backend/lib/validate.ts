@@ -29,13 +29,17 @@ function nullableNum(v: unknown, opts: { int?: boolean; min: number; max: number
 }
 
 function list(v: unknown, maxItems: number, maxLen: number): string[] {
-  const raw = Array.isArray(v) ? v : typeof v === 'string' ? v.split(',') : [];
-  const out: string[] = [];
+  // 클라이언트가 보낸 배열이 아무리 커도 앞부분만 본다 (CPU 낭비 방지)
+  const raw = (
+    Array.isArray(v) ? v : typeof v === 'string' ? v.slice(0, maxItems * (maxLen + 1) * 2).split(',') : []
+  ).slice(0, maxItems * 4);
+  const out = new Set<string>();
   for (const it of raw) {
     const s = str(it, maxLen).replace(/,/g, ' ').trim();
-    if (s && !out.includes(s)) out.push(s);
+    if (s) out.add(s);
+    if (out.size >= maxItems) break;
   }
-  return out.slice(0, maxItems);
+  return [...out];
 }
 
 const SOURCES: MetadataSource[] = ['a1111', 'comfyui', 'novelai', 'invokeai', 'json', 'manual'];
@@ -98,19 +102,24 @@ export function modelFilePathRe(userId: string): RegExp {
 export function parseImages(raw: unknown, userId: string, defaultNsfw: boolean, required: boolean): ValidImage[] {
   const arr = Array.isArray(raw) ? raw : [];
   if (required && arr.length === 0) throw badRequest('샘플 이미지를 1장 이상 올려 주세요.');
-  if (arr.length > LIMITS.imagesPerUpload) throw badRequest(`이미지는 한 번에 ${LIMITS.imagesPerUpload}장까지 올릴 수 있어요.`);
+  if (arr.length > LIMITS.imagesPerUpload)
+    throw badRequest(`이미지는 한 번에 ${LIMITS.imagesPerUpload}장까지 올릴 수 있어요.`);
   const imgRe = imagePathRe(userId);
   const thumbRe = thumbPathRe(userId);
+  const seen = new Set<string>();
   return arr.map((item) => {
     const o = item && typeof item === 'object' ? (item as Record<string, unknown>) : {};
     const path = str(o.path, 300);
     const thumbPath = str(o.thumbPath, 300);
     const pm = imgRe.exec(path);
     const tm = thumbRe.exec(thumbPath);
-    if (!pm || !tm || pm[1] !== tm[1]) throw badRequest('이미지를 다시 올려 주세요.');
+    if (!pm || !tm || pm[1] !== tm[1] || seen.has(pm[1])) throw badRequest('이미지를 다시 올려 주세요.');
+    seen.add(pm[1]);
     const width = nullableNum(o.width, { int: true, min: 1, max: 20000 });
     const height = nullableNum(o.height, { int: true, min: 1, max: 20000 });
     if (!width || !height) throw badRequest('이미지 크기를 읽지 못했어요.');
+    if (width / height > 6 || height / width > 6)
+      throw badRequest('가로세로 비율이 너무 극단적인 이미지는 올릴 수 없어요.');
     const color = typeof o.color === 'string' && /^#[0-9a-f]{6}$/i.test(o.color) ? o.color : null;
     const source = SOURCES.includes(o.source as MetadataSource) ? (o.source as MetadataSource) : null;
     return {
@@ -173,7 +182,8 @@ export function parseVersion(raw: unknown, userId: string): ValidVersion {
     } catch {
       throw badRequest('외부 다운로드 링크는 http(s) 주소여야 해요.');
     }
-    if (u.protocol !== 'https:' && u.protocol !== 'http:') throw badRequest('외부 다운로드 링크는 http(s) 주소여야 해요.');
+    if (u.protocol !== 'https:' && u.protocol !== 'http:')
+      throw badRequest('외부 다운로드 링크는 http(s) 주소여야 해요.');
     externalUrl = u.toString();
   }
 
@@ -202,9 +212,29 @@ export function parseVersion(raw: unknown, userId: string): ValidVersion {
   };
 }
 
-export function parseDisplayName(raw: unknown): string {
-  const name = str(raw, 40).replace(/\s+/g, ' ');
-  if (name.length < 2 || name.length > 20) throw badRequest('닉네임은 2~20자로 입력해 주세요.');
+/** 다른 사람으로 보이게 하는 닉네임 (사이트 이름, 운영자, 샘플 제작자 등) */
+const RESERVED_NAMES = ['그림터', '관리자', '운영자', '운영진', 'admin', 'administrator', 'official', '공식'];
+
+export function cleanDisplayName(raw: unknown): string {
+  return (
+    (typeof raw === 'string' ? raw : '')
+      .normalize('NFC')
+      // 제어 문자·방향 제어·폭 없는 문자 등 보이지 않는 문자 제거
+      .replace(/[\p{Cc}\p{Cf}\p{Co}\p{Cn}\u2028\u2029]/gu, '')
+      .replace(/\s+/g, ' ')
+      .trim()
+  );
+}
+
+/** reservedExact: 그대로 따라 쓰면 안 되는 이름 (샘플 제작자 닉네임 등) */
+export function parseDisplayName(raw: unknown, reservedExact: string[] = []): string {
+  const name = cleanDisplayName(raw);
+  if ([...name].length < 2 || [...name].length > 20) throw badRequest('닉네임은 2~20자로 입력해 주세요.');
+  const norm = (v: string) => v.toLocaleLowerCase('ko-KR').replace(/\s/g, '');
+  const key = norm(name);
+  if (RESERVED_NAMES.some((r) => key.includes(norm(r))) || reservedExact.some((r) => norm(r) === key)) {
+    throw badRequest('사용할 수 없는 닉네임이에요. 다른 이름을 골라 주세요.');
+  }
   return name;
 }
 
@@ -214,7 +244,8 @@ export function decodeBase64(data: unknown, maxBytes: number, label: string): Bu
   if (!/^[A-Za-z0-9+/=\s]+$/.test(data)) throw badRequest(`${label} 파일 형식이 올바르지 않아요.`);
   const buf = Buffer.from(data, 'base64');
   if (buf.length === 0) throw badRequest(`${label} 파일이 비어 있어요.`);
-  if (buf.length > maxBytes) throw badRequest(`${label} 파일이 너무 커요. (최대 ${Math.round(maxBytes / 1024 / 1024)}MB)`);
+  if (buf.length > maxBytes)
+    throw badRequest(`${label} 파일이 너무 커요. (최대 ${Math.round(maxBytes / 1024 / 1024)}MB)`);
   return buf;
 }
 
@@ -223,7 +254,8 @@ export type ImageKind = 'png' | 'jpg' | 'webp';
 export function sniffImage(buf: Buffer): ImageKind | null {
   if (buf.length > 8 && buf[0] === 0x89 && buf.toString('latin1', 1, 4) === 'PNG') return 'png';
   if (buf.length > 3 && buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff) return 'jpg';
-  if (buf.length > 12 && buf.toString('latin1', 0, 4) === 'RIFF' && buf.toString('latin1', 8, 12) === 'WEBP') return 'webp';
+  if (buf.length > 12 && buf.toString('latin1', 0, 4) === 'RIFF' && buf.toString('latin1', 8, 12) === 'WEBP')
+    return 'webp';
   return null;
 }
 

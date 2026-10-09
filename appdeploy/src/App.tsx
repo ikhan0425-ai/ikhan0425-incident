@@ -25,7 +25,10 @@ function Notice() {
   const { notice, clearNotice } = useAuth();
   if (!notice) return null;
   return (
-    <div role="alert" className="fixed inset-x-0 bottom-4 z-[200] mx-auto flex w-fit max-w-[calc(100%-2rem)] items-center gap-3 rounded-xl border border-line bg-surface px-4 py-3 text-sm shadow-2xl shadow-black/50">
+    <div
+      role="alert"
+      className="fixed inset-x-0 bottom-4 z-[200] mx-auto flex w-fit max-w-[calc(100%-2rem)] items-center gap-3 rounded-xl border border-line bg-surface px-4 py-3 text-sm shadow-2xl shadow-black/50"
+    >
       <span>{notice}</span>
       <button type="button" className="btn btn-ghost px-2 py-1" onClick={clearNotice}>
         닫기

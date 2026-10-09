@@ -3,7 +3,14 @@
 import { db, storage } from '@appdeploy/sdk';
 import type { Period } from '../shared/constants';
 import type { GenerationParams, MetadataSource } from '../shared/generation';
-import type { ImageCardData, ImageDetailData, ModelCardData, ModelDetailData, ModelVersionData, UserRef } from '../shared/types';
+import type {
+  ImageCardData,
+  ImageDetailData,
+  ModelCardData,
+  ModelDetailData,
+  ModelVersionData,
+  UserRef,
+} from '../shared/types';
 import { Catalog, type ImageSummary, type ModelSummary } from './catalog';
 import {
   isSeedId,
@@ -122,8 +129,16 @@ export function imageLikes(w: World, id: string, period: Period = 'all'): number
 /** 로그인한 사용자가 좋아요 한 대상 ('m:<id>' / 'i:<id>') */
 export async function viewerLikes(userId: string | null): Promise<Set<string>> {
   if (!userId) return new Set();
-  const { items } = await db.list<{ k: string; target: string }>(likesTable(userId), { limit: 1000 });
-  return new Set(items.map((x) => `${x.k}:${x.target}`));
+  const out = new Set<string>();
+  let nextToken: string | undefined;
+  // 좋아요가 아주 많은 사용자도 몇 페이지 안에 끝나도록 상한을 둔다
+  for (let page = 0; page < 10; page++) {
+    const res = await db.list<{ k: string; target: string }>(likesTable(userId), { limit: 500, nextToken });
+    for (const x of res.items) out.add(`${x.k}:${x.target}`);
+    if (!res.nextToken) break;
+    nextToken = res.nextToken;
+  }
+  return out;
 }
 
 /** 'seed/...' 는 프론트엔드 정적 파일이라 그대로, 'u/...' 는 서명된 storage URL 로 바꾼다 */
@@ -171,9 +186,19 @@ export async function toModelCards(w: World, list: ModelSummary[]): Promise<Mode
       createdAt: m.createdAt,
       baseModel: m.versions[m.versions.length - 1]?.baseModel ?? null,
       creator: userRef(m.ownerId, m.ownerName),
-      stats: { downloads: modelDownloads(w, m.id), likes: modelLikes(w, m.id), images: w.imagesByModel.get(m.id)?.length ?? 0 },
+      stats: {
+        downloads: modelDownloads(w, m.id),
+        likes: modelLikes(w, m.id),
+        images: w.imagesByModel.get(m.id)?.length ?? 0,
+      },
       cover: c
-        ? { thumbUrl: urls.get(c.thumb) ?? c.thumb, width: c.width, height: c.height, color: c.color, nsfw: c.nsfw || m.nsfw }
+        ? {
+            thumbUrl: urls.get(c.thumb) ?? c.thumb,
+            width: c.width,
+            height: c.height,
+            color: c.color,
+            nsfw: c.nsfw || m.nsfw,
+          }
         : null,
     };
   });
@@ -247,7 +272,11 @@ export async function imageDetail(w: World, id: string, liked: Set<string>): Pro
 }
 
 /** 버전 정보 (최신 → 오래된 순) */
-export async function modelDetail(w: World, id: string, liked: Set<string>): Promise<(ModelDetailData & { files: Map<string, VersionFile> }) | null> {
+export async function modelDetail(
+  w: World,
+  id: string,
+  liked: Set<string>,
+): Promise<(ModelDetailData & { files: Map<string, VersionFile> }) | null> {
   const summary = w.modelById.get(id);
   if (!summary) return null;
   let description: string;
@@ -328,7 +357,11 @@ export interface VersionFile {
 
 export async function profileOf(userId: string): Promise<{ id: string | null; rec: ProfileRecord } | null> {
   const seed = seedProfile(userId);
-  if (seed) return { id: null, rec: { displayName: seed.displayName, bio: seed.bio, createdAt: Date.now() - seed.ageDays * 86400000 } };
+  if (seed)
+    return {
+      id: null,
+      rec: { displayName: seed.displayName, bio: seed.bio, createdAt: Date.now() - seed.ageDays * 86400000 },
+    };
   const { items } = await db.list<ProfileRecord>(profileTable(userId), { limit: 1 });
   const first = items[0];
   if (!first) return null;

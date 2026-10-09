@@ -75,7 +75,13 @@ function DownloadButton({ modelId, version }: { modelId: string; version: ModelV
   };
 
   return (
-    <button type="button" onClick={download} disabled={busy} aria-busy={busy} className="btn btn-primary w-full py-3 text-base">
+    <button
+      type="button"
+      onClick={download}
+      disabled={busy}
+      aria-busy={busy}
+      className="btn btn-primary w-full py-3 text-base"
+    >
       {external ? (
         <>
           <ExternalLinkIcon size={18} /> 외부 링크에서 다운로드
@@ -102,7 +108,12 @@ function StripSkeleton() {
 /** 제작자가 올린 이 버전의 샘플 이미지 */
 function Samples({ model, version }: { model: ModelDetailData; version: ModelVersionData | undefined }) {
   const query = version
-    ? new URLSearchParams({ versionId: version.id, userId: model.creator.id, oldestFirst: '1', pageSize: '60' }).toString()
+    ? new URLSearchParams({
+        versionId: version.id,
+        userId: model.creator.id,
+        oldestFirst: '1',
+        pageSize: '60',
+      }).toString()
     : null;
   const { data, error, retry } = usePageData<Paged<ImageCardData>>(query ? `/api/images?${query}` : null);
 
@@ -123,12 +134,15 @@ function Samples({ model, version }: { model: ModelDetailData; version: ModelVer
 
 function ModelContent({ model, requestedVersion }: { model: ModelDetailData; requestedVersion: string | null }) {
   const { me } = useAuth();
-  const version: ModelVersionData | undefined = model.versions.find((v) => v.id === requestedVersion) ?? model.versions[0];
+  const version: ModelVersionData | undefined =
+    model.versions.find((v) => v.id === requestedVersion) ?? model.versions[0];
   const isOwner = !!me && me.id === model.creator.id;
   const type = modelTypeInfo(model.type);
   const ext = version?.fileName ? version.fileName.slice(version.fileName.lastIndexOf('.')).toLowerCase() : '';
   const hash = autoV2(version?.sha256);
-  const uploadTo = version ? `/images/new?modelId=${encodeURIComponent(model.id)}&versionId=${encodeURIComponent(version.id)}` : null;
+  const uploadTo = version
+    ? `/images/new?modelId=${encodeURIComponent(model.id)}&versionId=${encodeURIComponent(version.id)}`
+    : null;
 
   return (
     <>
@@ -233,7 +247,8 @@ function ModelContent({ model, requestedVersion }: { model: ModelDetailData; req
             {PICKLE_EXTENSIONS.includes(ext) && (
               <p className="flex gap-2 rounded-lg border border-warn/30 bg-warn/10 p-3 text-xs leading-relaxed text-warn">
                 <AlertIcon size={15} className="mt-0.5 shrink-0" />
-                {ext} 파일은 pickle 형식이라 악성 코드가 들어 있을 수 있어요. 믿을 수 있는 제작자의 파일만 받고, 가능하면 .safetensors 를 쓰세요.
+                {ext} 파일은 pickle 형식이라 악성 코드가 들어 있을 수 있어요. 믿을 수 있는 제작자의 파일만 받고,
+                가능하면 .safetensors 를 쓰세요.
               </p>
             )}
 
@@ -263,7 +278,10 @@ function ModelContent({ model, requestedVersion }: { model: ModelDetailData; req
                 <p className="mb-2.5 text-xs text-muted">프롬프트에 넣으면 이 모델의 효과가 적용돼요.</p>
                 <div className="flex flex-wrap gap-1.5">
                   {version.triggerWords.map((w) => (
-                    <span key={w} className="inline-flex items-center gap-0.5 rounded-md bg-accent/15 py-0.5 pl-2 pr-0.5 font-mono text-sm text-fg">
+                    <span
+                      key={w}
+                      className="inline-flex items-center gap-0.5 rounded-md bg-accent/15 py-0.5 pl-2 pr-0.5 font-mono text-sm text-fg"
+                    >
                       {w}
                       <CopyButton text={w} title={`"${w}" 복사`} />
                     </span>
@@ -292,7 +310,9 @@ function ModelContent({ model, requestedVersion }: { model: ModelDetailData; req
         <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
           <div>
             <h2 className="text-xl font-bold">커뮤니티 갤러리</h2>
-            <p className="mt-1 text-sm text-muted">다른 사람들이 이 모델로 만든 이미지예요. 마우스를 올리면 프롬프트가 보여요.</p>
+            <p className="mt-1 text-sm text-muted">
+              다른 사람들이 이 모델로 만든 이미지예요. 마우스를 올리면 프롬프트가 보여요.
+            </p>
           </div>
           {uploadTo && (
             <Link to={uploadTo} className="btn btn-primary">

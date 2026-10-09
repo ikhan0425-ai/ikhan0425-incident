@@ -26,7 +26,12 @@ function codeFromStatus(status: number): ApiErrorCode {
 
 function toApiError(e: unknown): ApiError {
   if (e instanceof ApiError) return e;
-  const err = e as { response?: { status?: number; data?: unknown }; status?: number; data?: unknown; message?: string };
+  const err = e as {
+    response?: { status?: number; data?: unknown };
+    status?: number;
+    data?: unknown;
+    message?: string;
+  };
   const status = err?.response?.status ?? err?.status ?? 0;
   const data = (err?.response?.data ?? err?.data) as { error?: unknown; code?: unknown } | undefined;
   const message =
@@ -35,7 +40,10 @@ function toApiError(e: unknown): ApiError {
       : status === 0
         ? '네트워크 오류가 발생했어요. 잠시 후 다시 시도해 주세요.'
         : '요청을 처리하지 못했어요. 잠시 후 다시 시도해 주세요.';
-  const code = data && typeof data === 'object' && typeof data.code === 'string' ? (data.code as ApiErrorCode) : codeFromStatus(status);
+  const code =
+    data && typeof data === 'object' && typeof data.code === 'string'
+      ? (data.code as ApiErrorCode)
+      : codeFromStatus(status);
   return new ApiError(message, status, code);
 }
 
@@ -44,7 +52,16 @@ function unwrap<T>(res: { data: unknown }): T {
   const data = res?.data as { error?: unknown; code?: unknown } | undefined;
   if (data && typeof data === 'object' && typeof data.error === 'string' && typeof data.code === 'string') {
     const code = data.code as ApiErrorCode;
-    const status = code === 'auth_required' ? 401 : code === 'forbidden' ? 403 : code === 'not_found' ? 404 : code === 'bad_request' ? 400 : 500;
+    const status =
+      code === 'auth_required'
+        ? 401
+        : code === 'forbidden'
+          ? 403
+          : code === 'not_found'
+            ? 404
+            : code === 'bad_request'
+              ? 400
+              : 500;
     throw new ApiError(data.error, status, code);
   }
   return res.data as T;

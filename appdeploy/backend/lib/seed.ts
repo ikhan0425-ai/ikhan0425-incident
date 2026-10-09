@@ -12,6 +12,10 @@ const profiles = new Map<string, SeedProfile>(SEED.profiles.map((p) => [p.id, p]
 const models = new Map<string, SeedModel>(SEED.models.map((m) => [m.id, m]));
 const images = new Map<string, SeedImage>(SEED.images.map((i) => [i.id, i]));
 
+export function seedProfileNames(): string[] {
+  return SEED.profiles.map((p) => p.displayName);
+}
+
 export function seedProfile(id: string): SeedProfile | undefined {
   return profiles.get(id);
 }
@@ -38,7 +42,13 @@ export function seedModelSummaries(now: number): ModelSummary[] {
     createdAt: ago(now, m.ageDays),
     updatedAt: ago(now, m.updatedAgeDays),
     versions: m.versions
-      .map((v) => ({ id: v.id, name: v.name, baseModel: v.baseModel, sha10: v.sha256.slice(0, 10), createdAt: ago(now, v.ageDays) }))
+      .map((v) => ({
+        id: v.id,
+        name: v.name,
+        baseModel: v.baseModel,
+        sha10: v.sha256.slice(0, 10),
+        createdAt: ago(now, v.ageDays),
+      }))
       .sort((a, b) => a.createdAt - b.createdAt),
   }));
 }
@@ -61,7 +71,9 @@ export function seedImageSummaries(now: number): ImageSummary[] {
   }));
 }
 
-export function seedImageFull(id: string): { file: string; meta: GenerationParams; source: MetadataSource | null } | null {
+export function seedImageFull(
+  id: string,
+): { file: string; meta: GenerationParams; source: MetadataSource | null } | null {
   const i = images.get(id);
   return i ? { file: i.file, meta: i.meta, source: i.source } : null;
 }

@@ -235,7 +235,11 @@ export class Catalog {
     const shard = shardOf(id);
     const found = this.slots.find((s) => s.rec.kind === kind && s.rec.shard === shard);
     if (found || !create) return found ?? null;
-    const slot: Slot = { id: null, rec: kind === 'mstats' ? { kind, shard, stats: {} } : { kind, shard, stats: {} }, dirty: true };
+    const slot: Slot = {
+      id: null,
+      rec: kind === 'mstats' ? { kind, shard, stats: {} } : { kind, shard, stats: {} },
+      dirty: true,
+    };
     this.slots.push(slot);
     return slot;
   }
