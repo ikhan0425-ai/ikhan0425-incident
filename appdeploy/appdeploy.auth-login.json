@@ -1,0 +1,14 @@
+{
+  "methods": ["google", "apple", "x", "email"],
+  "headline": "그림터에 로그인",
+  "subtitle": "모델과 AI 그림을 올리고 좋아요를 누르려면 로그인하세요.",
+  "style": {
+    "mode": "dark",
+    "accentColor": "#4c6ef5",
+    "backgroundColor": "#0f1012",
+    "panelColor": "#1a1b1e",
+    "textColor": "#e9eaee",
+    "fontFamily": "Pretendard, system-ui, sans-serif",
+    "borderRadius": 12
+  }
+}

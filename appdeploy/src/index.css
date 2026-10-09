@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #0f1012;
+  --color-surface: #1a1b1e;
+  --color-surface-2: #232428;
+  --color-surface-3: #2c2e33;
+  --color-line: #2f3137;
+  --color-fg: #e9eaee;
+  --color-muted: #a0a2ab;
+  --color-subtle: #6f727b;
+  --color-accent: #6b84ff;
+  --color-accent-strong: #4c6ef5;
+  --color-like: #ff6b81;
+  --color-danger: #ff6b6b;
+  --color-success: #51cf66;
+  --color-warn: #fcc419;
+
+  --font-sans:
+    "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo",
+    "Noto Sans KR", "Malgun Gothic", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  word-break: keep-all;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 프롬프트처럼 긴 영문 나열은 어디서든 줄바꿈 */
+.prompt-text {
+  word-break: normal;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-accent) 40%, transparent);
+}
+
+* {
+  scrollbar-color: var(--color-surface-3) transparent;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -400px 0;
+  }
+  100% {
+    background-position: 400px 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--color-surface) 0px, var(--color-surface-2) 80px, var(--color-surface) 160px);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s infinite linear;
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply bg-accent-strong text-white hover:bg-accent;
+  }
+  .btn-secondary {
+    @apply border border-line bg-surface-2 text-fg hover:bg-surface-3;
+  }
+  .btn-ghost {
+    @apply text-muted hover:bg-surface-2 hover:text-fg;
+  }
+  .btn-danger {
+    @apply border border-danger/40 text-danger hover:bg-danger/10;
+  }
+  .input {
+    @apply w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm text-fg placeholder:text-subtle focus:border-accent focus:outline-none;
+  }
+  .label {
+    @apply mb-1.5 block text-sm font-semibold text-fg;
+  }
+  .card {
+    @apply rounded-xl border border-line bg-surface;
+  }
+  .chip {
+    @apply inline-flex shrink-0 items-center gap-1 rounded-full border border-line bg-surface px-3 py-1.5 text-sm text-muted transition-colors hover:border-surface-3 hover:text-fg;
+  }
+  .chip-active {
+    @apply border-accent bg-accent/15 text-fg hover:border-accent;
+  }
+}

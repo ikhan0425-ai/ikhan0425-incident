@@ -1,0 +1,5 @@
+{
+  "extends": "../appdeploy/tsconfig.json",
+  "compilerOptions": { "noEmit": true },
+  "include": ["../appdeploy/src", "./types/appdeploy-client.d.ts"]
+}

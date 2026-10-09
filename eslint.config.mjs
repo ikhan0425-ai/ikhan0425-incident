@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // AppDeploy 배포용 포트(별도 프로젝트)와 로컬 테스트 도구
+    "appdeploy/**",
+    "appdeploy-dev/**",
   ]),
 ]);
 

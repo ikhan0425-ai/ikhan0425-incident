@@ -43,3 +43,9 @@ next-env.d.ts
 
 # app data (sqlite db, uploads)
 /data
+
+# AppDeploy 포트: 의존성/빌드 결과물, 로컬 테스트 데이터
+/appdeploy/node_modules
+/appdeploy/dist
+/appdeploy-dev/.data
+/appdeploy-dev/.dist

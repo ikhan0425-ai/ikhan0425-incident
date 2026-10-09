@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": false,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "paths": { "@appdeploy/sdk": ["./mock-sdk.ts"] }
+  }
+}

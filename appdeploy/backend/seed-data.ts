@@ -1,0 +1,6310 @@
+// 자동 생성 파일 (scripts/appdeploy-seed.ts). 직접 고치지 마세요.
+// 샘플 그림은 SVG 로 절차적으로 만든 것이고, 모델 파일은 실제 모델이 아닌 빈 파일입니다.
+// 시간은 "며칠 전" 상대값이라 언제 봐도 최근 활동이 있는 것처럼 보입니다.
+
+import type { SeedData } from './lib/seed-types';
+
+export const SEED: SeedData = {
+ "profiles": [
+  {
+   "id": "seed-minji_art",
+   "displayName": "민지아트",
+   "bio": "애니메이션·웹툰 스타일 LoRA 를 주로 만들어요. 피드백 환영!",
+   "ageDays": 240
+  },
+  {
+   "id": "seed-doyun_ai",
+   "displayName": "도윤",
+   "bio": "실사 체크포인트 병합 연구 중. 추천 설정은 모델 설명에 적어 둡니다.",
+   "ageDays": 240
+  },
+  {
+   "id": "seed-sora_lab",
+   "displayName": "소라연구소",
+   "bio": "ControlNet · 워크플로 · 업스케일러",
+   "ageDays": 240
+  },
+  {
+   "id": "seed-hanbit3d",
+   "displayName": "한빛3D",
+   "bio": "3D, 클레이, 로우폴리 스타일을 좋아합니다.",
+   "ageDays": 240
+  },
+  {
+   "id": "seed-pixel_jun",
+   "displayName": "픽셀준",
+   "bio": "16bit 도트 장인 (지망생)",
+   "ageDays": 240
+  },
+  {
+   "id": "seed-mukmuk",
+   "displayName": "먹먹",
+   "bio": "수묵화와 동양화 느낌을 AI 로 재현해 보고 있어요.",
+   "ageDays": 240
+  }
+ ],
+ "models": [
+  {
+   "id": "seed-m01",
+   "ownerId": "seed-minji_art",
+   "name": "파스텔 드림 애니 믹스",
+   "type": "CHECKPOINT",
+   "description": "몽글몽글한 파스텔 톤 애니메이션 체크포인트입니다.\n\n추천 설정\n- 샘플러: Euler a 또는 DPM++ 2M\n- 스텝: 25~30\n- CFG: 5~7\n- Clip skip: 2\n\n밝은 배경과 부드러운 조명에 특히 강해요.",
+   "nsfw": false,
+   "tags": [
+    "anime",
+    "illustration",
+    "style"
+   ],
+   "ageDays": 140,
+   "updatedAgeDays": 70,
+   "versions": [
+    {
+     "id": "seed-m01-v1",
+     "name": "v1.0",
+     "baseModel": "SDXL",
+     "triggerWords": [],
+     "description": "",
+     "fileName": "pastelDreamMix_v1.0.safetensors",
+     "fileSize": 128,
+     "sha256": "c594ccac966eae287d0f2c98cd1ce6d22f02571a47fcb3cc8d21ccdd3ded2938",
+     "externalUrl": null,
+     "file": "seed/files/pastelDreamMix_v1.0.safetensors",
+     "ageDays": 140
+    },
+    {
+     "id": "seed-m01-v2",
+     "name": "v2.0",
+     "baseModel": "Illustrious",
+     "triggerWords": [],
+     "description": "Illustrious 기반으로 다시 병합했어요. 손 표현이 좋아졌습니다.",
+     "fileName": "pastelDreamMix_v2.0.safetensors",
+     "fileSize": 128,
+     "sha256": "3cff68f280b814cdde919b9c128949197e3a58be7becbb92d91b931af49bdd1f",
+     "externalUrl": null,
+     "file": "seed/files/pastelDreamMix_v2.0.safetensors",
+     "ageDays": 70
+    }
+   ]
+  },
+  {
+   "id": "seed-m02",
+   "ownerId": "seed-doyun_ai",
+   "name": "서울 야경 리얼리스틱",
+   "type": "CHECKPOINT",
+   "description": "서울의 밤 풍경을 사진처럼 표현하는 실사 체크포인트. 네온 사인과 빗길 반사광이 특징입니다.\n\n추천: DPM++ 2M Karras, 30 스텝, CFG 6",
+   "nsfw": false,
+   "tags": [
+    "realistic",
+    "landscape",
+    "architecture"
+   ],
+   "ageDays": 95,
+   "updatedAgeDays": 95,
+   "versions": [
+    {
+     "id": "seed-m02-v1",
+     "name": "v1.0",
+     "baseModel": "SDXL",
+     "triggerWords": [],
+     "description": "",
+     "fileName": "seoulNightRealistic_v1.0.safetensors",
+     "fileSize": 133,
+     "sha256": "1a498ba5fa9221c2a34fb87a6cbd2994727d74e35acad1af8327430d9d9602e7",
+     "externalUrl": null,
+     "file": "seed/files/seoulNightRealistic_v1.0.safetensors",
+     "ageDays": 95
+    }
+   ]
+  },
+  {
+   "id": "seed-m03",
+   "ownerId": "seed-minji_art",
+   "name": "한복 스타일 LoRA",
+   "type": "LORA",
+   "description": "전통 한복과 생활 한복을 자연스럽게 입혀 주는 LoRA 입니다. 가중치 0.6~0.8 을 추천해요.\n\n트리거 단어를 프롬프트 앞쪽에 넣어 주세요.",
+   "nsfw": false,
+   "tags": [
+    "clothing",
+    "character",
+    "style",
+    "hanbok"
+   ],
+   "ageDays": 5,
+   "updatedAgeDays": 5,
+   "versions": [
+    {
+     "id": "seed-m03-v1",
+     "name": "v1.0",
+     "baseModel": "Illustrious",
+     "triggerWords": [
+      "hanbok",
+      "korean traditional clothes"
+     ],
+     "description": "",
+     "fileName": "hanbokStyle_v1.0.safetensors",
+     "fileSize": 125,
+     "sha256": "eff2a992b13daf2f0dd127670b4bba5d791774473a473ecf6dfed028470c1308",
+     "externalUrl": null,
+     "file": "seed/files/hanbokStyle_v1.0.safetensors",
+     "ageDays": 5
+    }
+   ]
+  },
+  {
+   "id": "seed-m04",
+   "ownerId": "seed-mukmuk",
+   "name": "수묵 산수화 스타일",
+   "type": "LORA",
+   "description": "먹의 번짐과 여백을 살린 동양 산수화 스타일 LoRA. 풍경 프롬프트와 잘 어울립니다.",
+   "nsfw": false,
+   "tags": [
+    "traditional",
+    "landscape",
+    "style"
+   ],
+   "ageDays": 60,
+   "updatedAgeDays": 20,
+   "versions": [
+    {
+     "id": "seed-m04-v1",
+     "name": "v1.0",
+     "baseModel": "SD 1.5",
+     "triggerWords": [
+      "sumukhwa",
+      "ink wash"
+     ],
+     "description": "",
+     "fileName": "sumukSansu_v1.0.safetensors",
+     "fileSize": 124,
+     "sha256": "586eba7caea8bb1732ae8dbbd07d73bf04521fed8c31cec6e2f60eb92f135619",
+     "externalUrl": null,
+     "file": "seed/files/sumukSansu_v1.0.safetensors",
+     "ageDays": 60
+    },
+    {
+     "id": "seed-m04-v2",
+     "name": "v1.5",
+     "baseModel": "Flux.1",
+     "triggerWords": [
+      "sumukhwa style"
+     ],
+     "description": "Flux.1 용으로 다시 학습",
+     "fileName": "sumukSansu_v1.5.safetensors",
+     "fileSize": 124,
+     "sha256": "a13fa2956caeb794b6b2940dab81088dfe9a5df19b04588eda054eadbc52bdfa",
+     "externalUrl": null,
+     "file": "seed/files/sumukSansu_v1.5.safetensors",
+     "ageDays": 20
+    }
+   ]
+  },
+  {
+   "id": "seed-m05",
+   "ownerId": "seed-hanbit3d",
+   "name": "클레이 피규어 3D",
+   "type": "LORA",
+   "description": "찰흙 피규어처럼 말랑한 3D 질감을 만들어 주는 LoRA. 단색 배경 + 스튜디오 조명 조합을 추천합니다.",
+   "nsfw": false,
+   "tags": [
+    "3d",
+    "character",
+    "style"
+   ],
+   "ageDays": 33,
+   "updatedAgeDays": 33,
+   "versions": [
+    {
+     "id": "seed-m05-v1",
+     "name": "v1.0",
+     "baseModel": "SDXL",
+     "triggerWords": [
+      "claystyle"
+     ],
+     "description": "",
+     "fileName": "clayFigure3D_v1.0.safetensors",
+     "fileSize": 126,
+     "sha256": "1f504175958d6340537cef2a477ab8efd464aa9ffc5268d9714030a0c9bf207b",
+     "externalUrl": null,
+     "file": "seed/files/clayFigure3D_v1.0.safetensors",
+     "ageDays": 33
+    }
+   ]
+  },
+  {
+   "id": "seed-m06",
+   "ownerId": "seed-pixel_jun",
+   "name": "16bit 픽셀아트",
+   "type": "LORA",
+   "description": "레트로 게임 느낌의 16bit 도트 그림을 만들어 줍니다. 생성 후 nearest-neighbor 로 축소하면 더 깔끔해요.",
+   "nsfw": false,
+   "tags": [
+    "pixel art",
+    "style",
+    "background"
+   ],
+   "ageDays": 120,
+   "updatedAgeDays": 120,
+   "versions": [
+    {
+     "id": "seed-m06-v1",
+     "name": "v1.0",
+     "baseModel": "SD 1.5",
+     "triggerWords": [
+      "pixel art",
+      "16bit"
+     ],
+     "description": "",
+     "fileName": "pixelArt16bit_v1.0.safetensors",
+     "fileSize": 127,
+     "sha256": "37456eac91681ca39b7a4e4f7887e18bd6866f9a5e2fdf65e6f0ceff02cce293",
+     "externalUrl": null,
+     "file": "seed/files/pixelArt16bit_v1.0.safetensors",
+     "ageDays": 120
+    }
+   ]
+  },
+  {
+   "id": "seed-m07",
+   "ownerId": "seed-doyun_ai",
+   "name": "네온 사이버펑크",
+   "type": "LORA",
+   "description": "보라·핑크 네온과 비 오는 거리. 사이버펑크 분위기를 강하게 넣어 줍니다. Flux.1 [dev] 에서 테스트했어요.",
+   "nsfw": false,
+   "tags": [
+    "sci-fi",
+    "style",
+    "architecture"
+   ],
+   "ageDays": 2,
+   "updatedAgeDays": 2,
+   "versions": [
+    {
+     "id": "seed-m07-v1",
+     "name": "v1.0",
+     "baseModel": "Flux.1",
+     "triggerWords": [
+      "neonpunk"
+     ],
+     "description": "",
+     "fileName": "neonCyberpunk_v1.0.safetensors",
+     "fileSize": 127,
+     "sha256": "62cff93458b6119a64bce3f0606f2bf94d9287033126bd2201b49f8b0aee87e1",
+     "externalUrl": null,
+     "file": "seed/files/neonCyberpunk_v1.0.safetensors",
+     "ageDays": 2
+    }
+   ]
+  },
+  {
+   "id": "seed-m08",
+   "ownerId": "seed-hanbit3d",
+   "name": "로우폴리 월드",
+   "type": "LORA",
+   "description": "삼각형 면으로 이루어진 로우폴리 3D 배경 스타일.",
+   "nsfw": false,
+   "tags": [
+    "3d",
+    "landscape",
+    "background"
+   ],
+   "ageDays": 75,
+   "updatedAgeDays": 75,
+   "versions": [
+    {
+     "id": "seed-m08-v1",
+     "name": "v1.0",
+     "baseModel": "SDXL",
+     "triggerWords": [
+      "lowpoly"
+     ],
+     "description": "",
+     "fileName": "lowpolyWorld_v1.0.safetensors",
+     "fileSize": 126,
+     "sha256": "3d1897a2a61d4ff7e939c1b7e876b734198b6a5516eb884d89d469cfca16501b",
+     "externalUrl": null,
+     "file": "seed/files/lowpolyWorld_v1.0.safetensors",
+     "ageDays": 75
+    }
+   ]
+  },
+  {
+   "id": "seed-m09",
+   "ownerId": "seed-doyun_ai",
+   "name": "노을 풍경 체크포인트",
+   "type": "CHECKPOINT",
+   "description": "골든아워의 산과 하늘을 따뜻하게 표현하는 풍경 전용 체크포인트입니다.",
+   "nsfw": false,
+   "tags": [
+    "realistic",
+    "landscape"
+   ],
+   "ageDays": 200,
+   "updatedAgeDays": 110,
+   "versions": [
+    {
+     "id": "seed-m09-v1",
+     "name": "v1.0",
+     "baseModel": "SD 1.5",
+     "triggerWords": [],
+     "description": "",
+     "fileName": "goldenHourScenery_v1.0.safetensors",
+     "fileSize": 131,
+     "sha256": "0497264b26c71039ac636a84807a66bdd052f0d0efe7468854f227882065392d",
+     "externalUrl": null,
+     "file": "seed/files/goldenHourScenery_v1.0.safetensors",
+     "ageDays": 200
+    },
+    {
+     "id": "seed-m09-v2",
+     "name": "v2.0",
+     "baseModel": "SDXL",
+     "triggerWords": [],
+     "description": "해상도와 디테일 개선",
+     "fileName": "goldenHourScenery_v2.0.safetensors",
+     "fileSize": 131,
+     "sha256": "eadad5d61ea3fb0b5a67e8dda596fc8e53044bdae9ea6e989f68465cf8b5ac45",
+     "externalUrl": null,
+     "file": "seed/files/goldenHourScenery_v2.0.safetensors",
+     "ageDays": 110
+    }
+   ]
+  },
+  {
+   "id": "seed-m10",
+   "ownerId": "seed-sora_lab",
+   "name": "오로라 판타지",
+   "type": "CHECKPOINT",
+   "description": "밤하늘, 오로라, 설경에 특화된 판타지 컨셉아트 체크포인트.",
+   "nsfw": false,
+   "tags": [
+    "fantasy",
+    "landscape",
+    "concept art"
+   ],
+   "ageDays": 12,
+   "updatedAgeDays": 12,
+   "versions": [
+    {
+     "id": "seed-m10-v1",
+     "name": "v1.0",
+     "baseModel": "Flux.1",
+     "triggerWords": [],
+     "description": "",
+     "fileName": "auroraFantasy_v1.0.safetensors",
+     "fileSize": 127,
+     "sha256": "f04e1a6b096fe0b1f7fe9a08b1d51da6f9a13aa10ad627f0f548a354202ec609",
+     "externalUrl": null,
+     "file": "seed/files/auroraFantasy_v1.0.safetensors",
+     "ageDays": 12
+    }
+   ]
+  },
+  {
+   "id": "seed-m11",
+   "ownerId": "seed-doyun_ai",
+   "name": "부드러운 피부 임베딩",
+   "type": "EMBEDDING",
+   "description": "네거티브 프롬프트에 넣어 피부 노이즈와 과한 질감을 줄이는 임베딩입니다.",
+   "nsfw": false,
+   "tags": [
+    "realistic",
+    "portrait"
+   ],
+   "ageDays": 160,
+   "updatedAgeDays": 160,
+   "versions": [
+    {
+     "id": "seed-m11-v1",
+     "name": "v1.0",
+     "baseModel": "SD 1.5",
+     "triggerWords": [
+      "smoothskin_neg"
+     ],
+     "description": "",
+     "fileName": "smoothSkinNeg_v1.0.safetensors",
+     "fileSize": 127,
+     "sha256": "34e79240ad4e8fdba9bbf12f20848e004f1c5941792642b55a8da06aff192a3b",
+     "externalUrl": null,
+     "file": "seed/files/smoothSkinNeg_v1.0.safetensors",
+     "ageDays": 160
+    }
+   ]
+  },
+  {
+   "id": "seed-m12",
+   "ownerId": "seed-sora_lab",
+   "name": "시네마틱 컬러 VAE",
+   "type": "VAE",
+   "description": "채도를 살짝 올리고 대비를 부드럽게 만드는 SDXL VAE. 색이 탁하게 나올 때 바꿔 보세요.",
+   "nsfw": false,
+   "tags": [
+    "realistic"
+   ],
+   "ageDays": 45,
+   "updatedAgeDays": 45,
+   "versions": [
+    {
+     "id": "seed-m12-v1",
+     "name": "v1.0",
+     "baseModel": "SDXL",
+     "triggerWords": [],
+     "description": "",
+     "fileName": "cinematicColorVAE_v1.0.safetensors",
+     "fileSize": 131,
+     "sha256": "0263b25fbe200748d9024fc42aa3cf1e03cb3911c85c6c16909d5a9f974e57f9",
+     "externalUrl": null,
+     "file": "seed/files/cinematicColorVAE_v1.0.safetensors",
+     "ageDays": 45
+    }
+   ]
+  },
+  {
+   "id": "seed-m13",
+   "ownerId": "seed-sora_lab",
+   "name": "오픈포즈 XL 컨트롤넷",
+   "type": "CONTROLNET",
+   "description": "SDXL 용 OpenPose ControlNet. 포즈 스켈레톤 이미지를 넣으면 같은 자세로 생성합니다.\n\n권장 가중치 0.7, 시작 0, 끝 0.8",
+   "nsfw": false,
+   "tags": [
+    "character"
+   ],
+   "ageDays": 110,
+   "updatedAgeDays": 110,
+   "versions": [
+    {
+     "id": "seed-m13-v1",
+     "name": "v1.0",
+     "baseModel": "SDXL",
+     "triggerWords": [],
+     "description": "",
+     "fileName": "openposeXL_v1.0.safetensors",
+     "fileSize": 124,
+     "sha256": "4f2219db4c6246f09b454651138c3d79ce8d175a0fe20e492b6ab4b280482db8",
+     "externalUrl": null,
+     "file": "seed/files/openposeXL_v1.0.safetensors",
+     "ageDays": 110
+    }
+   ]
+  },
+  {
+   "id": "seed-m14",
+   "ownerId": "seed-sora_lab",
+   "name": "4x 애니 업스케일러",
+   "type": "UPSCALER",
+   "description": "애니메이션 그림 전용 4배 업스케일러. 선이 깨지지 않고 깔끔하게 커집니다. Hires.fix 에서 사용하세요.",
+   "nsfw": false,
+   "tags": [
+    "anime"
+   ],
+   "ageDays": 180,
+   "updatedAgeDays": 180,
+   "versions": [
+    {
+     "id": "seed-m14-v1",
+     "name": "v1.0",
+     "baseModel": "기타",
+     "triggerWords": [],
+     "description": "",
+     "fileName": "4xAnimeUpscaler_v1.0.safetensors",
+     "fileSize": 129,
+     "sha256": "255a1be4d347864826174dba40e726177b42047e349dec56db885e74f70415b7",
+     "externalUrl": null,
+     "file": "seed/files/4xAnimeUpscaler_v1.0.safetensors",
+     "ageDays": 180
+    }
+   ]
+  },
+  {
+   "id": "seed-m15",
+   "ownerId": "seed-sora_lab",
+   "name": "Flux 업스케일 워크플로",
+   "type": "WORKFLOW",
+   "description": "ComfyUI 용 2단계 업스케일 워크플로(json). 첫 생성 → 타일 업스케일 → 디테일 보정 순서입니다.",
+   "nsfw": false,
+   "tags": [
+    "concept art"
+   ],
+   "ageDays": 20,
+   "updatedAgeDays": 20,
+   "versions": [
+    {
+     "id": "seed-m15-v1",
+     "name": "v1.0",
+     "baseModel": "Flux.1",
+     "triggerWords": [],
+     "description": "",
+     "fileName": "fluxUpscaleWorkflow_v1.0.json",
+     "fileSize": 75,
+     "sha256": "ebb4148a8a03341b22ca76d35c85df39e9bd16d99117f96c69c2e32570f63190",
+     "externalUrl": null,
+     "file": "seed/files/fluxUpscaleWorkflow_v1.0.json",
+     "ageDays": 20
+    }
+   ]
+  },
+  {
+   "id": "seed-m16",
+   "ownerId": "seed-minji_art",
+   "name": "웹툰 채색 스타일",
+   "type": "LORA",
+   "description": "한국 웹툰 느낌의 깔끔한 셀 채색과 선화를 만들어 주는 LoRA.",
+   "nsfw": false,
+   "tags": [
+    "webtoon",
+    "anime",
+    "illustration"
+   ],
+   "ageDays": 8,
+   "updatedAgeDays": 8,
+   "versions": [
+    {
+     "id": "seed-m16-v1",
+     "name": "v1.0",
+     "baseModel": "Illustrious",
+     "triggerWords": [
+      "webtoon style"
+     ],
+     "description": "",
+     "fileName": "webtoonColoring_v1.0.safetensors",
+     "fileSize": 129,
+     "sha256": "0139870fd0f8527c28ffcb792398d6cb52430b5969583e225e0ccd81a7bc492d",
+     "externalUrl": null,
+     "file": "seed/files/webtoonColoring_v1.0.safetensors",
+     "ageDays": 8
+    }
+   ]
+  },
+  {
+   "id": "seed-m17",
+   "ownerId": "seed-mukmuk",
+   "name": "벚꽃 배경 LyCORIS",
+   "type": "LYCORIS",
+   "description": "벚꽃 가지와 흩날리는 꽃잎 배경을 만들어 주는 LyCORIS(LoCon).",
+   "nsfw": false,
+   "tags": [
+    "background",
+    "landscape",
+    "illustration"
+   ],
+   "ageDays": 26,
+   "updatedAgeDays": 26,
+   "versions": [
+    {
+     "id": "seed-m17-v1",
+     "name": "v1.0",
+     "baseModel": "Pony",
+     "triggerWords": [
+      "sakura_bg"
+     ],
+     "description": "",
+     "fileName": "sakuraBackground_v1.0.safetensors",
+     "fileSize": 130,
+     "sha256": "7c72fc4b1898c0fa636e555543ae30004b32929152f55d9efaef4b5d8febe0dd",
+     "externalUrl": null,
+     "file": "seed/files/sakuraBackground_v1.0.safetensors",
+     "ageDays": 26
+    }
+   ]
+  },
+  {
+   "id": "seed-m18",
+   "ownerId": "seed-hanbit3d",
+   "name": "바다 물결 Qwen",
+   "type": "LORA",
+   "description": "겹겹이 쌓인 물결을 일러스트처럼 표현하는 Qwen-Image 용 LoRA.",
+   "nsfw": false,
+   "tags": [
+    "landscape",
+    "illustration"
+   ],
+   "ageDays": 0.6,
+   "updatedAgeDays": 0.6,
+   "versions": [
+    {
+     "id": "seed-m18-v1",
+     "name": "v1.0",
+     "baseModel": "Qwen-Image",
+     "triggerWords": [
+      "wavestyle"
+     ],
+     "description": "",
+     "fileName": "oceanWavesQwen_v1.0.safetensors",
+     "fileSize": 128,
+     "sha256": "588d9c564979f6c71e9c450dd7366ed180e4ec088b9abd3545bdaa05abb390ed",
+     "externalUrl": null,
+     "file": "seed/files/oceanWavesQwen_v1.0.safetensors",
+     "ageDays": 0.6
+    }
+   ]
+  }
+ ],
+ "images": [
+  {
+   "id": "seed-i001",
+   "ownerId": "seed-minji_art",
+   "modelId": "seed-m01",
+   "versionId": "seed-m01-v1",
+   "file": "seed/seed-i001.webp",
+   "thumb": "seed/seed-i001-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#e8e8f8",
+   "meta": {
+    "prompt": "beautiful lighting, masterpiece, absurdres, 8k, magical girl, floating, sparkles",
+    "negativePrompt": "lowres, bad anatomy, bad hands, text, error, missing fingers, worst quality, low quality, jpeg artifacts, signature, watermark",
+    "sampler": "Euler a",
+    "scheduler": "Automatic",
+    "steps": 35,
+    "cfgScale": 6.5,
+    "seed": "3712101992",
+    "clipSkip": 2,
+    "size": "640x960",
+    "model": "pastelDreamMix_v1.0",
+    "modelHash": "c594ccac96",
+    "extra": {
+     "Hires upscale": "2",
+     "Hires upscaler": "Latent",
+     "Denoising strength": "0.5",
+     "Version": "v1.9.4"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 140
+  },
+  {
+   "id": "seed-i002",
+   "ownerId": "seed-minji_art",
+   "modelId": "seed-m01",
+   "versionId": "seed-m01-v1",
+   "file": "seed/seed-i002.webp",
+   "thumb": "seed/seed-i002-t.webp",
+   "width": 960,
+   "height": 640,
+   "color": "#f8d8e8",
+   "meta": {
+    "prompt": "8k, sharp focus, beautiful lighting, highly detailed, cozy cafe interior, warm light",
+    "negativePrompt": "(worst quality:1.4), (low quality:1.4), blurry, deformed, extra limbs, watermark",
+    "sampler": "DPM++ SDE",
+    "scheduler": "Karras",
+    "steps": 35,
+    "cfgScale": 5,
+    "seed": "4212268238",
+    "clipSkip": 1,
+    "size": "960x640",
+    "model": "pastelDreamMix_v1.0",
+    "modelHash": "c594ccac96",
+    "extra": {
+     "Hires upscale": "1.5",
+     "Hires upscaler": "Latent",
+     "Denoising strength": "0.4",
+     "Version": "v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 139.9993
+  },
+  {
+   "id": "seed-i003",
+   "ownerId": "seed-minji_art",
+   "modelId": "seed-m01",
+   "versionId": "seed-m01-v1",
+   "file": "seed/seed-i003.webp",
+   "thumb": "seed/seed-i003-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#e8e8e8",
+   "meta": {
+    "prompt": "masterpiece, absurdres, 8k, magical girl, floating, sparkles",
+    "negativePrompt": "nsfw, lowres, blurry, oversaturated, ugly, duplicate",
+    "sampler": "DPM++ SDE",
+    "scheduler": "Karras",
+    "steps": 24,
+    "cfgScale": 7.5,
+    "seed": "145023333",
+    "clipSkip": 2,
+    "size": "640x960",
+    "model": "pastelDreamMix_v1.0",
+    "modelHash": "c594ccac96",
+    "extra": {
+     "Version": "v1.9.4"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 139.9986
+  },
+  {
+   "id": "seed-i004",
+   "ownerId": "seed-minji_art",
+   "modelId": "seed-m01",
+   "versionId": "seed-m01-v2",
+   "file": "seed/seed-i004.webp",
+   "thumb": "seed/seed-i004-t.webp",
+   "width": 704,
+   "height": 1024,
+   "color": "#d8d8f8",
+   "meta": {
+    "prompt": "best quality, masterpiece, beautiful lighting, 8k, 1girl, sitting by the window, soft light",
+    "negativePrompt": "easynegative, bad-hands-5, lowres, text",
+    "sampler": "DPM++ 2M SDE",
+    "scheduler": "Exponential",
+    "steps": 30,
+    "cfgScale": 7.5,
+    "seed": "1383648970",
+    "clipSkip": null,
+    "size": "704x1024",
+    "model": "pastelDreamMix_v2.0",
+    "modelHash": null,
+    "extra": {}
+   },
+   "source": "comfyui",
+   "nsfw": false,
+   "ageDays": 70
+  },
+  {
+   "id": "seed-i005",
+   "ownerId": "seed-minji_art",
+   "modelId": "seed-m01",
+   "versionId": "seed-m01-v2",
+   "file": "seed/seed-i005.webp",
+   "thumb": "seed/seed-i005-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#98c8f8",
+   "meta": {
+    "prompt": "highly detailed, best quality, starry sky, dreamy clouds",
+    "negativePrompt": "easynegative, bad-hands-5, lowres, text",
+    "sampler": "Euler",
+    "scheduler": "Simple",
+    "steps": 25,
+    "cfgScale": 4,
+    "seed": "3436608513",
+    "clipSkip": null,
+    "size": "640x960",
+    "model": "pastelDreamMix_v2.0",
+    "modelHash": null,
+    "extra": {}
+   },
+   "source": "comfyui",
+   "nsfw": false,
+   "ageDays": 69.9993
+  },
+  {
+   "id": "seed-i006",
+   "ownerId": "seed-minji_art",
+   "modelId": "seed-m01",
+   "versionId": "seed-m01-v2",
+   "file": "seed/seed-i006.webp",
+   "thumb": "seed/seed-i006-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#98b8f8",
+   "meta": {
+    "prompt": "masterpiece, best quality, beautiful lighting, 1girl, sitting by the window, soft light",
+    "negativePrompt": "lowres, bad anatomy, bad hands, text, error, missing fingers, worst quality, low quality, jpeg artifacts, signature, watermark",
+    "sampler": "DPM++ SDE",
+    "scheduler": "Karras",
+    "steps": 30,
+    "cfgScale": 6.5,
+    "seed": "4250293213",
+    "clipSkip": 2,
+    "size": "640x960",
+    "model": "pastelDreamMix_v2.0",
+    "modelHash": "3cff68f280",
+    "extra": {
+     "Version": "f2.0.1v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 69.9986
+  },
+  {
+   "id": "seed-i007",
+   "ownerId": "seed-pixel_jun",
+   "modelId": "seed-m01",
+   "versionId": "seed-m01-v2",
+   "file": "seed/seed-i007.webp",
+   "thumb": "seed/seed-i007-t.webp",
+   "width": 768,
+   "height": 768,
+   "color": "#c8d8f8",
+   "meta": {
+    "prompt": "8k, best quality, beautiful lighting, absurdres, 1girl, sitting by the window, soft light",
+    "negativePrompt": "easynegative, bad-hands-5, lowres, text",
+    "sampler": "DPM++ 2M",
+    "scheduler": "Karras",
+    "steps": 40,
+    "cfgScale": 7,
+    "seed": "3868664185",
+    "clipSkip": 2,
+    "size": "768x768",
+    "model": "pastelDreamMix_v2.0",
+    "modelHash": "752d43fee4",
+    "extra": {
+     "Version": "f2.0.1v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 34.0424
+  },
+  {
+   "id": "seed-i008",
+   "ownerId": "seed-mukmuk",
+   "modelId": "seed-m01",
+   "versionId": "seed-m01-v1",
+   "file": "seed/seed-i008.webp",
+   "thumb": "seed/seed-i008-t.webp",
+   "width": 768,
+   "height": 768,
+   "color": "#e8e8e8",
+   "meta": {
+    "prompt": "absurdres, best quality, 8k, magical girl, floating, sparkles",
+    "negativePrompt": "lowres, bad anatomy, bad hands, text, error, missing fingers, worst quality, low quality, jpeg artifacts, signature, watermark",
+    "sampler": "DPM++ 2M SDE",
+    "scheduler": "Exponential",
+    "steps": 30,
+    "cfgScale": 7.5,
+    "seed": "411888857",
+    "clipSkip": 2,
+    "size": "768x768",
+    "model": "pastelDreamMix_v1.0",
+    "modelHash": "d60b3f6673",
+    "extra": {
+     "Version": "f2.0.1v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 126.5339
+  },
+  {
+   "id": "seed-i009",
+   "ownerId": "seed-doyun_ai",
+   "modelId": "seed-m02",
+   "versionId": "seed-m02-v1",
+   "file": "seed/seed-i009.webp",
+   "thumb": "seed/seed-i009-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#281838",
+   "meta": {
+    "prompt": "beautiful lighting, sharp focus, 8k, seoul night skyline, neon signs, rain",
+    "negativePrompt": "lowres, bad anatomy, bad hands, text, error, missing fingers, worst quality, low quality, jpeg artifacts, signature, watermark",
+    "sampler": "DPM++ SDE",
+    "scheduler": "Karras",
+    "steps": 24,
+    "cfgScale": 5,
+    "seed": "1752891327",
+    "clipSkip": 2,
+    "size": "640x960",
+    "model": "seoulNightRealistic_v1.0",
+    "modelHash": "1a498ba5fa",
+    "extra": {
+     "Version": "v1.9.4"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 95
+  },
+  {
+   "id": "seed-i010",
+   "ownerId": "seed-doyun_ai",
+   "modelId": "seed-m02",
+   "versionId": "seed-m02-v1",
+   "file": "seed/seed-i010.webp",
+   "thumb": "seed/seed-i010-t.webp",
+   "width": 768,
+   "height": 768,
+   "color": "#381828",
+   "meta": {
+    "prompt": "best quality, absurdres, 8k, highly detailed, city street at night, wet asphalt reflections",
+    "negativePrompt": "nsfw, lowres, blurry, oversaturated, ugly, duplicate",
+    "sampler": "DPM++ SDE",
+    "scheduler": "Karras",
+    "steps": 30,
+    "cfgScale": 5.5,
+    "seed": "3581209795",
+    "clipSkip": 2,
+    "size": "768x768",
+    "model": "seoulNightRealistic_v1.0",
+    "modelHash": "1a498ba5fa",
+    "extra": {
+     "Version": "f2.0.1v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 94.9993
+  },
+  {
+   "id": "seed-i011",
+   "ownerId": "seed-hanbit3d",
+   "modelId": "seed-m02",
+   "versionId": "seed-m02-v1",
+   "file": "seed/seed-i011.webp",
+   "thumb": "seed/seed-i011-t.webp",
+   "width": 704,
+   "height": 1024,
+   "color": "#182838",
+   "meta": {
+    "prompt": "sharp focus, masterpiece, beautiful lighting, seoul night skyline, neon signs, rain",
+    "negativePrompt": "lowres, bad anatomy, bad hands, text, error, missing fingers, worst quality, low quality, jpeg artifacts, signature, watermark",
+    "sampler": "Euler a",
+    "scheduler": "Automatic",
+    "steps": 25,
+    "cfgScale": 5,
+    "seed": "1543058812",
+    "clipSkip": 1,
+    "size": "704x1024",
+    "model": "seoulNightRealistic_v1.0",
+    "modelHash": "e7ce293042",
+    "extra": {
+     "Hires upscale": "2",
+     "Hires upscaler": "R-ESRGAN 4x+ Anime6B",
+     "Denoising strength": "0.5",
+     "Version": "f2.0.1v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 37.5637
+  },
+  {
+   "id": "seed-i012",
+   "ownerId": "seed-minji_art",
+   "modelId": "seed-m03",
+   "versionId": "seed-m03-v1",
+   "file": "seed/seed-i012.webp",
+   "thumb": "seed/seed-i012-t.webp",
+   "width": 768,
+   "height": 768,
+   "color": "#e8e8f8",
+   "meta": {
+    "prompt": "sharp focus, 8k, absurdres, highly detailed, hanbok, korean traditional clothes, traditional korean palace garden, spring, <lora:hanbokStyle_v1.0:0.7>",
+    "negativePrompt": "easynegative, bad-hands-5, lowres, text",
+    "sampler": "DPM++ 2M",
+    "scheduler": "Karras",
+    "steps": 28,
+    "cfgScale": 5,
+    "seed": "1152149709",
+    "clipSkip": 2,
+    "size": "768x768",
+    "model": "illustriousXL_v01",
+    "modelHash": "7c74f83147",
+    "extra": {
+     "Version": "v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 5
+  },
+  {
+   "id": "seed-i013",
+   "ownerId": "seed-minji_art",
+   "modelId": "seed-m03",
+   "versionId": "seed-m03-v1",
+   "file": "seed/seed-i013.webp",
+   "thumb": "seed/seed-i013-t.webp",
+   "width": 960,
+   "height": 640,
+   "color": "#c8d8f8",
+   "meta": {
+    "prompt": null,
+    "negativePrompt": null,
+    "sampler": null,
+    "scheduler": null,
+    "steps": null,
+    "cfgScale": null,
+    "seed": null,
+    "clipSkip": null,
+    "size": null,
+    "model": null,
+    "modelHash": null,
+    "extra": {}
+   },
+   "source": null,
+   "nsfw": false,
+   "ageDays": 4.9993
+  },
+  {
+   "id": "seed-i014",
+   "ownerId": "seed-hanbit3d",
+   "modelId": "seed-m03",
+   "versionId": "seed-m03-v1",
+   "file": "seed/seed-i014.webp",
+   "thumb": "seed/seed-i014-t.webp",
+   "width": 768,
+   "height": 768,
+   "color": "#e8e8e8",
+   "meta": {
+    "prompt": "masterpiece, best quality, hanbok, korean traditional clothes, traditional korean palace garden, spring, <lora:hanbokStyle_v1.0:0.7>",
+    "negativePrompt": "easynegative, bad-hands-5, lowres, text",
+    "sampler": "DPM++ 2M SDE",
+    "scheduler": "Exponential",
+    "steps": 25,
+    "cfgScale": 6,
+    "seed": "2490627253",
+    "clipSkip": 2,
+    "size": "768x768",
+    "model": "illustriousXL_v01",
+    "modelHash": "7c74f83147",
+    "extra": {
+     "Version": "f2.0.1v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 0.2566
+  },
+  {
+   "id": "seed-i015",
+   "ownerId": "seed-doyun_ai",
+   "modelId": "seed-m03",
+   "versionId": "seed-m03-v1",
+   "file": "seed/seed-i015.webp",
+   "thumb": "seed/seed-i015-t.webp",
+   "width": 704,
+   "height": 1024,
+   "color": "#e8e8e8",
+   "meta": {
+    "prompt": "8k, best quality, sharp focus, highly detailed, hanbok, korean traditional clothes, traditional korean palace garden, spring, <lora:hanbokStyle_v1.0:0.6>",
+    "negativePrompt": "easynegative, bad-hands-5, lowres, text",
+    "sampler": "DPM++ SDE",
+    "scheduler": "Karras",
+    "steps": 20,
+    "cfgScale": 6.5,
+    "seed": "3954103112",
+    "clipSkip": 2,
+    "size": "704x1024",
+    "model": "illustriousXL_v01",
+    "modelHash": "7c74f83147",
+    "extra": {
+     "Hires upscale": "2",
+     "Hires upscaler": "Latent",
+     "Denoising strength": "0.4",
+     "Version": "v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 1.3455
+  },
+  {
+   "id": "seed-i016",
+   "ownerId": "seed-pixel_jun",
+   "modelId": "seed-m03",
+   "versionId": "seed-m03-v1",
+   "file": "seed/seed-i016.webp",
+   "thumb": "seed/seed-i016-t.webp",
+   "width": 704,
+   "height": 1024,
+   "color": "#e8e8e8",
+   "meta": {
+    "prompt": "absurdres, best quality, masterpiece, beautiful lighting, hanbok, korean traditional clothes, girl in hanbok holding a fan, <lora:hanbokStyle_v1.0:1>",
+    "negativePrompt": "easynegative, bad-hands-5, lowres, text",
+    "sampler": "UniPC",
+    "scheduler": "Automatic",
+    "steps": 40,
+    "cfgScale": 3.5,
+    "seed": "4003585704",
+    "clipSkip": 2,
+    "size": "704x1024",
+    "model": "illustriousXL_v01",
+    "modelHash": "7c74f83147",
+    "extra": {
+     "Version": "v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 3.5439
+  },
+  {
+   "id": "seed-i017",
+   "ownerId": "seed-mukmuk",
+   "modelId": "seed-m04",
+   "versionId": "seed-m04-v1",
+   "file": "seed/seed-i017.webp",
+   "thumb": "seed/seed-i017-t.webp",
+   "width": 704,
+   "height": 1024,
+   "color": "#e8e8c8",
+   "meta": {
+    "prompt": "absurdres, highly detailed, sumukhwa, ink wash, lonely boat on a lake, ink painting, <lora:sumukSansu_v1.0:0.7>",
+    "negativePrompt": "lowres, bad anatomy, bad hands, text, error, missing fingers, worst quality, low quality, jpeg artifacts, signature, watermark",
+    "sampler": "DPM++ SDE",
+    "scheduler": "Karras",
+    "steps": 30,
+    "cfgScale": 5.5,
+    "seed": "3384488707",
+    "clipSkip": 2,
+    "size": "704x1024",
+    "model": "realisticVisionV60B1",
+    "modelHash": "391fd85bc0",
+    "extra": {
+     "Hires upscale": "2",
+     "Hires upscaler": "R-ESRGAN 4x+ Anime6B",
+     "Denoising strength": "0.4",
+     "Version": "v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 60
+  },
+  {
+   "id": "seed-i018",
+   "ownerId": "seed-mukmuk",
+   "modelId": "seed-m04",
+   "versionId": "seed-m04-v1",
+   "file": "seed/seed-i018.webp",
+   "thumb": "seed/seed-i018-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#e8e8c8",
+   "meta": {
+    "prompt": "absurdres, highly detailed, sumukhwa, ink wash, misty mountains, ink wash painting, <lora:sumukSansu_v1.0:0.8>",
+    "negativePrompt": "nsfw, lowres, blurry, oversaturated, ugly, duplicate",
+    "sampler": "DPM++ SDE",
+    "scheduler": "Karras",
+    "steps": 40,
+    "cfgScale": 6.5,
+    "seed": "362371661",
+    "clipSkip": 2,
+    "size": "640x960",
+    "model": "realisticVisionV60B1",
+    "modelHash": "391fd85bc0",
+    "extra": {
+     "Hires upscale": "2",
+     "Hires upscaler": "Latent",
+     "Denoising strength": "0.5",
+     "Version": "v1.9.4"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 59.9993
+  },
+  {
+   "id": "seed-i019",
+   "ownerId": "seed-mukmuk",
+   "modelId": "seed-m04",
+   "versionId": "seed-m04-v1",
+   "file": "seed/seed-i019.webp",
+   "thumb": "seed/seed-i019-t.webp",
+   "width": 704,
+   "height": 1024,
+   "color": "#e8e8c8",
+   "meta": {
+    "prompt": "masterpiece, beautiful lighting, best quality, sumukhwa, ink wash, lonely boat on a lake, ink painting, <lora:sumukSansu_v1.0:0.7>",
+    "negativePrompt": "easynegative, bad-hands-5, lowres, text",
+    "sampler": "DPM++ 2M SDE",
+    "scheduler": "Exponential",
+    "steps": 24,
+    "cfgScale": 4,
+    "seed": "2814606765",
+    "clipSkip": 2,
+    "size": "704x1024",
+    "model": "realisticVisionV60B1",
+    "modelHash": "391fd85bc0",
+    "extra": {
+     "Version": "f2.0.1v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 59.9986
+  },
+  {
+   "id": "seed-i020",
+   "ownerId": "seed-mukmuk",
+   "modelId": "seed-m04",
+   "versionId": "seed-m04-v1",
+   "file": "seed/seed-i020.webp",
+   "thumb": "seed/seed-i020-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#e8e8c8",
+   "meta": {
+    "prompt": "masterpiece, best quality, highly detailed, absurdres, sumukhwa, ink wash, lonely boat on a lake, ink painting, <lora:sumukSansu_v1.0:0.6>",
+    "negativePrompt": "(worst quality:1.4), (low quality:1.4), blurry, deformed, extra limbs, watermark",
+    "sampler": "Euler",
+    "scheduler": "Simple",
+    "steps": 30,
+    "cfgScale": 4,
+    "seed": "3896074736",
+    "clipSkip": 2,
+    "size": "640x960",
+    "model": "realisticVisionV60B1",
+    "modelHash": "391fd85bc0",
+    "extra": {
+     "Version": "f2.0.1v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 59.9979
+  },
+  {
+   "id": "seed-i021",
+   "ownerId": "seed-mukmuk",
+   "modelId": "seed-m04",
+   "versionId": "seed-m04-v2",
+   "file": "seed/seed-i021.webp",
+   "thumb": "seed/seed-i021-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#e8e8c8",
+   "meta": {
+    "prompt": "beautiful lighting, sharp focus, best quality, absurdres, sumukhwa style, misty mountains, ink wash painting, <lora:sumukSansu_v1.5:0.8>",
+    "negativePrompt": "nsfw, lowres, blurry, oversaturated, ugly, duplicate",
+    "sampler": "Euler",
+    "scheduler": "Simple",
+    "steps": 40,
+    "cfgScale": 5,
+    "seed": "1997914420",
+    "clipSkip": null,
+    "size": "640x960",
+    "model": "flux1-dev",
+    "modelHash": "aeb9c77335",
+    "extra": {
+     "Hires upscale": "2",
+     "Hires upscaler": "R-ESRGAN 4x+ Anime6B",
+     "Denoising strength": "0.5",
+     "Version": "v1.9.4"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 20
+  },
+  {
+   "id": "seed-i022",
+   "ownerId": "seed-mukmuk",
+   "modelId": "seed-m04",
+   "versionId": "seed-m04-v2",
+   "file": "seed/seed-i022.webp",
+   "thumb": "seed/seed-i022-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#e8e8c8",
+   "meta": {
+    "prompt": null,
+    "negativePrompt": null,
+    "sampler": null,
+    "scheduler": null,
+    "steps": null,
+    "cfgScale": null,
+    "seed": null,
+    "clipSkip": null,
+    "size": null,
+    "model": null,
+    "modelHash": null,
+    "extra": {}
+   },
+   "source": null,
+   "nsfw": false,
+   "ageDays": 19.9993
+  },
+  {
+   "id": "seed-i023",
+   "ownerId": "seed-mukmuk",
+   "modelId": "seed-m04",
+   "versionId": "seed-m04-v2",
+   "file": "seed/seed-i023.webp",
+   "thumb": "seed/seed-i023-t.webp",
+   "width": 768,
+   "height": 768,
+   "color": "#e8e8c8",
+   "meta": {
+    "prompt": "beautiful lighting, masterpiece, best quality, highly detailed, sumukhwa style, misty mountains, ink wash painting, <lora:sumukSansu_v1.5:0.7>",
+    "negativePrompt": "lowres, bad anatomy, bad hands, text, error, missing fingers, worst quality, low quality, jpeg artifacts, signature, watermark",
+    "sampler": "UniPC",
+    "scheduler": "Automatic",
+    "steps": 20,
+    "cfgScale": 3.5,
+    "seed": "2022036983",
+    "clipSkip": null,
+    "size": "768x768",
+    "model": "flux1-dev",
+    "modelHash": "aeb9c77335",
+    "extra": {
+     "Version": "v1.9.4"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 19.9986
+  },
+  {
+   "id": "seed-i024",
+   "ownerId": "seed-mukmuk",
+   "modelId": "seed-m04",
+   "versionId": "seed-m04-v2",
+   "file": "seed/seed-i024.webp",
+   "thumb": "seed/seed-i024-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#e8e8c8",
+   "meta": {
+    "prompt": "beautiful lighting, best quality, highly detailed, sharp focus, sumukhwa style, misty mountains, ink wash painting, <lora:sumukSansu_v1.5:0.6>",
+    "negativePrompt": "lowres, bad anatomy, bad hands, text, error, missing fingers, worst quality, low quality, jpeg artifacts, signature, watermark",
+    "sampler": "Euler",
+    "scheduler": "Simple",
+    "steps": 25,
+    "cfgScale": 7.5,
+    "seed": "2919707809",
+    "clipSkip": null,
+    "size": "640x960",
+    "model": "flux1-dev",
+    "modelHash": null,
+    "extra": {}
+   },
+   "source": "comfyui",
+   "nsfw": false,
+   "ageDays": 19.9979
+  },
+  {
+   "id": "seed-i025",
+   "ownerId": "seed-minji_art",
+   "modelId": "seed-m04",
+   "versionId": "seed-m04-v2",
+   "file": "seed/seed-i025.webp",
+   "thumb": "seed/seed-i025-t.webp",
+   "width": 768,
+   "height": 768,
+   "color": "#e8e8c8",
+   "meta": {
+    "prompt": null,
+    "negativePrompt": null,
+    "sampler": null,
+    "scheduler": null,
+    "steps": null,
+    "cfgScale": null,
+    "seed": null,
+    "clipSkip": null,
+    "size": null,
+    "model": null,
+    "modelHash": null,
+    "extra": {}
+   },
+   "source": null,
+   "nsfw": false,
+   "ageDays": 14.6146
+  },
+  {
+   "id": "seed-i026",
+   "ownerId": "seed-doyun_ai",
+   "modelId": "seed-m04",
+   "versionId": "seed-m04-v2",
+   "file": "seed/seed-i026.webp",
+   "thumb": "seed/seed-i026-t.webp",
+   "width": 768,
+   "height": 768,
+   "color": "#e8e8c8",
+   "meta": {
+    "prompt": "8k, masterpiece, beautiful lighting, sumukhwa style, pine trees on cliffs, traditional painting, <lora:sumukSansu_v1.5:0.8>",
+    "negativePrompt": "nsfw, lowres, blurry, oversaturated, ugly, duplicate",
+    "sampler": "DPM++ 2M",
+    "scheduler": "Karras",
+    "steps": 20,
+    "cfgScale": 5.5,
+    "seed": "984749175",
+    "clipSkip": null,
+    "size": "768x768",
+    "model": "flux1-dev",
+    "modelHash": null,
+    "extra": {}
+   },
+   "source": "comfyui",
+   "nsfw": false,
+   "ageDays": 19.5237
+  },
+  {
+   "id": "seed-i027",
+   "ownerId": "seed-hanbit3d",
+   "modelId": "seed-m05",
+   "versionId": "seed-m05-v1",
+   "file": "seed/seed-i027.webp",
+   "thumb": "seed/seed-i027-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#182828",
+   "meta": {
+    "prompt": "masterpiece, beautiful lighting, best quality, claystyle, cute clay figure, studio lighting, <lora:clayFigure3D_v1.0:0.6>",
+    "negativePrompt": "lowres, bad anatomy, bad hands, text, error, missing fingers, worst quality, low quality, jpeg artifacts, signature, watermark",
+    "sampler": "DPM++ SDE",
+    "scheduler": "Karras",
+    "steps": 20,
+    "cfgScale": 6,
+    "seed": "4074935725",
+    "clipSkip": null,
+    "size": "640x960",
+    "model": "sd_xl_base_1.0",
+    "modelHash": null,
+    "extra": {}
+   },
+   "source": "comfyui",
+   "nsfw": false,
+   "ageDays": 33
+  },
+  {
+   "id": "seed-i028",
+   "ownerId": "seed-hanbit3d",
+   "modelId": "seed-m05",
+   "versionId": "seed-m05-v1",
+   "file": "seed/seed-i028.webp",
+   "thumb": "seed/seed-i028-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#181828",
+   "meta": {
+    "prompt": "highly detailed, 8k, best quality, absurdres, claystyle, cute clay figure, studio lighting, <lora:clayFigure3D_v1.0:1>",
+    "negativePrompt": "(worst quality:1.4), (low quality:1.4), blurry, deformed, extra limbs, watermark",
+    "sampler": "DPM++ SDE",
+    "scheduler": "Karras",
+    "steps": 24,
+    "cfgScale": 6,
+    "seed": "2431360202",
+    "clipSkip": 1,
+    "size": "640x960",
+    "model": "sd_xl_base_1.0",
+    "modelHash": "90ae2046fa",
+    "extra": {
+     "Hires upscale": "1.5",
+     "Hires upscaler": "4x-UltraSharp",
+     "Denoising strength": "0.4",
+     "Version": "v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 32.9993
+  },
+  {
+   "id": "seed-i029",
+   "ownerId": "seed-hanbit3d",
+   "modelId": "seed-m05",
+   "versionId": "seed-m05-v1",
+   "file": "seed/seed-i029.webp",
+   "thumb": "seed/seed-i029-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#d8d8c8",
+   "meta": {
+    "prompt": "sharp focus, highly detailed, claystyle, colorful clay balls, minimal, <lora:clayFigure3D_v1.0:0.7>",
+    "negativePrompt": "(worst quality:1.4), (low quality:1.4), blurry, deformed, extra limbs, watermark",
+    "sampler": "DPM++ 2M",
+    "scheduler": "Karras",
+    "steps": 30,
+    "cfgScale": 6.5,
+    "seed": "129525669",
+    "clipSkip": 1,
+    "size": "640x960",
+    "model": "sd_xl_base_1.0",
+    "modelHash": "90ae2046fa",
+    "extra": {
+     "Hires upscale": "2",
+     "Hires upscaler": "Latent",
+     "Denoising strength": "0.4",
+     "Version": "f2.0.1v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 32.9986
+  },
+  {
+   "id": "seed-i030",
+   "ownerId": "seed-hanbit3d",
+   "modelId": "seed-m05",
+   "versionId": "seed-m05-v1",
+   "file": "seed/seed-i030.webp",
+   "thumb": "seed/seed-i030-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#281818",
+   "meta": {
+    "prompt": "sharp focus, masterpiece, claystyle, colorful clay balls, minimal, <lora:clayFigure3D_v1.0:0.8>",
+    "negativePrompt": "(worst quality:1.4), (low quality:1.4), blurry, deformed, extra limbs, watermark",
+    "sampler": "DPM++ SDE",
+    "scheduler": "Karras",
+    "steps": 40,
+    "cfgScale": 7.5,
+    "seed": "2084457408",
+    "clipSkip": 1,
+    "size": "640x960",
+    "model": "sd_xl_base_1.0",
+    "modelHash": "90ae2046fa",
+    "extra": {
+     "Hires upscale": "2",
+     "Hires upscaler": "4x-UltraSharp",
+     "Denoising strength": "0.5",
+     "Version": "v1.9.4"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 32.9979
+  },
+  {
+   "id": "seed-i031",
+   "ownerId": "seed-doyun_ai",
+   "modelId": "seed-m05",
+   "versionId": "seed-m05-v1",
+   "file": "seed/seed-i031.webp",
+   "thumb": "seed/seed-i031-t.webp",
+   "width": 960,
+   "height": 640,
+   "color": "#e8d8d8",
+   "meta": {
+    "prompt": "highly detailed, best quality, 8k, beautiful lighting, claystyle, claymation style toy, soft shadows, <lora:clayFigure3D_v1.0:0.8>",
+    "negativePrompt": "nsfw, lowres, blurry, oversaturated, ugly, duplicate",
+    "sampler": "UniPC",
+    "scheduler": "Automatic",
+    "steps": 20,
+    "cfgScale": 3.5,
+    "seed": "3028966470",
+    "clipSkip": 2,
+    "size": "960x640",
+    "model": "sd_xl_base_1.0",
+    "modelHash": "90ae2046fa",
+    "extra": {
+     "Hires upscale": "1.5",
+     "Hires upscaler": "Latent",
+     "Denoising strength": "0.35",
+     "Version": "f2.0.1v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 31.8575
+  },
+  {
+   "id": "seed-i032",
+   "ownerId": "seed-doyun_ai",
+   "modelId": "seed-m05",
+   "versionId": "seed-m05-v1",
+   "file": "seed/seed-i032.webp",
+   "thumb": "seed/seed-i032-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#281828",
+   "meta": {
+    "prompt": "masterpiece, best quality, claystyle, claymation style toy, soft shadows, <lora:clayFigure3D_v1.0:1>",
+    "negativePrompt": "easynegative, bad-hands-5, lowres, text",
+    "sampler": "DPM++ 2M",
+    "scheduler": "Karras",
+    "steps": 20,
+    "cfgScale": 6,
+    "seed": "2715307354",
+    "clipSkip": 1,
+    "size": "640x960",
+    "model": "sd_xl_base_1.0",
+    "modelHash": "90ae2046fa",
+    "extra": {
+     "Version": "v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 31.6931
+  },
+  {
+   "id": "seed-i033",
+   "ownerId": "seed-pixel_jun",
+   "modelId": "seed-m06",
+   "versionId": "seed-m06-v1",
+   "file": "seed/seed-i033.webp",
+   "thumb": "seed/seed-i033-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#483868",
+   "meta": {
+    "prompt": "beautiful lighting, 8k, pixel art, 16bit, 16bit forest, sunset, clouds, <lora:pixelArt16bit_v1.0:0.8>",
+    "negativePrompt": "(worst quality:1.4), (low quality:1.4), blurry, deformed, extra limbs, watermark",
+    "sampler": "UniPC",
+    "scheduler": "Automatic",
+    "steps": 35,
+    "cfgScale": 7,
+    "seed": "628011077",
+    "clipSkip": 2,
+    "size": "640x960",
+    "model": "realisticVisionV60B1",
+    "modelHash": "391fd85bc0",
+    "extra": {
+     "Version": "v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 120
+  },
+  {
+   "id": "seed-i034",
+   "ownerId": "seed-pixel_jun",
+   "modelId": "seed-m06",
+   "versionId": "seed-m06-v1",
+   "file": "seed/seed-i034.webp",
+   "thumb": "seed/seed-i034-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#286848",
+   "meta": {
+    "prompt": "masterpiece, beautiful lighting, best quality, highly detailed, pixel art, 16bit, pixel art village, morning, <lora:pixelArt16bit_v1.0:0.7>",
+    "negativePrompt": "(worst quality:1.4), (low quality:1.4), blurry, deformed, extra limbs, watermark",
+    "sampler": "DPM++ SDE",
+    "scheduler": "Karras",
+    "steps": 25,
+    "cfgScale": 4,
+    "seed": "3559282142",
+    "clipSkip": 1,
+    "size": "640x960",
+    "model": "realisticVisionV60B1",
+    "modelHash": "391fd85bc0",
+    "extra": {
+     "Version": "v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 119.9993
+  },
+  {
+   "id": "seed-i035",
+   "ownerId": "seed-pixel_jun",
+   "modelId": "seed-m06",
+   "versionId": "seed-m06-v1",
+   "file": "seed/seed-i035.webp",
+   "thumb": "seed/seed-i035-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#286848",
+   "meta": {
+    "prompt": "8k, beautiful lighting, masterpiece, pixel art, 16bit, pixel art village, morning, <lora:pixelArt16bit_v1.0:0.6>",
+    "negativePrompt": "(worst quality:1.4), (low quality:1.4), blurry, deformed, extra limbs, watermark",
+    "sampler": "Euler",
+    "scheduler": "Simple",
+    "steps": 30,
+    "cfgScale": 6,
+    "seed": "3006301681",
+    "clipSkip": 1,
+    "size": "640x960",
+    "model": "realisticVisionV60B1",
+    "modelHash": "391fd85bc0",
+    "extra": {
+     "Hires upscale": "2",
+     "Hires upscaler": "4x-UltraSharp",
+     "Denoising strength": "0.4",
+     "Version": "v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 119.9986
+  },
+  {
+   "id": "seed-i036",
+   "ownerId": "seed-pixel_jun",
+   "modelId": "seed-m06",
+   "versionId": "seed-m06-v1",
+   "file": "seed/seed-i036.webp",
+   "thumb": "seed/seed-i036-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#286848",
+   "meta": {
+    "prompt": "beautiful lighting, masterpiece, pixel art, 16bit, pixel art landscape, retro game, <lora:pixelArt16bit_v1.0:1>",
+    "negativePrompt": "(worst quality:1.4), (low quality:1.4), blurry, deformed, extra limbs, watermark",
+    "sampler": "DPM++ 2M",
+    "scheduler": "Karras",
+    "steps": 24,
+    "cfgScale": 6,
+    "seed": "2954220550",
+    "clipSkip": 2,
+    "size": "640x960",
+    "model": "realisticVisionV60B1",
+    "modelHash": "391fd85bc0",
+    "extra": {
+     "Version": "v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 119.9979
+  },
+  {
+   "id": "seed-i037",
+   "ownerId": "seed-doyun_ai",
+   "modelId": "seed-m06",
+   "versionId": "seed-m06-v1",
+   "file": "seed/seed-i037.webp",
+   "thumb": "seed/seed-i037-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#483868",
+   "meta": {
+    "prompt": "masterpiece, highly detailed, absurdres, pixel art, 16bit, pixel art landscape, retro game, <lora:pixelArt16bit_v1.0:1>",
+    "negativePrompt": "(worst quality:1.4), (low quality:1.4), blurry, deformed, extra limbs, watermark",
+    "sampler": "DPM++ 2M SDE",
+    "scheduler": "Exponential",
+    "steps": 24,
+    "cfgScale": 7,
+    "seed": "2977404945",
+    "clipSkip": 2,
+    "size": "640x960",
+    "model": "realisticVisionV60B1",
+    "modelHash": "391fd85bc0",
+    "extra": {
+     "Hires upscale": "2",
+     "Hires upscaler": "Latent",
+     "Denoising strength": "0.5",
+     "Version": "v1.9.4"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 36.2639
+  },
+  {
+   "id": "seed-i038",
+   "ownerId": "seed-doyun_ai",
+   "modelId": "seed-m06",
+   "versionId": "seed-m06-v1",
+   "file": "seed/seed-i038.webp",
+   "thumb": "seed/seed-i038-t.webp",
+   "width": 960,
+   "height": 640,
+   "color": "#286848",
+   "meta": {
+    "prompt": "masterpiece, best quality, highly detailed, pixel art, 16bit, pixel art village, morning, <lora:pixelArt16bit_v1.0:0.8>",
+    "negativePrompt": "easynegative, bad-hands-5, lowres, text",
+    "sampler": "Euler",
+    "scheduler": "Simple",
+    "steps": 40,
+    "cfgScale": 7.5,
+    "seed": "1220276181",
+    "clipSkip": 2,
+    "size": "960x640",
+    "model": "realisticVisionV60B1",
+    "modelHash": "391fd85bc0",
+    "extra": {
+     "Version": "v1.9.4"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 69.4787
+  },
+  {
+   "id": "seed-i039",
+   "ownerId": "seed-mukmuk",
+   "modelId": "seed-m06",
+   "versionId": "seed-m06-v1",
+   "file": "seed/seed-i039.webp",
+   "thumb": "seed/seed-i039-t.webp",
+   "width": 704,
+   "height": 1024,
+   "color": "#286848",
+   "meta": {
+    "prompt": "masterpiece, absurdres, 8k, pixel art, 16bit, pixel art village, morning, <lora:pixelArt16bit_v1.0:0.6>",
+    "negativePrompt": "nsfw, lowres, blurry, oversaturated, ugly, duplicate",
+    "sampler": "Euler",
+    "scheduler": "Simple",
+    "steps": 35,
+    "cfgScale": 7.5,
+    "seed": "780564635",
+    "clipSkip": 2,
+    "size": "704x1024",
+    "model": "realisticVisionV60B1",
+    "modelHash": "391fd85bc0",
+    "extra": {
+     "Hires upscale": "2",
+     "Hires upscaler": "R-ESRGAN 4x+ Anime6B",
+     "Denoising strength": "0.35",
+     "Version": "v1.9.4"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 113.1135
+  },
+  {
+   "id": "seed-i040",
+   "ownerId": "seed-doyun_ai",
+   "modelId": "seed-m07",
+   "versionId": "seed-m07-v1",
+   "file": "seed/seed-i040.webp",
+   "thumb": "seed/seed-i040-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#381828",
+   "meta": {
+    "prompt": "highly detailed, best quality, masterpiece, neonpunk, futuristic city, flying cars, night, <lora:neonCyberpunk_v1.0:0.7>",
+    "negativePrompt": "(worst quality:1.4), (low quality:1.4), blurry, deformed, extra limbs, watermark",
+    "sampler": "DPM++ SDE",
+    "scheduler": "Karras",
+    "steps": 40,
+    "cfgScale": 4,
+    "seed": "58443914",
+    "clipSkip": null,
+    "size": "640x960",
+    "model": "flux1-dev",
+    "modelHash": "aeb9c77335",
+    "extra": {
+     "Version": "v1.9.4"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 2
+  },
+  {
+   "id": "seed-i041",
+   "ownerId": "seed-doyun_ai",
+   "modelId": "seed-m07",
+   "versionId": "seed-m07-v1",
+   "file": "seed/seed-i041.webp",
+   "thumb": "seed/seed-i041-t.webp",
+   "width": 960,
+   "height": 640,
+   "color": "#182838",
+   "meta": {
+    "prompt": "beautiful lighting, highly detailed, neonpunk, cyberpunk alley, neon lights, rain, <lora:neonCyberpunk_v1.0:0.7>",
+    "negativePrompt": "easynegative, bad-hands-5, lowres, text",
+    "sampler": "Euler a",
+    "scheduler": "Automatic",
+    "steps": 40,
+    "cfgScale": 6.5,
+    "seed": "3593060690",
+    "clipSkip": null,
+    "size": "960x640",
+    "model": "flux1-dev",
+    "modelHash": "aeb9c77335",
+    "extra": {
+     "Version": "v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 1.9993
+  },
+  {
+   "id": "seed-i042",
+   "ownerId": "seed-doyun_ai",
+   "modelId": "seed-m07",
+   "versionId": "seed-m07-v1",
+   "file": "seed/seed-i042.webp",
+   "thumb": "seed/seed-i042-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#281838",
+   "meta": {
+    "prompt": "highly detailed, absurdres, sharp focus, neonpunk, futuristic city, flying cars, night, <lora:neonCyberpunk_v1.0:1>",
+    "negativePrompt": "lowres, bad anatomy, bad hands, text, error, missing fingers, worst quality, low quality, jpeg artifacts, signature, watermark",
+    "sampler": "Euler a",
+    "scheduler": "Automatic",
+    "steps": 24,
+    "cfgScale": 5.5,
+    "seed": "3781141023",
+    "clipSkip": null,
+    "size": "640x960",
+    "model": "flux1-dev",
+    "modelHash": "aeb9c77335",
+    "extra": {
+     "Hires upscale": "2",
+     "Hires upscaler": "R-ESRGAN 4x+ Anime6B",
+     "Denoising strength": "0.4",
+     "Version": "v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 1.9986
+  },
+  {
+   "id": "seed-i043",
+   "ownerId": "seed-minji_art",
+   "modelId": "seed-m07",
+   "versionId": "seed-m07-v1",
+   "file": "seed/seed-i043.webp",
+   "thumb": "seed/seed-i043-t.webp",
+   "width": 960,
+   "height": 640,
+   "color": "#182838",
+   "meta": {
+    "prompt": "beautiful lighting, masterpiece, best quality, neonpunk, cyberpunk alley, neon lights, rain, <lora:neonCyberpunk_v1.0:1>",
+    "negativePrompt": "lowres, bad anatomy, bad hands, text, error, missing fingers, worst quality, low quality, jpeg artifacts, signature, watermark",
+    "sampler": "UniPC",
+    "scheduler": "Automatic",
+    "steps": 25,
+    "cfgScale": 7,
+    "seed": "2525492334",
+    "clipSkip": null,
+    "size": "960x640",
+    "model": "flux1-dev",
+    "modelHash": "aeb9c77335",
+    "extra": {
+     "Version": "f2.0.1v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 0.448
+  },
+  {
+   "id": "seed-i044",
+   "ownerId": "seed-hanbit3d",
+   "modelId": "seed-m08",
+   "versionId": "seed-m08-v1",
+   "file": "seed/seed-i044.webp",
+   "thumb": "seed/seed-i044-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#3868f8",
+   "meta": {
+    "prompt": "masterpiece, best quality, sharp focus, beautiful lighting, lowpoly, low poly landscape, gradient sky, <lora:lowpolyWorld_v1.0:1>",
+    "negativePrompt": "easynegative, bad-hands-5, lowres, text",
+    "sampler": "Euler",
+    "scheduler": "Simple",
+    "steps": 28,
+    "cfgScale": 5,
+    "seed": "926994635",
+    "clipSkip": 1,
+    "size": "640x960",
+    "model": "sd_xl_base_1.0",
+    "modelHash": "90ae2046fa",
+    "extra": {
+     "Version": "v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 75
+  },
+  {
+   "id": "seed-i045",
+   "ownerId": "seed-hanbit3d",
+   "modelId": "seed-m08",
+   "versionId": "seed-m08-v1",
+   "file": "seed/seed-i045.webp",
+   "thumb": "seed/seed-i045-t.webp",
+   "width": 960,
+   "height": 640,
+   "color": "#282858",
+   "meta": {
+    "prompt": "absurdres, 8k, sharp focus, best quality, lowpoly, low poly mountains, geometric, <lora:lowpolyWorld_v1.0:1>",
+    "negativePrompt": "easynegative, bad-hands-5, lowres, text",
+    "sampler": "DPM++ SDE",
+    "scheduler": "Karras",
+    "steps": 30,
+    "cfgScale": 4,
+    "seed": "143821407",
+    "clipSkip": 2,
+    "size": "960x640",
+    "model": "sd_xl_base_1.0",
+    "modelHash": "90ae2046fa",
+    "extra": {
+     "Version": "v1.9.4"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 74.9993
+  },
+  {
+   "id": "seed-i046",
+   "ownerId": "seed-hanbit3d",
+   "modelId": "seed-m08",
+   "versionId": "seed-m08-v1",
+   "file": "seed/seed-i046.webp",
+   "thumb": "seed/seed-i046-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#e82868",
+   "meta": {
+    "prompt": "masterpiece, best quality, highly detailed, absurdres, lowpoly, low poly landscape, gradient sky, <lora:lowpolyWorld_v1.0:0.8>",
+    "negativePrompt": "lowres, bad anatomy, bad hands, text, error, missing fingers, worst quality, low quality, jpeg artifacts, signature, watermark",
+    "sampler": "DPM++ 2M",
+    "scheduler": "Karras",
+    "steps": 28,
+    "cfgScale": 7.5,
+    "seed": "549719659",
+    "clipSkip": 1,
+    "size": "640x960",
+    "model": "sd_xl_base_1.0",
+    "modelHash": "90ae2046fa",
+    "extra": {
+     "Version": "v1.9.4"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 74.9986
+  },
+  {
+   "id": "seed-i047",
+   "ownerId": "seed-hanbit3d",
+   "modelId": "seed-m08",
+   "versionId": "seed-m08-v1",
+   "file": "seed/seed-i047.webp",
+   "thumb": "seed/seed-i047-t.webp",
+   "width": 768,
+   "height": 768,
+   "color": "#3878f8",
+   "meta": {
+    "prompt": "sharp focus, 8k, absurdres, highly detailed, lowpoly, low poly landscape, gradient sky, <lora:lowpolyWorld_v1.0:1>",
+    "negativePrompt": "nsfw, lowres, blurry, oversaturated, ugly, duplicate",
+    "sampler": "UniPC",
+    "scheduler": "Automatic",
+    "steps": 40,
+    "cfgScale": 6.5,
+    "seed": "983244606",
+    "clipSkip": null,
+    "size": "768x768",
+    "model": "sd_xl_base_1.0",
+    "modelHash": null,
+    "extra": {}
+   },
+   "source": "comfyui",
+   "nsfw": false,
+   "ageDays": 74.9979
+  },
+  {
+   "id": "seed-i048",
+   "ownerId": "seed-sora_lab",
+   "modelId": "seed-m08",
+   "versionId": "seed-m08-v1",
+   "file": "seed/seed-i048.webp",
+   "thumb": "seed/seed-i048-t.webp",
+   "width": 768,
+   "height": 768,
+   "color": "#38e878",
+   "meta": {
+    "prompt": "absurdres, beautiful lighting, lowpoly, low poly landscape, gradient sky, <lora:lowpolyWorld_v1.0:0.6>",
+    "negativePrompt": "(worst quality:1.4), (low quality:1.4), blurry, deformed, extra limbs, watermark",
+    "sampler": "DPM++ SDE",
+    "scheduler": "Karras",
+    "steps": 30,
+    "cfgScale": 5,
+    "seed": "3640079622",
+    "clipSkip": 1,
+    "size": "768x768",
+    "model": "sd_xl_base_1.0",
+    "modelHash": "90ae2046fa",
+    "extra": {
+     "Version": "f2.0.1v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 73.3197
+  },
+  {
+   "id": "seed-i049",
+   "ownerId": "seed-doyun_ai",
+   "modelId": "seed-m09",
+   "versionId": "seed-m09-v1",
+   "file": "seed/seed-i049.webp",
+   "thumb": "seed/seed-i049-t.webp",
+   "width": 960,
+   "height": 640,
+   "color": "#98c8f8",
+   "meta": {
+    "prompt": "highly detailed, 8k, masterpiece, mountain range at sunset, golden hour",
+    "negativePrompt": "(worst quality:1.4), (low quality:1.4), blurry, deformed, extra limbs, watermark",
+    "sampler": "Euler",
+    "scheduler": "Simple",
+    "steps": 25,
+    "cfgScale": 5,
+    "seed": "636979718",
+    "clipSkip": 1,
+    "size": "960x640",
+    "model": "goldenHourScenery_v1.0",
+    "modelHash": "0497264b26",
+    "extra": {
+     "Version": "v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 200
+  },
+  {
+   "id": "seed-i050",
+   "ownerId": "seed-doyun_ai",
+   "modelId": "seed-m09",
+   "versionId": "seed-m09-v1",
+   "file": "seed/seed-i050.webp",
+   "thumb": "seed/seed-i050-t.webp",
+   "width": 960,
+   "height": 640,
+   "color": "#684858",
+   "meta": {
+    "prompt": "best quality, absurdres, calm ocean, sunset, waves",
+    "negativePrompt": "easynegative, bad-hands-5, lowres, text",
+    "sampler": "DPM++ 2M SDE",
+    "scheduler": "Exponential",
+    "steps": 35,
+    "cfgScale": 3.5,
+    "seed": "3890726391",
+    "clipSkip": null,
+    "size": "960x640",
+    "model": "goldenHourScenery_v1.0",
+    "modelHash": null,
+    "extra": {}
+   },
+   "source": "comfyui",
+   "nsfw": false,
+   "ageDays": 199.9993
+  },
+  {
+   "id": "seed-i051",
+   "ownerId": "seed-doyun_ai",
+   "modelId": "seed-m09",
+   "versionId": "seed-m09-v1",
+   "file": "seed/seed-i051.webp",
+   "thumb": "seed/seed-i051-t.webp",
+   "width": 768,
+   "height": 768,
+   "color": "#98c8f8",
+   "meta": {
+    "prompt": "beautiful lighting, masterpiece, absurdres, 8k, layered hills, warm haze",
+    "negativePrompt": "easynegative, bad-hands-5, lowres, text",
+    "sampler": "Euler a",
+    "scheduler": "Automatic",
+    "steps": 24,
+    "cfgScale": 5,
+    "seed": "880478014",
+    "clipSkip": 1,
+    "size": "768x768",
+    "model": "goldenHourScenery_v1.0",
+    "modelHash": "0497264b26",
+    "extra": {
+     "Version": "v1.9.4"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 199.9986
+  },
+  {
+   "id": "seed-i052",
+   "ownerId": "seed-doyun_ai",
+   "modelId": "seed-m09",
+   "versionId": "seed-m09-v1",
+   "file": "seed/seed-i052.webp",
+   "thumb": "seed/seed-i052-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#98c8f8",
+   "meta": {
+    "prompt": "best quality, absurdres, sharp focus, mountain range at sunset, golden hour",
+    "negativePrompt": "lowres, bad anatomy, bad hands, text, error, missing fingers, worst quality, low quality, jpeg artifacts, signature, watermark",
+    "sampler": "Euler a",
+    "scheduler": "Automatic",
+    "steps": 20,
+    "cfgScale": 3.5,
+    "seed": "939848896",
+    "clipSkip": 1,
+    "size": "640x960",
+    "model": "goldenHourScenery_v1.0",
+    "modelHash": "0497264b26",
+    "extra": {
+     "Version": "v1.9.4"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 199.9979
+  },
+  {
+   "id": "seed-i053",
+   "ownerId": "seed-doyun_ai",
+   "modelId": "seed-m09",
+   "versionId": "seed-m09-v2",
+   "file": "seed/seed-i053.webp",
+   "thumb": "seed/seed-i053-t.webp",
+   "width": 768,
+   "height": 768,
+   "color": "#181838",
+   "meta": {
+    "prompt": "beautiful lighting, masterpiece, best quality, sharp focus, layered hills, warm haze",
+    "negativePrompt": "(worst quality:1.4), (low quality:1.4), blurry, deformed, extra limbs, watermark",
+    "sampler": "DPM++ 2M",
+    "scheduler": "Karras",
+    "steps": 24,
+    "cfgScale": 4,
+    "seed": "3269993309",
+    "clipSkip": 1,
+    "size": "768x768",
+    "model": "goldenHourScenery_v2.0",
+    "modelHash": "eadad5d61e",
+    "extra": {
+     "Version": "v1.9.4"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 110
+  },
+  {
+   "id": "seed-i054",
+   "ownerId": "seed-doyun_ai",
+   "modelId": "seed-m09",
+   "versionId": "seed-m09-v2",
+   "file": "seed/seed-i054.webp",
+   "thumb": "seed/seed-i054-t.webp",
+   "width": 960,
+   "height": 640,
+   "color": "#181838",
+   "meta": {
+    "prompt": "masterpiece, best quality, 8k, layered hills, warm haze",
+    "negativePrompt": "lowres, bad anatomy, bad hands, text, error, missing fingers, worst quality, low quality, jpeg artifacts, signature, watermark",
+    "sampler": "Euler a",
+    "scheduler": "Automatic",
+    "steps": 20,
+    "cfgScale": 4,
+    "seed": "1997047541",
+    "clipSkip": 2,
+    "size": "960x640",
+    "model": "goldenHourScenery_v2.0",
+    "modelHash": "eadad5d61e",
+    "extra": {
+     "Version": "f2.0.1v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 109.9993
+  },
+  {
+   "id": "seed-i055",
+   "ownerId": "seed-sora_lab",
+   "modelId": "seed-m09",
+   "versionId": "seed-m09-v1",
+   "file": "seed/seed-i055.webp",
+   "thumb": "seed/seed-i055-t.webp",
+   "width": 960,
+   "height": 640,
+   "color": "#98c8f8",
+   "meta": {
+    "prompt": "best quality, beautiful lighting, masterpiece, layered hills, warm haze",
+    "negativePrompt": "(worst quality:1.4), (low quality:1.4), blurry, deformed, extra limbs, watermark",
+    "sampler": "DPM++ 2M SDE",
+    "scheduler": "Exponential",
+    "steps": 20,
+    "cfgScale": 4,
+    "seed": "3829721866",
+    "clipSkip": 2,
+    "size": "960x640",
+    "model": "goldenHourScenery_v1.0",
+    "modelHash": "85bbf5279c",
+    "extra": {
+     "Version": "f2.0.1v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 13.7193
+  },
+  {
+   "id": "seed-i056",
+   "ownerId": "seed-hanbit3d",
+   "modelId": "seed-m09",
+   "versionId": "seed-m09-v2",
+   "file": "seed/seed-i056.webp",
+   "thumb": "seed/seed-i056-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#98c8f8",
+   "meta": {
+    "prompt": "sharp focus, highly detailed, mountain range at sunset, golden hour",
+    "negativePrompt": "lowres, bad anatomy, bad hands, text, error, missing fingers, worst quality, low quality, jpeg artifacts, signature, watermark",
+    "sampler": "DPM++ 2M SDE",
+    "scheduler": "Exponential",
+    "steps": 20,
+    "cfgScale": 7,
+    "seed": "1386678240",
+    "clipSkip": 2,
+    "size": "640x960",
+    "model": "goldenHourScenery_v2.0",
+    "modelHash": "3fd31e6605",
+    "extra": {
+     "Hires upscale": "2",
+     "Hires upscaler": "Latent",
+     "Denoising strength": "0.5",
+     "Version": "f2.0.1v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 87.4373
+  },
+  {
+   "id": "seed-i057",
+   "ownerId": "seed-sora_lab",
+   "modelId": "seed-m10",
+   "versionId": "seed-m10-v1",
+   "file": "seed/seed-i057.webp",
+   "thumb": "seed/seed-i057-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#082848",
+   "meta": {
+    "prompt": "best quality, masterpiece, aurora borealis over snowy forest",
+    "negativePrompt": "lowres, bad anatomy, bad hands, text, error, missing fingers, worst quality, low quality, jpeg artifacts, signature, watermark",
+    "sampler": "DPM++ 2M",
+    "scheduler": "Karras",
+    "steps": 40,
+    "cfgScale": 3.5,
+    "seed": "2620108074",
+    "clipSkip": null,
+    "size": "640x960",
+    "model": "auroraFantasy_v1.0",
+    "modelHash": "f04e1a6b09",
+    "extra": {
+     "Version": "v1.9.4"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 12
+  },
+  {
+   "id": "seed-i058",
+   "ownerId": "seed-sora_lab",
+   "modelId": "seed-m10",
+   "versionId": "seed-m10-v1",
+   "file": "seed/seed-i058.webp",
+   "thumb": "seed/seed-i058-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#082848",
+   "meta": {
+    "prompt": "absurdres, highly detailed, sharp focus, best quality, aurora borealis over snowy forest",
+    "negativePrompt": "easynegative, bad-hands-5, lowres, text",
+    "sampler": "DPM++ 2M",
+    "scheduler": "Karras",
+    "steps": 40,
+    "cfgScale": 4,
+    "seed": "210871305",
+    "clipSkip": null,
+    "size": "640x960",
+    "model": "auroraFantasy_v1.0",
+    "modelHash": "f04e1a6b09",
+    "extra": {
+     "Version": "v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 11.9993
+  },
+  {
+   "id": "seed-i059",
+   "ownerId": "seed-sora_lab",
+   "modelId": "seed-m10",
+   "versionId": "seed-m10-v1",
+   "file": "seed/seed-i059.webp",
+   "thumb": "seed/seed-i059-t.webp",
+   "width": 960,
+   "height": 640,
+   "color": "#082848",
+   "meta": {
+    "prompt": "sharp focus, 8k, absurdres, northern lights, starry night, pine trees",
+    "negativePrompt": "lowres, bad anatomy, bad hands, text, error, missing fingers, worst quality, low quality, jpeg artifacts, signature, watermark",
+    "sampler": "DPM++ 2M",
+    "scheduler": "Karras",
+    "steps": 28,
+    "cfgScale": 3.5,
+    "seed": "4244247137",
+    "clipSkip": null,
+    "size": "960x640",
+    "model": "auroraFantasy_v1.0",
+    "modelHash": "f04e1a6b09",
+    "extra": {
+     "Version": "v1.9.4"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 11.9986
+  },
+  {
+   "id": "seed-i060",
+   "ownerId": "seed-sora_lab",
+   "modelId": "seed-m10",
+   "versionId": "seed-m10-v1",
+   "file": "seed/seed-i060.webp",
+   "thumb": "seed/seed-i060-t.webp",
+   "width": 768,
+   "height": 768,
+   "color": "#082848",
+   "meta": {
+    "prompt": "masterpiece, best quality, aurora borealis over snowy forest",
+    "negativePrompt": "nsfw, lowres, blurry, oversaturated, ugly, duplicate",
+    "sampler": "DPM++ 2M",
+    "scheduler": "Karras",
+    "steps": 24,
+    "cfgScale": 4,
+    "seed": "3991223036",
+    "clipSkip": null,
+    "size": "768x768",
+    "model": "auroraFantasy_v1.0",
+    "modelHash": "f04e1a6b09",
+    "extra": {
+     "Version": "v1.9.4"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 11.9979
+  },
+  {
+   "id": "seed-i061",
+   "ownerId": "seed-minji_art",
+   "modelId": "seed-m10",
+   "versionId": "seed-m10-v1",
+   "file": "seed/seed-i061.webp",
+   "thumb": "seed/seed-i061-t.webp",
+   "width": 960,
+   "height": 640,
+   "color": "#082848",
+   "meta": {
+    "prompt": "8k, beautiful lighting, absurdres, sharp focus, aurora borealis over snowy forest",
+    "negativePrompt": "nsfw, lowres, blurry, oversaturated, ugly, duplicate",
+    "sampler": "Euler",
+    "scheduler": "Simple",
+    "steps": 40,
+    "cfgScale": 4,
+    "seed": "1432615871",
+    "clipSkip": null,
+    "size": "960x640",
+    "model": "auroraFantasy_v1.0",
+    "modelHash": "4c52b34927",
+    "extra": {
+     "Version": "v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 5.8328
+  },
+  {
+   "id": "seed-i062",
+   "ownerId": "seed-doyun_ai",
+   "modelId": "seed-m10",
+   "versionId": "seed-m10-v1",
+   "file": "seed/seed-i062.webp",
+   "thumb": "seed/seed-i062-t.webp",
+   "width": 768,
+   "height": 768,
+   "color": "#082848",
+   "meta": {
+    "prompt": null,
+    "negativePrompt": null,
+    "sampler": null,
+    "scheduler": null,
+    "steps": null,
+    "cfgScale": null,
+    "seed": null,
+    "clipSkip": null,
+    "size": null,
+    "model": null,
+    "modelHash": null,
+    "extra": {}
+   },
+   "source": null,
+   "nsfw": false,
+   "ageDays": 1.4736
+  },
+  {
+   "id": "seed-i063",
+   "ownerId": "seed-hanbit3d",
+   "modelId": "seed-m10",
+   "versionId": "seed-m10-v1",
+   "file": "seed/seed-i063.webp",
+   "thumb": "seed/seed-i063-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#082848",
+   "meta": {
+    "prompt": "sharp focus, masterpiece, best quality, highly detailed, northern lights, starry night, pine trees",
+    "negativePrompt": "(worst quality:1.4), (low quality:1.4), blurry, deformed, extra limbs, watermark",
+    "sampler": "UniPC",
+    "scheduler": "Automatic",
+    "steps": 35,
+    "cfgScale": 4,
+    "seed": "4128896944",
+    "clipSkip": null,
+    "size": "640x960",
+    "model": "auroraFantasy_v1.0",
+    "modelHash": "4c52b34927",
+    "extra": {
+     "Version": "v1.9.4"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 6.9268
+  },
+  {
+   "id": "seed-i064",
+   "ownerId": "seed-doyun_ai",
+   "modelId": "seed-m11",
+   "versionId": "seed-m11-v1",
+   "file": "seed/seed-i064.webp",
+   "thumb": "seed/seed-i064-t.webp",
+   "width": 704,
+   "height": 1024,
+   "color": "#9888f8",
+   "meta": {
+    "prompt": "best quality, beautiful lighting, masterpiece, smoothskin_neg, portrait, soft skin, natural light",
+    "negativePrompt": "nsfw, lowres, blurry, oversaturated, ugly, duplicate",
+    "sampler": "DPM++ 2M",
+    "scheduler": "Karras",
+    "steps": 28,
+    "cfgScale": 6.5,
+    "seed": "1332770365",
+    "clipSkip": 1,
+    "size": "704x1024",
+    "model": "realisticVisionV60B1",
+    "modelHash": "391fd85bc0",
+    "extra": {
+     "Version": "v1.9.4"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 160
+  },
+  {
+   "id": "seed-i065",
+   "ownerId": "seed-doyun_ai",
+   "modelId": "seed-m11",
+   "versionId": "seed-m11-v1",
+   "file": "seed/seed-i065.webp",
+   "thumb": "seed/seed-i065-t.webp",
+   "width": 704,
+   "height": 1024,
+   "color": "#f8a8f8",
+   "meta": {
+    "prompt": "masterpiece, sharp focus, smoothskin_neg, portrait, soft skin, natural light",
+    "negativePrompt": "(worst quality:1.4), (low quality:1.4), blurry, deformed, extra limbs, watermark",
+    "sampler": "UniPC",
+    "scheduler": "Automatic",
+    "steps": 40,
+    "cfgScale": 5,
+    "seed": "2511908878",
+    "clipSkip": 2,
+    "size": "704x1024",
+    "model": "realisticVisionV60B1",
+    "modelHash": "391fd85bc0",
+    "extra": {
+     "Version": "v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 159.9993
+  },
+  {
+   "id": "seed-i066",
+   "ownerId": "seed-doyun_ai",
+   "modelId": "seed-m11",
+   "versionId": "seed-m11-v1",
+   "file": "seed/seed-i066.webp",
+   "thumb": "seed/seed-i066-t.webp",
+   "width": 960,
+   "height": 640,
+   "color": "#c8e8a8",
+   "meta": {
+    "prompt": "highly detailed, best quality, absurdres, smoothskin_neg, portrait, soft skin, natural light",
+    "negativePrompt": "lowres, bad anatomy, bad hands, text, error, missing fingers, worst quality, low quality, jpeg artifacts, signature, watermark",
+    "sampler": "Euler",
+    "scheduler": "Simple",
+    "steps": 40,
+    "cfgScale": 5,
+    "seed": "2711149533",
+    "clipSkip": 2,
+    "size": "960x640",
+    "model": "realisticVisionV60B1",
+    "modelHash": "391fd85bc0",
+    "extra": {
+     "Version": "v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 159.9986
+  },
+  {
+   "id": "seed-i067",
+   "ownerId": "seed-doyun_ai",
+   "modelId": "seed-m11",
+   "versionId": "seed-m11-v1",
+   "file": "seed/seed-i067.webp",
+   "thumb": "seed/seed-i067-t.webp",
+   "width": 960,
+   "height": 640,
+   "color": "#a8c8e8",
+   "meta": {
+    "prompt": "absurdres, sharp focus, smoothskin_neg, portrait, soft skin, natural light",
+    "negativePrompt": "nsfw, lowres, blurry, oversaturated, ugly, duplicate",
+    "sampler": "Euler a",
+    "scheduler": "Automatic",
+    "steps": 20,
+    "cfgScale": 5,
+    "seed": "2834654750",
+    "clipSkip": null,
+    "size": "960x640",
+    "model": "realisticVisionV60B1",
+    "modelHash": null,
+    "extra": {}
+   },
+   "source": "comfyui",
+   "nsfw": false,
+   "ageDays": 159.9979
+  },
+  {
+   "id": "seed-i068",
+   "ownerId": "seed-mukmuk",
+   "modelId": "seed-m11",
+   "versionId": "seed-m11-v1",
+   "file": "seed/seed-i068.webp",
+   "thumb": "seed/seed-i068-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#f8b8d8",
+   "meta": {
+    "prompt": "8k, absurdres, sharp focus, smoothskin_neg, portrait, soft skin, natural light",
+    "negativePrompt": "(worst quality:1.4), (low quality:1.4), blurry, deformed, extra limbs, watermark",
+    "sampler": "Euler",
+    "scheduler": "Simple",
+    "steps": 30,
+    "cfgScale": 4,
+    "seed": "1739087560",
+    "clipSkip": 2,
+    "size": "640x960",
+    "model": "realisticVisionV60B1",
+    "modelHash": "391fd85bc0",
+    "extra": {
+     "Hires upscale": "1.5",
+     "Hires upscaler": "R-ESRGAN 4x+ Anime6B",
+     "Denoising strength": "0.4",
+     "Version": "v1.9.4"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 75.2126
+  },
+  {
+   "id": "seed-i069",
+   "ownerId": "seed-sora_lab",
+   "modelId": "seed-m12",
+   "versionId": "seed-m12-v1",
+   "file": "seed/seed-i069.webp",
+   "thumb": "seed/seed-i069-t.webp",
+   "width": 960,
+   "height": 640,
+   "color": "#98c8f8",
+   "meta": {
+    "prompt": "beautiful lighting, masterpiece, absurdres, sharp focus, cinematic color grading, landscape",
+    "negativePrompt": "lowres, bad anatomy, bad hands, text, error, missing fingers, worst quality, low quality, jpeg artifacts, signature, watermark",
+    "sampler": "DPM++ SDE",
+    "scheduler": "Karras",
+    "steps": 35,
+    "cfgScale": 6,
+    "seed": "3009538263",
+    "clipSkip": 2,
+    "size": "960x640",
+    "model": "sd_xl_base_1.0",
+    "modelHash": "90ae2046fa",
+    "extra": {
+     "Hires upscale": "1.5",
+     "Hires upscaler": "R-ESRGAN 4x+ Anime6B",
+     "Denoising strength": "0.35",
+     "Version": "f2.0.1v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 45
+  },
+  {
+   "id": "seed-i070",
+   "ownerId": "seed-sora_lab",
+   "modelId": "seed-m12",
+   "versionId": "seed-m12-v1",
+   "file": "seed/seed-i070.webp",
+   "thumb": "seed/seed-i070-t.webp",
+   "width": 960,
+   "height": 640,
+   "color": "#98c8f8",
+   "meta": {
+    "prompt": "masterpiece, best quality, 8k, cinematic color grading, landscape",
+    "negativePrompt": "nsfw, lowres, blurry, oversaturated, ugly, duplicate",
+    "sampler": "DPM++ 2M SDE",
+    "scheduler": "Exponential",
+    "steps": 20,
+    "cfgScale": 5,
+    "seed": "3364197199",
+    "clipSkip": 2,
+    "size": "960x640",
+    "model": "sd_xl_base_1.0",
+    "modelHash": "90ae2046fa",
+    "extra": {
+     "Version": "v1.9.4"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 44.9993
+  },
+  {
+   "id": "seed-i071",
+   "ownerId": "seed-sora_lab",
+   "modelId": "seed-m12",
+   "versionId": "seed-m12-v1",
+   "file": "seed/seed-i071.webp",
+   "thumb": "seed/seed-i071-t.webp",
+   "width": 960,
+   "height": 640,
+   "color": "#584848",
+   "meta": {
+    "prompt": "highly detailed, masterpiece, 8k, best quality, cinematic color grading, landscape",
+    "negativePrompt": "nsfw, lowres, blurry, oversaturated, ugly, duplicate",
+    "sampler": "Euler",
+    "scheduler": "Simple",
+    "steps": 20,
+    "cfgScale": 7,
+    "seed": "1254789047",
+    "clipSkip": 2,
+    "size": "960x640",
+    "model": "sd_xl_base_1.0",
+    "modelHash": "90ae2046fa",
+    "extra": {
+     "Version": "v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 44.9986
+  },
+  {
+   "id": "seed-i072",
+   "ownerId": "seed-sora_lab",
+   "modelId": "seed-m12",
+   "versionId": "seed-m12-v1",
+   "file": "seed/seed-i072.webp",
+   "thumb": "seed/seed-i072-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#98c8f8",
+   "meta": {
+    "prompt": "absurdres, 8k, cinematic color grading, landscape",
+    "negativePrompt": "lowres, bad anatomy, bad hands, text, error, missing fingers, worst quality, low quality, jpeg artifacts, signature, watermark",
+    "sampler": "DPM++ 2M",
+    "scheduler": "Karras",
+    "steps": 20,
+    "cfgScale": 5.5,
+    "seed": "2734822662",
+    "clipSkip": 2,
+    "size": "640x960",
+    "model": "sd_xl_base_1.0",
+    "modelHash": "90ae2046fa",
+    "extra": {
+     "Version": "f2.0.1v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 44.9979
+  },
+  {
+   "id": "seed-i073",
+   "ownerId": "seed-minji_art",
+   "modelId": "seed-m12",
+   "versionId": "seed-m12-v1",
+   "file": "seed/seed-i073.webp",
+   "thumb": "seed/seed-i073-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#98c8f8",
+   "meta": {
+    "prompt": "beautiful lighting, sharp focus, 8k, absurdres, cinematic color grading, landscape",
+    "negativePrompt": "easynegative, bad-hands-5, lowres, text",
+    "sampler": "DPM++ SDE",
+    "scheduler": "Karras",
+    "steps": 25,
+    "cfgScale": 6,
+    "seed": "1785805278",
+    "clipSkip": 2,
+    "size": "640x960",
+    "model": "sd_xl_base_1.0",
+    "modelHash": "90ae2046fa",
+    "extra": {
+     "Version": "v1.9.4"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 9.4691
+  },
+  {
+   "id": "seed-i074",
+   "ownerId": "seed-minji_art",
+   "modelId": "seed-m12",
+   "versionId": "seed-m12-v1",
+   "file": "seed/seed-i074.webp",
+   "thumb": "seed/seed-i074-t.webp",
+   "width": 704,
+   "height": 1024,
+   "color": "#181838",
+   "meta": {
+    "prompt": "best quality, masterpiece, highly detailed, beautiful lighting, cinematic color grading, landscape",
+    "negativePrompt": "nsfw, lowres, blurry, oversaturated, ugly, duplicate",
+    "sampler": "UniPC",
+    "scheduler": "Automatic",
+    "steps": 40,
+    "cfgScale": 5,
+    "seed": "2978593343",
+    "clipSkip": 1,
+    "size": "704x1024",
+    "model": "sd_xl_base_1.0",
+    "modelHash": "90ae2046fa",
+    "extra": {
+     "Hires upscale": "1.5",
+     "Hires upscaler": "4x-UltraSharp",
+     "Denoising strength": "0.5",
+     "Version": "f2.0.1v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 2.9898
+  },
+  {
+   "id": "seed-i075",
+   "ownerId": "seed-sora_lab",
+   "modelId": "seed-m13",
+   "versionId": "seed-m13-v1",
+   "file": "seed/seed-i075.webp",
+   "thumb": "seed/seed-i075-t.webp",
+   "width": 704,
+   "height": 1024,
+   "color": "#282858",
+   "meta": {
+    "prompt": "masterpiece, best quality, highly detailed, pose reference, dynamic pose",
+    "negativePrompt": "nsfw, lowres, blurry, oversaturated, ugly, duplicate",
+    "sampler": "UniPC",
+    "scheduler": "Automatic",
+    "steps": 30,
+    "cfgScale": 3.5,
+    "seed": "4281954598",
+    "clipSkip": 2,
+    "size": "704x1024",
+    "model": "sd_xl_base_1.0",
+    "modelHash": "90ae2046fa",
+    "extra": {
+     "Version": "f2.0.1v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 110
+  },
+  {
+   "id": "seed-i076",
+   "ownerId": "seed-sora_lab",
+   "modelId": "seed-m13",
+   "versionId": "seed-m13-v1",
+   "file": "seed/seed-i076.webp",
+   "thumb": "seed/seed-i076-t.webp",
+   "width": 768,
+   "height": 768,
+   "color": "#38e878",
+   "meta": {
+    "prompt": "best quality, sharp focus, 8k, pose reference, dynamic pose",
+    "negativePrompt": "(worst quality:1.4), (low quality:1.4), blurry, deformed, extra limbs, watermark",
+    "sampler": "DPM++ SDE",
+    "scheduler": "Karras",
+    "steps": 30,
+    "cfgScale": 4,
+    "seed": "3261116890",
+    "clipSkip": 1,
+    "size": "768x768",
+    "model": "sd_xl_base_1.0",
+    "modelHash": "90ae2046fa",
+    "extra": {
+     "Version": "f2.0.1v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 109.9993
+  },
+  {
+   "id": "seed-i077",
+   "ownerId": "seed-sora_lab",
+   "modelId": "seed-m13",
+   "versionId": "seed-m13-v1",
+   "file": "seed/seed-i077.webp",
+   "thumb": "seed/seed-i077-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#d8d8c8",
+   "meta": {
+    "prompt": "highly detailed, absurdres, masterpiece, beautiful lighting, pose reference, dynamic pose",
+    "negativePrompt": "lowres, bad anatomy, bad hands, text, error, missing fingers, worst quality, low quality, jpeg artifacts, signature, watermark",
+    "sampler": "Euler",
+    "scheduler": "Simple",
+    "steps": 25,
+    "cfgScale": 4,
+    "seed": "3539017811",
+    "clipSkip": 2,
+    "size": "640x960",
+    "model": "sd_xl_base_1.0",
+    "modelHash": "90ae2046fa",
+    "extra": {
+     "Hires upscale": "1.5",
+     "Hires upscaler": "Latent",
+     "Denoising strength": "0.35",
+     "Version": "v1.9.4"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 109.9986
+  },
+  {
+   "id": "seed-i078",
+   "ownerId": "seed-sora_lab",
+   "modelId": "seed-m13",
+   "versionId": "seed-m13-v1",
+   "file": "seed/seed-i078.webp",
+   "thumb": "seed/seed-i078-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#281818",
+   "meta": {
+    "prompt": "best quality, 8k, absurdres, highly detailed, pose reference, dynamic pose",
+    "negativePrompt": "easynegative, bad-hands-5, lowres, text",
+    "sampler": "Euler a",
+    "scheduler": "Automatic",
+    "steps": 30,
+    "cfgScale": 5,
+    "seed": "4049479001",
+    "clipSkip": 2,
+    "size": "640x960",
+    "model": "sd_xl_base_1.0",
+    "modelHash": "90ae2046fa",
+    "extra": {
+     "Version": "v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 109.9979
+  },
+  {
+   "id": "seed-i079",
+   "ownerId": "seed-mukmuk",
+   "modelId": "seed-m13",
+   "versionId": "seed-m13-v1",
+   "file": "seed/seed-i079.webp",
+   "thumb": "seed/seed-i079-t.webp",
+   "width": 768,
+   "height": 768,
+   "color": "#182818",
+   "meta": {
+    "prompt": "beautiful lighting, best quality, absurdres, sharp focus, pose reference, dynamic pose",
+    "negativePrompt": "lowres, bad anatomy, bad hands, text, error, missing fingers, worst quality, low quality, jpeg artifacts, signature, watermark",
+    "sampler": "DPM++ 2M SDE",
+    "scheduler": "Exponential",
+    "steps": 25,
+    "cfgScale": 5.5,
+    "seed": "1247603658",
+    "clipSkip": 1,
+    "size": "768x768",
+    "model": "sd_xl_base_1.0",
+    "modelHash": "90ae2046fa",
+    "extra": {
+     "Version": "v1.9.4"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 79.197
+  },
+  {
+   "id": "seed-i080",
+   "ownerId": "seed-pixel_jun",
+   "modelId": "seed-m13",
+   "versionId": "seed-m13-v1",
+   "file": "seed/seed-i080.webp",
+   "thumb": "seed/seed-i080-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#3878f8",
+   "meta": {
+    "prompt": "beautiful lighting, 8k, absurdres, highly detailed, pose reference, dynamic pose",
+    "negativePrompt": "(worst quality:1.4), (low quality:1.4), blurry, deformed, extra limbs, watermark",
+    "sampler": "DPM++ 2M SDE",
+    "scheduler": "Exponential",
+    "steps": 25,
+    "cfgScale": 7,
+    "seed": "2376681889",
+    "clipSkip": 2,
+    "size": "640x960",
+    "model": "sd_xl_base_1.0",
+    "modelHash": "90ae2046fa",
+    "extra": {
+     "Version": "v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 46.0946
+  },
+  {
+   "id": "seed-i081",
+   "ownerId": "seed-minji_art",
+   "modelId": "seed-m13",
+   "versionId": "seed-m13-v1",
+   "file": "seed/seed-i081.webp",
+   "thumb": "seed/seed-i081-t.webp",
+   "width": 768,
+   "height": 768,
+   "color": "#e83858",
+   "meta": {
+    "prompt": "beautiful lighting, masterpiece, sharp focus, best quality, pose reference, dynamic pose",
+    "negativePrompt": "(worst quality:1.4), (low quality:1.4), blurry, deformed, extra limbs, watermark",
+    "sampler": "DPM++ 2M",
+    "scheduler": "Karras",
+    "steps": 20,
+    "cfgScale": 5.5,
+    "seed": "3651956516",
+    "clipSkip": 2,
+    "size": "768x768",
+    "model": "sd_xl_base_1.0",
+    "modelHash": "90ae2046fa",
+    "extra": {
+     "Hires upscale": "2",
+     "Hires upscaler": "4x-UltraSharp",
+     "Denoising strength": "0.5",
+     "Version": "v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 89.3286
+  },
+  {
+   "id": "seed-i082",
+   "ownerId": "seed-sora_lab",
+   "modelId": "seed-m14",
+   "versionId": "seed-m14-v1",
+   "file": "seed/seed-i082.webp",
+   "thumb": "seed/seed-i082-t.webp",
+   "width": 704,
+   "height": 1024,
+   "color": "#e8e8f8",
+   "meta": {
+    "prompt": "masterpiece, absurdres, upscaled anime illustration",
+    "negativePrompt": "easynegative, bad-hands-5, lowres, text",
+    "sampler": "DPM++ SDE",
+    "scheduler": "Karras",
+    "steps": 35,
+    "cfgScale": 5.5,
+    "seed": "3963763957",
+    "clipSkip": null,
+    "size": "704x1024",
+    "model": "sd_xl_base_1.0",
+    "modelHash": null,
+    "extra": {}
+   },
+   "source": "comfyui",
+   "nsfw": false,
+   "ageDays": 180
+  },
+  {
+   "id": "seed-i083",
+   "ownerId": "seed-sora_lab",
+   "modelId": "seed-m14",
+   "versionId": "seed-m14-v1",
+   "file": "seed/seed-i083.webp",
+   "thumb": "seed/seed-i083-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#f898c8",
+   "meta": {
+    "prompt": "8k, masterpiece, best quality, upscaled anime illustration",
+    "negativePrompt": "lowres, bad anatomy, bad hands, text, error, missing fingers, worst quality, low quality, jpeg artifacts, signature, watermark",
+    "sampler": "UniPC",
+    "scheduler": "Automatic",
+    "steps": 25,
+    "cfgScale": 6,
+    "seed": "2231637511",
+    "clipSkip": null,
+    "size": "640x960",
+    "model": "sd_xl_base_1.0",
+    "modelHash": "90ae2046fa",
+    "extra": {
+     "Version": "v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 179.9993
+  },
+  {
+   "id": "seed-i084",
+   "ownerId": "seed-sora_lab",
+   "modelId": "seed-m14",
+   "versionId": "seed-m14-v1",
+   "file": "seed/seed-i084.webp",
+   "thumb": "seed/seed-i084-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#f8a8e8",
+   "meta": {
+    "prompt": "highly detailed, best quality, beautiful lighting, 8k, upscaled anime illustration",
+    "negativePrompt": "(worst quality:1.4), (low quality:1.4), blurry, deformed, extra limbs, watermark",
+    "sampler": "DPM++ SDE",
+    "scheduler": "Karras",
+    "steps": 40,
+    "cfgScale": 6.5,
+    "seed": "1112868481",
+    "clipSkip": null,
+    "size": "640x960",
+    "model": "sd_xl_base_1.0",
+    "modelHash": "90ae2046fa",
+    "extra": {
+     "Version": "v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 179.9986
+  },
+  {
+   "id": "seed-i085",
+   "ownerId": "seed-pixel_jun",
+   "modelId": "seed-m14",
+   "versionId": "seed-m14-v1",
+   "file": "seed/seed-i085.webp",
+   "thumb": "seed/seed-i085-t.webp",
+   "width": 768,
+   "height": 768,
+   "color": "#e8e8f8",
+   "meta": {
+    "prompt": "masterpiece, 8k, best quality, upscaled anime illustration",
+    "negativePrompt": "easynegative, bad-hands-5, lowres, text",
+    "sampler": "DPM++ 2M",
+    "scheduler": "Karras",
+    "steps": 30,
+    "cfgScale": 7,
+    "seed": "2742180283",
+    "clipSkip": null,
+    "size": "768x768",
+    "model": "sd_xl_base_1.0",
+    "modelHash": "90ae2046fa",
+    "extra": {
+     "Version": "v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 134.7375
+  },
+  {
+   "id": "seed-i086",
+   "ownerId": "seed-hanbit3d",
+   "modelId": "seed-m14",
+   "versionId": "seed-m14-v1",
+   "file": "seed/seed-i086.webp",
+   "thumb": "seed/seed-i086-t.webp",
+   "width": 704,
+   "height": 1024,
+   "color": "#e8e8f8",
+   "meta": {
+    "prompt": null,
+    "negativePrompt": null,
+    "sampler": null,
+    "scheduler": null,
+    "steps": null,
+    "cfgScale": null,
+    "seed": null,
+    "clipSkip": null,
+    "size": null,
+    "model": null,
+    "modelHash": null,
+    "extra": {}
+   },
+   "source": null,
+   "nsfw": false,
+   "ageDays": 114.7317
+  },
+  {
+   "id": "seed-i087",
+   "ownerId": "seed-sora_lab",
+   "modelId": "seed-m15",
+   "versionId": "seed-m15-v1",
+   "file": "seed/seed-i087.webp",
+   "thumb": "seed/seed-i087-t.webp",
+   "width": 960,
+   "height": 640,
+   "color": "#082848",
+   "meta": {
+    "prompt": "masterpiece, beautiful lighting, detailed fantasy landscape, upscale",
+    "negativePrompt": "lowres, bad anatomy, bad hands, text, error, missing fingers, worst quality, low quality, jpeg artifacts, signature, watermark",
+    "sampler": "Euler a",
+    "scheduler": "Automatic",
+    "steps": 35,
+    "cfgScale": 4,
+    "seed": "2341500844",
+    "clipSkip": null,
+    "size": "960x640",
+    "model": "flux1-dev",
+    "modelHash": null,
+    "extra": {}
+   },
+   "source": "comfyui",
+   "nsfw": false,
+   "ageDays": 20
+  },
+  {
+   "id": "seed-i088",
+   "ownerId": "seed-sora_lab",
+   "modelId": "seed-m15",
+   "versionId": "seed-m15-v1",
+   "file": "seed/seed-i088.webp",
+   "thumb": "seed/seed-i088-t.webp",
+   "width": 768,
+   "height": 768,
+   "color": "#082848",
+   "meta": {
+    "prompt": "masterpiece, best quality, detailed fantasy landscape, upscale",
+    "negativePrompt": "lowres, bad anatomy, bad hands, text, error, missing fingers, worst quality, low quality, jpeg artifacts, signature, watermark",
+    "sampler": "DPM++ 2M",
+    "scheduler": "Karras",
+    "steps": 40,
+    "cfgScale": 5.5,
+    "seed": "1038230803",
+    "clipSkip": null,
+    "size": "768x768",
+    "model": "flux1-dev",
+    "modelHash": "aeb9c77335",
+    "extra": {
+     "Version": "v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 19.9993
+  },
+  {
+   "id": "seed-i089",
+   "ownerId": "seed-mukmuk",
+   "modelId": "seed-m15",
+   "versionId": "seed-m15-v1",
+   "file": "seed/seed-i089.webp",
+   "thumb": "seed/seed-i089-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#38e878",
+   "meta": {
+    "prompt": "masterpiece, best quality, detailed fantasy landscape, upscale",
+    "negativePrompt": "(worst quality:1.4), (low quality:1.4), blurry, deformed, extra limbs, watermark",
+    "sampler": "Euler",
+    "scheduler": "Simple",
+    "steps": 40,
+    "cfgScale": 5,
+    "seed": "745758898",
+    "clipSkip": null,
+    "size": "640x960",
+    "model": "flux1-dev",
+    "modelHash": "aeb9c77335",
+    "extra": {
+     "Version": "f2.0.1v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 1.1405
+  },
+  {
+   "id": "seed-i090",
+   "ownerId": "seed-minji_art",
+   "modelId": "seed-m16",
+   "versionId": "seed-m16-v1",
+   "file": "seed/seed-i090.webp",
+   "thumb": "seed/seed-i090-t.webp",
+   "width": 960,
+   "height": 640,
+   "color": "#f8d898",
+   "meta": {
+    "prompt": "absurdres, beautiful lighting, highly detailed, webtoon style, webtoon style, school uniform, classroom, <lora:webtoonColoring_v1.0:0.7>",
+    "negativePrompt": "(worst quality:1.4), (low quality:1.4), blurry, deformed, extra limbs, watermark",
+    "sampler": "DPM++ 2M SDE",
+    "scheduler": "Exponential",
+    "steps": 25,
+    "cfgScale": 7.5,
+    "seed": "3145614194",
+    "clipSkip": 1,
+    "size": "960x640",
+    "model": "illustriousXL_v01",
+    "modelHash": "7c74f83147",
+    "extra": {
+     "Version": "v1.9.4"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 8
+  },
+  {
+   "id": "seed-i091",
+   "ownerId": "seed-minji_art",
+   "modelId": "seed-m16",
+   "versionId": "seed-m16-v1",
+   "file": "seed/seed-i091.webp",
+   "thumb": "seed/seed-i091-t.webp",
+   "width": 768,
+   "height": 768,
+   "color": "#98e8f8",
+   "meta": {
+    "prompt": "8k, masterpiece, sharp focus, webtoon style, webtoon panel, dramatic lighting, <lora:webtoonColoring_v1.0:0.7>",
+    "negativePrompt": "nsfw, lowres, blurry, oversaturated, ugly, duplicate",
+    "sampler": "DPM++ 2M SDE",
+    "scheduler": "Exponential",
+    "steps": 28,
+    "cfgScale": 4,
+    "seed": "3741700775",
+    "clipSkip": 2,
+    "size": "768x768",
+    "model": "illustriousXL_v01",
+    "modelHash": "7c74f83147",
+    "extra": {
+     "Version": "v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 7.9993
+  },
+  {
+   "id": "seed-i092",
+   "ownerId": "seed-mukmuk",
+   "modelId": "seed-m16",
+   "versionId": "seed-m16-v1",
+   "file": "seed/seed-i092.webp",
+   "thumb": "seed/seed-i092-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#d8b8f8",
+   "meta": {
+    "prompt": "sharp focus, 8k, beautiful lighting, absurdres, webtoon style, webtoon panel, dramatic lighting, <lora:webtoonColoring_v1.0:0.6>",
+    "negativePrompt": "nsfw, lowres, blurry, oversaturated, ugly, duplicate",
+    "sampler": "DPM++ 2M SDE",
+    "scheduler": "Exponential",
+    "steps": 35,
+    "cfgScale": 4,
+    "seed": "3693956279",
+    "clipSkip": 2,
+    "size": "640x960",
+    "model": "illustriousXL_v01",
+    "modelHash": "7c74f83147",
+    "extra": {
+     "Version": "f2.0.1v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 4.8133
+  },
+  {
+   "id": "seed-i093",
+   "ownerId": "seed-sora_lab",
+   "modelId": "seed-m16",
+   "versionId": "seed-m16-v1",
+   "file": "seed/seed-i093.webp",
+   "thumb": "seed/seed-i093-t.webp",
+   "width": 768,
+   "height": 768,
+   "color": "#a8c8f8",
+   "meta": {
+    "prompt": "sharp focus, masterpiece, best quality, beautiful lighting, webtoon style, webtoon style, school uniform, classroom, <lora:webtoonColoring_v1.0:0.7>",
+    "negativePrompt": "lowres, bad anatomy, bad hands, text, error, missing fingers, worst quality, low quality, jpeg artifacts, signature, watermark",
+    "sampler": "UniPC",
+    "scheduler": "Automatic",
+    "steps": 20,
+    "cfgScale": 7,
+    "seed": "2583712075",
+    "clipSkip": 2,
+    "size": "768x768",
+    "model": "illustriousXL_v01",
+    "modelHash": "7c74f83147",
+    "extra": {
+     "Version": "f2.0.1v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 0.8707
+  },
+  {
+   "id": "seed-i094",
+   "ownerId": "seed-mukmuk",
+   "modelId": "seed-m17",
+   "versionId": "seed-m17-v1",
+   "file": "seed/seed-i094.webp",
+   "thumb": "seed/seed-i094-t.webp",
+   "width": 960,
+   "height": 640,
+   "color": "#d8e8f8",
+   "meta": {
+    "prompt": "best quality, absurdres, sharp focus, sakura_bg, cherry blossom branches, falling petals, blue sky, <lora:sakuraBackground_v1.0:0.8>",
+    "negativePrompt": "(worst quality:1.4), (low quality:1.4), blurry, deformed, extra limbs, watermark",
+    "sampler": "DPM++ SDE",
+    "scheduler": "Karras",
+    "steps": 24,
+    "cfgScale": 5.5,
+    "seed": "2372886431",
+    "clipSkip": 1,
+    "size": "960x640",
+    "model": "ponyDiffusionV6XL",
+    "modelHash": "d647ad6ac4",
+    "extra": {
+     "Version": "v1.9.4"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 26
+  },
+  {
+   "id": "seed-i095",
+   "ownerId": "seed-mukmuk",
+   "modelId": "seed-m17",
+   "versionId": "seed-m17-v1",
+   "file": "seed/seed-i095.webp",
+   "thumb": "seed/seed-i095-t.webp",
+   "width": 960,
+   "height": 640,
+   "color": "#e8e8f8",
+   "meta": {
+    "prompt": "beautiful lighting, 8k, best quality, absurdres, sakura_bg, sakura, spring breeze, <lora:sakuraBackground_v1.0:0.7>",
+    "negativePrompt": "easynegative, bad-hands-5, lowres, text",
+    "sampler": "Euler",
+    "scheduler": "Simple",
+    "steps": 30,
+    "cfgScale": 7,
+    "seed": "2234128397",
+    "clipSkip": 1,
+    "size": "960x640",
+    "model": "ponyDiffusionV6XL",
+    "modelHash": "d647ad6ac4",
+    "extra": {
+     "Version": "v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 25.9993
+  },
+  {
+   "id": "seed-i096",
+   "ownerId": "seed-mukmuk",
+   "modelId": "seed-m17",
+   "versionId": "seed-m17-v1",
+   "file": "seed/seed-i096.webp",
+   "thumb": "seed/seed-i096-t.webp",
+   "width": 704,
+   "height": 1024,
+   "color": "#e8e8e8",
+   "meta": {
+    "prompt": "8k, absurdres, sakura_bg, cherry blossom branches, falling petals, blue sky, <lora:sakuraBackground_v1.0:0.6>",
+    "negativePrompt": "(worst quality:1.4), (low quality:1.4), blurry, deformed, extra limbs, watermark",
+    "sampler": "DPM++ 2M SDE",
+    "scheduler": "Exponential",
+    "steps": 35,
+    "cfgScale": 4,
+    "seed": "1409523713",
+    "clipSkip": 1,
+    "size": "704x1024",
+    "model": "ponyDiffusionV6XL",
+    "modelHash": "d647ad6ac4",
+    "extra": {
+     "Version": "v1.9.4"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 25.9986
+  },
+  {
+   "id": "seed-i097",
+   "ownerId": "seed-doyun_ai",
+   "modelId": "seed-m17",
+   "versionId": "seed-m17-v1",
+   "file": "seed/seed-i097.webp",
+   "thumb": "seed/seed-i097-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#d8e8f8",
+   "meta": {
+    "prompt": "beautiful lighting, masterpiece, 8k, sakura_bg, cherry blossom branches, falling petals, blue sky, <lora:sakuraBackground_v1.0:1>",
+    "negativePrompt": "easynegative, bad-hands-5, lowres, text",
+    "sampler": "DPM++ SDE",
+    "scheduler": "Karras",
+    "steps": 35,
+    "cfgScale": 5.5,
+    "seed": "1309520214",
+    "clipSkip": 2,
+    "size": "640x960",
+    "model": "ponyDiffusionV6XL",
+    "modelHash": "d647ad6ac4",
+    "extra": {
+     "Version": "f2.0.1v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 17.7013
+  },
+  {
+   "id": "seed-i098",
+   "ownerId": "seed-hanbit3d",
+   "modelId": "seed-m17",
+   "versionId": "seed-m17-v1",
+   "file": "seed/seed-i098.webp",
+   "thumb": "seed/seed-i098-t.webp",
+   "width": 704,
+   "height": 1024,
+   "color": "#e8e8f8",
+   "meta": {
+    "prompt": "absurdres, highly detailed, sakura_bg, sakura, spring breeze, <lora:sakuraBackground_v1.0:0.6>",
+    "negativePrompt": "easynegative, bad-hands-5, lowres, text",
+    "sampler": "UniPC",
+    "scheduler": "Automatic",
+    "steps": 35,
+    "cfgScale": 3.5,
+    "seed": "3629351477",
+    "clipSkip": 2,
+    "size": "704x1024",
+    "model": "ponyDiffusionV6XL",
+    "modelHash": "d647ad6ac4",
+    "extra": {
+     "Version": "v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 23.6301
+  },
+  {
+   "id": "seed-i099",
+   "ownerId": "seed-hanbit3d",
+   "modelId": "seed-m18",
+   "versionId": "seed-m18-v1",
+   "file": "seed/seed-i099.webp",
+   "thumb": "seed/seed-i099-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#98c8f8",
+   "meta": {
+    "prompt": "absurdres, highly detailed, sharp focus, wavestyle, moonlit sea, calm waves, <lora:oceanWavesQwen_v1.0:0.7>",
+    "negativePrompt": "lowres, bad anatomy, bad hands, text, error, missing fingers, worst quality, low quality, jpeg artifacts, signature, watermark",
+    "sampler": "DPM++ 2M SDE",
+    "scheduler": "Exponential",
+    "steps": 40,
+    "cfgScale": 5.5,
+    "seed": "619691620",
+    "clipSkip": null,
+    "size": "640x960",
+    "model": "qwen_image",
+    "modelHash": null,
+    "extra": {}
+   },
+   "source": "comfyui",
+   "nsfw": false,
+   "ageDays": 0.6
+  },
+  {
+   "id": "seed-i100",
+   "ownerId": "seed-hanbit3d",
+   "modelId": "seed-m18",
+   "versionId": "seed-m18-v1",
+   "file": "seed/seed-i100.webp",
+   "thumb": "seed/seed-i100-t.webp",
+   "width": 768,
+   "height": 768,
+   "color": "#98c8f8",
+   "meta": {
+    "prompt": null,
+    "negativePrompt": null,
+    "sampler": null,
+    "scheduler": null,
+    "steps": null,
+    "cfgScale": null,
+    "seed": null,
+    "clipSkip": null,
+    "size": null,
+    "model": null,
+    "modelHash": null,
+    "extra": {}
+   },
+   "source": null,
+   "nsfw": false,
+   "ageDays": 0.5993
+  },
+  {
+   "id": "seed-i101",
+   "ownerId": "seed-doyun_ai",
+   "modelId": "seed-m18",
+   "versionId": "seed-m18-v1",
+   "file": "seed/seed-i101.webp",
+   "thumb": "seed/seed-i101-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#98c8f8",
+   "meta": {
+    "prompt": "absurdres, highly detailed, 8k, beautiful lighting, wavestyle, moonlit sea, calm waves, <lora:oceanWavesQwen_v1.0:0.8>",
+    "negativePrompt": "lowres, bad anatomy, bad hands, text, error, missing fingers, worst quality, low quality, jpeg artifacts, signature, watermark",
+    "sampler": "UniPC",
+    "scheduler": "Automatic",
+    "steps": 24,
+    "cfgScale": 6.5,
+    "seed": "2017661874",
+    "clipSkip": null,
+    "size": "640x960",
+    "model": "qwen_image",
+    "modelHash": "f861f6fb55",
+    "extra": {
+     "Hires upscale": "1.5",
+     "Hires upscaler": "4x-UltraSharp",
+     "Denoising strength": "0.5",
+     "Version": "v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 0.0758
+  },
+  {
+   "id": "seed-i102",
+   "ownerId": "seed-minji_art",
+   "modelId": null,
+   "versionId": null,
+   "file": "seed/seed-i102.webp",
+   "thumb": "seed/seed-i102-t.webp",
+   "width": 704,
+   "height": 1024,
+   "color": "#082848",
+   "meta": {
+    "prompt": "highly detailed, absurdres, wallpaper, scenic view",
+    "negativePrompt": "easynegative, bad-hands-5, lowres, text",
+    "sampler": "Euler a",
+    "scheduler": "Automatic",
+    "steps": 30,
+    "cfgScale": 6.5,
+    "seed": "1022599360",
+    "clipSkip": 2,
+    "size": "704x1024",
+    "model": "sd_xl_base_1.0",
+    "modelHash": "90ae2046fa",
+    "extra": {
+     "Hires upscale": "2",
+     "Hires upscaler": "Latent",
+     "Denoising strength": "0.5",
+     "Version": "v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 32.3164
+  },
+  {
+   "id": "seed-i103",
+   "ownerId": "seed-mukmuk",
+   "modelId": null,
+   "versionId": null,
+   "file": "seed/seed-i103.webp",
+   "thumb": "seed/seed-i103-t.webp",
+   "width": 704,
+   "height": 1024,
+   "color": "#986858",
+   "meta": {
+    "prompt": "8k, absurdres, highly detailed, wallpaper, scenic view",
+    "negativePrompt": "(worst quality:1.4), (low quality:1.4), blurry, deformed, extra limbs, watermark",
+    "sampler": "UniPC",
+    "scheduler": "Automatic",
+    "steps": 24,
+    "cfgScale": 6.5,
+    "seed": "3616649241",
+    "clipSkip": null,
+    "size": "704x1024",
+    "model": "sd_xl_base_1.0",
+    "modelHash": null,
+    "extra": {}
+   },
+   "source": "comfyui",
+   "nsfw": false,
+   "ageDays": 24.4421
+  },
+  {
+   "id": "seed-i104",
+   "ownerId": "seed-doyun_ai",
+   "modelId": null,
+   "versionId": null,
+   "file": "seed/seed-i104.webp",
+   "thumb": "seed/seed-i104-t.webp",
+   "width": 768,
+   "height": 768,
+   "color": "#d8e8f8",
+   "meta": {
+    "prompt": "masterpiece, best quality, highly detailed, sharp focus, abstract shapes, gradient",
+    "negativePrompt": "(worst quality:1.4), (low quality:1.4), blurry, deformed, extra limbs, watermark",
+    "sampler": "DPM++ 2M SDE",
+    "scheduler": "Exponential",
+    "steps": 30,
+    "cfgScale": 5,
+    "seed": "2755551823",
+    "clipSkip": 2,
+    "size": "768x768",
+    "model": "sd_xl_base_1.0",
+    "modelHash": "90ae2046fa",
+    "extra": {
+     "Hires upscale": "1.5",
+     "Hires upscaler": "4x-UltraSharp",
+     "Denoising strength": "0.5",
+     "Version": "f2.0.1v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 17.1973
+  },
+  {
+   "id": "seed-i105",
+   "ownerId": "seed-doyun_ai",
+   "modelId": null,
+   "versionId": null,
+   "file": "seed/seed-i105.webp",
+   "thumb": "seed/seed-i105-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#381828",
+   "meta": {
+    "prompt": "8k, absurdres, highly detailed, sharp focus, dreamy landscape",
+    "negativePrompt": "lowres, bad anatomy, bad hands, text, error, missing fingers, worst quality, low quality, jpeg artifacts, signature, watermark",
+    "sampler": "DPM++ SDE",
+    "scheduler": "Karras",
+    "steps": 30,
+    "cfgScale": 3.5,
+    "seed": "3887768169",
+    "clipSkip": 1,
+    "size": "640x960",
+    "model": "sd_xl_base_1.0",
+    "modelHash": "90ae2046fa",
+    "extra": {
+     "Version": "f2.0.1v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 38.3026
+  },
+  {
+   "id": "seed-i106",
+   "ownerId": "seed-mukmuk",
+   "modelId": null,
+   "versionId": null,
+   "file": "seed/seed-i106.webp",
+   "thumb": "seed/seed-i106-t.webp",
+   "width": 640,
+   "height": 960,
+   "color": "#181838",
+   "meta": {
+    "prompt": null,
+    "negativePrompt": null,
+    "sampler": null,
+    "scheduler": null,
+    "steps": null,
+    "cfgScale": null,
+    "seed": null,
+    "clipSkip": null,
+    "size": null,
+    "model": null,
+    "modelHash": null,
+    "extra": {}
+   },
+   "source": null,
+   "nsfw": false,
+   "ageDays": 16.0261
+  },
+  {
+   "id": "seed-i107",
+   "ownerId": "seed-pixel_jun",
+   "modelId": null,
+   "versionId": null,
+   "file": "seed/seed-i107.webp",
+   "thumb": "seed/seed-i107-t.webp",
+   "width": 704,
+   "height": 1024,
+   "color": "#98c8f8",
+   "meta": {
+    "prompt": "sharp focus, absurdres, beautiful lighting, 8k, dreamy landscape",
+    "negativePrompt": "lowres, bad anatomy, bad hands, text, error, missing fingers, worst quality, low quality, jpeg artifacts, signature, watermark",
+    "sampler": "DPM++ 2M SDE",
+    "scheduler": "Exponential",
+    "steps": 40,
+    "cfgScale": 6.5,
+    "seed": "3518800433",
+    "clipSkip": 1,
+    "size": "704x1024",
+    "model": "sd_xl_base_1.0",
+    "modelHash": "90ae2046fa",
+    "extra": {
+     "Version": "f2.0.1v1.10.1"
+    }
+   },
+   "source": "a1111",
+   "nsfw": false,
+   "ageDays": 25.3226
+  }
+ ],
+ "modelDownloads": {
+  "seed-m01": {
+   "total": 530,
+   "days": {
+    "0": 2,
+    "1": 2,
+    "2": 5,
+    "3": 6,
+    "4": 4,
+    "5": 8,
+    "6": 9,
+    "7": 4,
+    "8": 4,
+    "9": 7,
+    "10": 3,
+    "11": 4,
+    "12": 6,
+    "13": 5,
+    "14": 6,
+    "15": 3,
+    "17": 3,
+    "18": 1,
+    "19": 4,
+    "20": 6,
+    "21": 5,
+    "22": 6,
+    "23": 4,
+    "24": 4,
+    "25": 3,
+    "26": 6,
+    "27": 8,
+    "28": 3,
+    "29": 3,
+    "30": 8
+   },
+   "months": {
+    "0": 138,
+    "1": 166,
+    "2": 108,
+    "3": 55,
+    "4": 63
+   }
+  },
+  "seed-m02": {
+   "total": 216,
+   "days": {
+    "0": 2,
+    "1": 1,
+    "2": 2,
+    "3": 4,
+    "4": 2,
+    "5": 1,
+    "6": 1,
+    "7": 1,
+    "8": 2,
+    "9": 1,
+    "10": 2,
+    "13": 1,
+    "14": 1,
+    "16": 2,
+    "17": 2,
+    "18": 2,
+    "19": 2,
+    "20": 2,
+    "21": 1,
+    "22": 2,
+    "23": 1,
+    "24": 2,
+    "26": 2,
+    "27": 3,
+    "28": 1,
+    "29": 1,
+    "30": 1
+   },
+   "months": {
+    "0": 45,
+    "1": 59,
+    "2": 90,
+    "3": 22
+   }
+  },
+  "seed-m03": {
+   "total": 252,
+   "days": {
+    "0": 114,
+    "1": 69,
+    "2": 52,
+    "3": 14,
+    "4": 3
+   },
+   "months": {
+    "0": 252
+   }
+  },
+  "seed-m04": {
+   "total": 362,
+   "days": {
+    "0": 6,
+    "1": 13,
+    "2": 10,
+    "3": 8,
+    "4": 5,
+    "5": 13,
+    "6": 7,
+    "7": 11,
+    "8": 9,
+    "9": 15,
+    "10": 10,
+    "11": 7,
+    "12": 7,
+    "13": 13,
+    "14": 14,
+    "15": 11,
+    "16": 20,
+    "17": 18,
+    "18": 9,
+    "19": 31,
+    "20": 5,
+    "21": 5,
+    "22": 4,
+    "23": 1,
+    "24": 1,
+    "25": 4,
+    "26": 2,
+    "27": 2,
+    "28": 1,
+    "29": 6,
+    "30": 1
+   },
+   "months": {
+    "0": 269,
+    "1": 93
+   }
+  },
+  "seed-m05": {
+   "total": 156,
+   "days": {
+    "0": 1,
+    "1": 4,
+    "2": 2,
+    "3": 3,
+    "4": 1,
+    "5": 8,
+    "6": 5,
+    "7": 5,
+    "8": 5,
+    "9": 4,
+    "10": 4,
+    "11": 6,
+    "12": 4,
+    "13": 3,
+    "14": 2,
+    "15": 3,
+    "16": 7,
+    "17": 3,
+    "18": 4,
+    "19": 7,
+    "20": 1,
+    "21": 5,
+    "22": 5,
+    "23": 7,
+    "24": 6,
+    "25": 2,
+    "26": 4,
+    "27": 6,
+    "28": 2,
+    "29": 9,
+    "30": 11
+   },
+   "months": {
+    "0": 131,
+    "1": 25
+   }
+  },
+  "seed-m06": {
+   "total": 275,
+   "days": {
+    "1": 1,
+    "2": 1,
+    "3": 5,
+    "5": 2,
+    "6": 3,
+    "7": 1,
+    "8": 2,
+    "9": 2,
+    "12": 1,
+    "13": 1,
+    "14": 3,
+    "16": 2,
+    "17": 2,
+    "18": 2,
+    "20": 1,
+    "21": 4,
+    "22": 1,
+    "23": 5,
+    "24": 1,
+    "25": 2,
+    "26": 1,
+    "27": 3,
+    "28": 3,
+    "29": 5,
+    "30": 3
+   },
+   "months": {
+    "0": 56,
+    "1": 55,
+    "2": 72,
+    "3": 92
+   }
+  },
+  "seed-m07": {
+   "total": 198,
+   "days": {
+    "0": 174,
+    "1": 24
+   },
+   "months": {
+    "0": 198
+   }
+  },
+  "seed-m08": {
+   "total": 123,
+   "days": {
+    "0": 1,
+    "2": 2,
+    "3": 4,
+    "4": 3,
+    "5": 2,
+    "6": 3,
+    "7": 1,
+    "9": 1,
+    "10": 1,
+    "12": 1,
+    "13": 1,
+    "15": 2,
+    "16": 1,
+    "17": 1,
+    "18": 1,
+    "19": 2,
+    "20": 1,
+    "22": 2,
+    "24": 1,
+    "25": 3,
+    "28": 1,
+    "29": 2
+   },
+   "months": {
+    "0": 37,
+    "1": 31,
+    "2": 55
+   }
+  },
+  "seed-m09": {
+   "total": 311,
+   "days": {
+    "0": 2,
+    "1": 2,
+    "2": 1,
+    "3": 1,
+    "4": 1,
+    "5": 1,
+    "7": 2,
+    "8": 1,
+    "9": 1,
+    "10": 3,
+    "12": 1,
+    "13": 2,
+    "15": 2,
+    "16": 1,
+    "17": 1,
+    "18": 2,
+    "19": 3,
+    "20": 1,
+    "21": 3,
+    "22": 4,
+    "23": 1,
+    "25": 5,
+    "26": 1,
+    "27": 2,
+    "28": 2,
+    "29": 1,
+    "30": 1
+   },
+   "months": {
+    "0": 48,
+    "1": 66,
+    "2": 45,
+    "3": 63,
+    "4": 21,
+    "5": 29,
+    "6": 39
+   }
+  },
+  "seed-m10": {
+   "total": 137,
+   "days": {
+    "0": 26,
+    "1": 23,
+    "2": 27,
+    "3": 22,
+    "4": 18,
+    "5": 6,
+    "6": 6,
+    "7": 4,
+    "8": 3,
+    "9": 2
+   },
+   "months": {
+    "0": 137
+   }
+  },
+  "seed-m11": {
+   "total": 190,
+   "days": {
+    "0": 1,
+    "2": 1,
+    "3": 1,
+    "4": 2,
+    "5": 2,
+    "6": 3,
+    "8": 1,
+    "9": 1,
+    "10": 3,
+    "14": 1,
+    "17": 1,
+    "20": 1,
+    "23": 1,
+    "26": 2,
+    "27": 1,
+    "28": 1
+   },
+   "months": {
+    "0": 23,
+    "1": 36,
+    "2": 28,
+    "3": 37,
+    "4": 41,
+    "5": 25
+   }
+  },
+  "seed-m12": {
+   "total": 140,
+   "days": {
+    "0": 2,
+    "1": 5,
+    "2": 5,
+    "3": 1,
+    "4": 3,
+    "5": 3,
+    "6": 1,
+    "7": 1,
+    "8": 2,
+    "9": 2,
+    "10": 2,
+    "11": 3,
+    "12": 1,
+    "13": 1,
+    "14": 3,
+    "15": 2,
+    "16": 7,
+    "17": 4,
+    "18": 3,
+    "19": 3,
+    "20": 2,
+    "21": 2,
+    "23": 4,
+    "24": 3,
+    "25": 2,
+    "26": 2,
+    "27": 3,
+    "28": 1,
+    "29": 3,
+    "30": 7
+   },
+   "months": {
+    "0": 78,
+    "1": 62
+   }
+  },
+  "seed-m13": {
+   "total": 353,
+   "days": {
+    "0": 5,
+    "1": 2,
+    "2": 3,
+    "3": 2,
+    "4": 3,
+    "5": 1,
+    "6": 1,
+    "7": 3,
+    "8": 3,
+    "9": 2,
+    "10": 3,
+    "11": 3,
+    "12": 2,
+    "13": 1,
+    "14": 2,
+    "15": 7,
+    "16": 1,
+    "17": 2,
+    "18": 3,
+    "19": 3,
+    "20": 1,
+    "21": 1,
+    "22": 3,
+    "23": 3,
+    "24": 5,
+    "25": 2,
+    "26": 5,
+    "27": 1,
+    "28": 1,
+    "29": 2,
+    "30": 4
+   },
+   "months": {
+    "0": 78,
+    "1": 76,
+    "2": 112,
+    "3": 87
+   }
+  },
+  "seed-m14": {
+   "total": 271,
+   "days": {
+    "1": 1,
+    "2": 2,
+    "4": 1,
+    "5": 1,
+    "6": 2,
+    "9": 1,
+    "10": 3,
+    "11": 4,
+    "12": 2,
+    "14": 1,
+    "18": 2,
+    "19": 2,
+    "20": 1,
+    "21": 1,
+    "22": 1,
+    "24": 1,
+    "25": 2,
+    "26": 1,
+    "28": 2
+   },
+   "months": {
+    "0": 31,
+    "1": 27,
+    "2": 39,
+    "3": 53,
+    "4": 41,
+    "5": 80
+   }
+  },
+  "seed-m15": {
+   "total": 191,
+   "days": {
+    "0": 3,
+    "1": 6,
+    "2": 15,
+    "3": 10,
+    "4": 7,
+    "5": 7,
+    "6": 6,
+    "7": 5,
+    "8": 9,
+    "9": 8,
+    "10": 11,
+    "11": 8,
+    "12": 6,
+    "13": 7,
+    "14": 11,
+    "15": 12,
+    "16": 9,
+    "17": 13,
+    "18": 11,
+    "19": 27
+   },
+   "months": {
+    "0": 191
+   }
+  },
+  "seed-m16": {
+   "total": 126,
+   "days": {
+    "0": 38,
+    "1": 42,
+    "2": 17,
+    "3": 15,
+    "4": 7,
+    "5": 5,
+    "6": 2
+   },
+   "months": {
+    "0": 126
+   }
+  },
+  "seed-m17": {
+   "total": 137,
+   "days": {
+    "0": 6,
+    "1": 3,
+    "2": 6,
+    "3": 6,
+    "4": 5,
+    "5": 5,
+    "6": 2,
+    "7": 5,
+    "8": 3,
+    "9": 4,
+    "10": 6,
+    "11": 3,
+    "12": 1,
+    "13": 7,
+    "14": 3,
+    "15": 4,
+    "16": 7,
+    "17": 8,
+    "18": 8,
+    "19": 4,
+    "20": 8,
+    "21": 4,
+    "22": 7,
+    "23": 5,
+    "24": 4,
+    "25": 13
+   },
+   "months": {
+    "0": 137
+   }
+  },
+  "seed-m18": {
+   "total": 53,
+   "days": {
+    "0": 53
+   },
+   "months": {
+    "0": 53
+   }
+  }
+ },
+ "modelLikes": {
+  "seed-m01": {
+   "total": 90,
+   "days": {
+    "2": 1,
+    "3": 1,
+    "4": 1,
+    "5": 2,
+    "9": 1,
+    "11": 1,
+    "13": 1,
+    "14": 2,
+    "15": 2,
+    "17": 1,
+    "20": 2,
+    "22": 1,
+    "24": 1,
+    "25": 1,
+    "26": 1,
+    "27": 2,
+    "28": 1
+   },
+   "months": {
+    "0": 22,
+    "1": 13,
+    "2": 16,
+    "3": 18,
+    "4": 21
+   }
+  },
+  "seed-m02": {
+   "total": 38,
+   "days": {
+    "0": 1,
+    "1": 1,
+    "12": 1,
+    "23": 1,
+    "26": 1,
+    "29": 2
+   },
+   "months": {
+    "0": 7,
+    "1": 16,
+    "2": 12,
+    "3": 3
+   }
+  },
+  "seed-m03": {
+   "total": 32,
+   "days": {
+    "0": 16,
+    "1": 12,
+    "2": 3,
+    "4": 1
+   },
+   "months": {
+    "0": 32
+   }
+  },
+  "seed-m04": {
+   "total": 84,
+   "days": {
+    "0": 1,
+    "1": 1,
+    "4": 2,
+    "5": 1,
+    "6": 1,
+    "7": 2,
+    "8": 1,
+    "10": 2,
+    "13": 1,
+    "14": 2,
+    "15": 1,
+    "16": 1,
+    "17": 1,
+    "19": 2,
+    "20": 2,
+    "21": 1,
+    "22": 1,
+    "23": 1,
+    "25": 2,
+    "26": 2,
+    "27": 2,
+    "28": 1,
+    "29": 2
+   },
+   "months": {
+    "0": 33,
+    "1": 51
+   }
+  },
+  "seed-m05": {
+   "total": 41,
+   "days": {
+    "2": 1,
+    "4": 1,
+    "7": 1,
+    "8": 1,
+    "9": 1,
+    "10": 1,
+    "12": 3,
+    "13": 3,
+    "14": 2,
+    "15": 2,
+    "16": 1,
+    "17": 2,
+    "18": 1,
+    "19": 1,
+    "21": 3,
+    "22": 1,
+    "23": 1,
+    "24": 1,
+    "26": 1,
+    "28": 2,
+    "29": 1,
+    "30": 3
+   },
+   "months": {
+    "0": 33,
+    "1": 8
+   }
+  },
+  "seed-m06": {
+   "total": 56,
+   "days": {
+    "1": 1,
+    "4": 1,
+    "7": 1,
+    "9": 1,
+    "10": 1,
+    "13": 1,
+    "17": 1,
+    "19": 1,
+    "23": 1,
+    "25": 1,
+    "27": 1,
+    "28": 1
+   },
+   "months": {
+    "0": 12,
+    "1": 11,
+    "2": 20,
+    "3": 13
+   }
+  },
+  "seed-m07": {
+   "total": 52,
+   "days": {
+    "0": 42,
+    "1": 10
+   },
+   "months": {
+    "0": 52
+   }
+  },
+  "seed-m08": {
+   "total": 23,
+   "days": {
+    "2": 2,
+    "4": 1,
+    "6": 1,
+    "16": 1,
+    "20": 1,
+    "23": 1
+   },
+   "months": {
+    "0": 7,
+    "1": 11,
+    "2": 5
+   }
+  },
+  "seed-m09": {
+   "total": 63,
+   "days": {
+    "0": 1,
+    "7": 1,
+    "18": 1,
+    "23": 1,
+    "26": 1,
+    "27": 1,
+    "30": 1
+   },
+   "months": {
+    "0": 7,
+    "1": 8,
+    "2": 7,
+    "3": 6,
+    "4": 9,
+    "5": 13,
+    "6": 13
+   }
+  },
+  "seed-m10": {
+   "total": 41,
+   "days": {
+    "0": 15,
+    "1": 7,
+    "2": 5,
+    "3": 5,
+    "4": 4,
+    "5": 3,
+    "6": 1,
+    "8": 1
+   },
+   "months": {
+    "0": 41
+   }
+  },
+  "seed-m11": {
+   "total": 51,
+   "days": {
+    "11": 1,
+    "12": 1,
+    "13": 1,
+    "14": 1,
+    "15": 1,
+    "27": 1
+   },
+   "months": {
+    "0": 6,
+    "1": 4,
+    "2": 12,
+    "3": 11,
+    "4": 13,
+    "5": 5
+   }
+  },
+  "seed-m12": {
+   "total": 41,
+   "days": {
+    "0": 1,
+    "2": 1,
+    "5": 1,
+    "8": 2,
+    "9": 1,
+    "10": 1,
+    "13": 1,
+    "14": 1,
+    "15": 1,
+    "16": 1,
+    "17": 1,
+    "19": 2,
+    "20": 2,
+    "21": 1,
+    "22": 1,
+    "23": 1,
+    "25": 1,
+    "26": 1
+   },
+   "months": {
+    "0": 21,
+    "1": 20
+   }
+  },
+  "seed-m13": {
+   "total": 50,
+   "days": {
+    "0": 1,
+    "1": 1,
+    "2": 1,
+    "5": 1,
+    "6": 1,
+    "9": 1,
+    "13": 1,
+    "15": 1,
+    "19": 1,
+    "21": 1,
+    "24": 1,
+    "28": 1,
+    "29": 1
+   },
+   "months": {
+    "0": 13,
+    "1": 11,
+    "2": 15,
+    "3": 11
+   }
+  },
+  "seed-m14": {
+   "total": 36,
+   "days": {
+    "3": 1,
+    "4": 1,
+    "8": 1,
+    "23": 1,
+    "27": 1
+   },
+   "months": {
+    "0": 5,
+    "1": 4,
+    "2": 6,
+    "3": 7,
+    "4": 4,
+    "5": 10
+   }
+  },
+  "seed-m15": {
+   "total": 41,
+   "days": {
+    "0": 2,
+    "1": 2,
+    "2": 2,
+    "3": 1,
+    "4": 2,
+    "5": 1,
+    "6": 3,
+    "9": 1,
+    "11": 2,
+    "12": 5,
+    "13": 5,
+    "14": 1,
+    "15": 2,
+    "16": 2,
+    "17": 1,
+    "18": 5,
+    "19": 4
+   },
+   "months": {
+    "0": 41
+   }
+  },
+  "seed-m16": {
+   "total": 21,
+   "days": {
+    "0": 11,
+    "1": 6,
+    "2": 3,
+    "3": 1
+   },
+   "months": {
+    "0": 21
+   }
+  },
+  "seed-m17": {
+   "total": 20,
+   "days": {
+    "1": 1,
+    "4": 1,
+    "8": 3,
+    "10": 1,
+    "11": 1,
+    "14": 1,
+    "17": 1,
+    "18": 4,
+    "20": 3,
+    "22": 1,
+    "23": 1,
+    "24": 1,
+    "25": 1
+   },
+   "months": {
+    "0": 20
+   }
+  },
+  "seed-m18": {
+   "total": 15,
+   "days": {
+    "0": 15
+   },
+   "months": {
+    "0": 15
+   }
+  }
+ },
+ "imageLikes": {
+  "seed-i001": {
+   "total": 32,
+   "days": {
+    "3": 1,
+    "5": 1,
+    "6": 1,
+    "11": 1,
+    "12": 1,
+    "16": 1,
+    "20": 1,
+    "22": 1,
+    "24": 1
+   },
+   "months": {
+    "0": 9,
+    "1": 8,
+    "2": 10,
+    "3": 3,
+    "4": 2
+   }
+  },
+  "seed-i002": {
+   "total": 4,
+   "days": {
+    "14": 2
+   },
+   "months": {
+    "0": 2,
+    "2": 1,
+    "3": 1
+   }
+  },
+  "seed-i003": {
+   "total": 24,
+   "days": {
+    "1": 1,
+    "6": 1,
+    "12": 1,
+    "13": 3,
+    "16": 1,
+    "27": 1
+   },
+   "months": {
+    "0": 8,
+    "1": 4,
+    "2": 4,
+    "3": 5,
+    "4": 3
+   }
+  },
+  "seed-i004": {
+   "total": 29,
+   "days": {
+    "3": 1,
+    "6": 2,
+    "8": 1,
+    "10": 1,
+    "11": 2,
+    "13": 1,
+    "14": 1,
+    "18": 2,
+    "21": 1,
+    "23": 1,
+    "24": 1,
+    "27": 2
+   },
+   "months": {
+    "0": 16,
+    "1": 10,
+    "2": 3
+   }
+  },
+  "seed-i005": {
+   "total": 1,
+   "days": {
+    "21": 1
+   },
+   "months": {
+    "0": 1
+   }
+  },
+  "seed-i006": {
+   "total": 31,
+   "days": {
+    "3": 1,
+    "4": 1,
+    "6": 1,
+    "7": 2,
+    "9": 2,
+    "11": 2,
+    "12": 1,
+    "13": 1,
+    "14": 1,
+    "15": 1,
+    "16": 1,
+    "20": 1,
+    "26": 3,
+    "27": 1,
+    "29": 2
+   },
+   "months": {
+    "0": 21,
+    "1": 9,
+    "2": 1
+   }
+  },
+  "seed-i007": {
+   "total": 6,
+   "days": {
+    "2": 1,
+    "5": 1,
+    "7": 1,
+    "9": 1,
+    "18": 1,
+    "23": 1
+   },
+   "months": {
+    "0": 6
+   }
+  },
+  "seed-i008": {
+   "total": 32,
+   "days": {
+    "0": 1,
+    "1": 1,
+    "4": 2,
+    "7": 1,
+    "9": 1,
+    "12": 1,
+    "13": 1,
+    "14": 1,
+    "16": 1,
+    "24": 1,
+    "26": 1,
+    "30": 2
+   },
+   "months": {
+    "0": 13,
+    "1": 9,
+    "2": 7,
+    "3": 3
+   }
+  },
+  "seed-i009": {
+   "total": 23,
+   "days": {
+    "6": 1,
+    "11": 1,
+    "15": 1,
+    "17": 1,
+    "19": 1,
+    "21": 1,
+    "23": 1,
+    "24": 2,
+    "26": 1,
+    "27": 1,
+    "29": 1
+   },
+   "months": {
+    "0": 12,
+    "1": 8,
+    "2": 3
+   }
+  },
+  "seed-i010": {
+   "total": 12,
+   "days": {
+    "6": 1,
+    "12": 1,
+    "14": 1,
+    "30": 1
+   },
+   "months": {
+    "0": 4,
+    "1": 6,
+    "2": 2
+   }
+  },
+  "seed-i011": {
+   "total": 13,
+   "days": {
+    "0": 1,
+    "1": 1,
+    "2": 1,
+    "5": 1,
+    "7": 2,
+    "12": 1,
+    "14": 1,
+    "20": 3,
+    "28": 1
+   },
+   "months": {
+    "0": 12,
+    "1": 1
+   }
+  },
+  "seed-i012": {
+   "total": 3,
+   "days": {
+    "0": 1,
+    "1": 1,
+    "2": 1
+   },
+   "months": {
+    "0": 3
+   }
+  },
+  "seed-i013": {
+   "total": 13,
+   "days": {
+    "0": 3,
+    "1": 1,
+    "2": 2,
+    "3": 5,
+    "4": 2
+   },
+   "months": {
+    "0": 13
+   }
+  },
+  "seed-i014": {
+   "total": 4,
+   "days": {
+    "0": 4
+   },
+   "months": {
+    "0": 4
+   }
+  },
+  "seed-i015": {
+   "total": 2,
+   "days": {
+    "0": 2
+   },
+   "months": {
+    "0": 2
+   }
+  },
+  "seed-i016": {
+   "total": 17,
+   "days": {
+    "0": 9,
+    "1": 4,
+    "2": 4
+   },
+   "months": {
+    "0": 17
+   }
+  },
+  "seed-i017": {
+   "total": 4,
+   "days": {
+    "0": 1,
+    "6": 1,
+    "24": 1
+   },
+   "months": {
+    "0": 3,
+    "1": 1
+   }
+  },
+  "seed-i018": {
+   "total": 21,
+   "days": {
+    "3": 3,
+    "5": 1,
+    "7": 1,
+    "9": 1,
+    "12": 1,
+    "14": 1,
+    "16": 1,
+    "18": 1,
+    "21": 1,
+    "23": 1,
+    "24": 1,
+    "29": 1
+   },
+   "months": {
+    "0": 14,
+    "1": 7
+   }
+  },
+  "seed-i019": {
+   "total": 1,
+   "days": {},
+   "months": {
+    "1": 1
+   }
+  },
+  "seed-i020": {
+   "total": 2,
+   "days": {
+    "14": 1,
+    "17": 1
+   },
+   "months": {
+    "0": 2
+   }
+  },
+  "seed-i021": {
+   "total": 14,
+   "days": {
+    "0": 1,
+    "1": 1,
+    "2": 1,
+    "3": 2,
+    "4": 1,
+    "6": 3,
+    "7": 1,
+    "8": 1,
+    "10": 1,
+    "14": 1,
+    "16": 1
+   },
+   "months": {
+    "0": 14
+   }
+  },
+  "seed-i022": {
+   "total": 24,
+   "days": {
+    "0": 3,
+    "1": 2,
+    "2": 4,
+    "3": 2,
+    "5": 2,
+    "6": 1,
+    "7": 2,
+    "8": 1,
+    "11": 1,
+    "13": 3,
+    "14": 1,
+    "17": 1,
+    "18": 1
+   },
+   "months": {
+    "0": 24
+   }
+  },
+  "seed-i023": {
+   "total": 15,
+   "days": {
+    "3": 1,
+    "4": 2,
+    "5": 1,
+    "6": 1,
+    "7": 2,
+    "8": 3,
+    "10": 2,
+    "11": 1,
+    "15": 2
+   },
+   "months": {
+    "0": 15
+   }
+  },
+  "seed-i024": {
+   "total": 22,
+   "days": {
+    "0": 2,
+    "1": 2,
+    "2": 2,
+    "3": 3,
+    "4": 1,
+    "5": 2,
+    "6": 1,
+    "7": 1,
+    "8": 1,
+    "9": 1,
+    "11": 2,
+    "12": 1,
+    "13": 1,
+    "15": 1,
+    "18": 1
+   },
+   "months": {
+    "0": 22
+   }
+  },
+  "seed-i025": {
+   "total": 12,
+   "days": {
+    "0": 2,
+    "1": 2,
+    "2": 1,
+    "5": 3,
+    "9": 1,
+    "11": 1,
+    "13": 2
+   },
+   "months": {
+    "0": 12
+   }
+  },
+  "seed-i026": {
+   "total": 9,
+   "days": {
+    "2": 1,
+    "5": 1,
+    "7": 1,
+    "10": 3,
+    "13": 1,
+    "15": 2
+   },
+   "months": {
+    "0": 9
+   }
+  },
+  "seed-i027": {
+   "total": 11,
+   "days": {
+    "0": 1,
+    "2": 2,
+    "3": 2,
+    "11": 2,
+    "15": 1,
+    "19": 1,
+    "25": 1,
+    "28": 1
+   },
+   "months": {
+    "0": 11
+   }
+  },
+  "seed-i028": {
+   "total": 14,
+   "days": {
+    "2": 1,
+    "7": 1,
+    "9": 1,
+    "10": 1,
+    "11": 2,
+    "14": 1,
+    "17": 2,
+    "21": 2,
+    "22": 1,
+    "27": 1,
+    "30": 1
+   },
+   "months": {
+    "0": 13,
+    "1": 1
+   }
+  },
+  "seed-i029": {
+   "total": 9,
+   "days": {
+    "9": 1,
+    "10": 1,
+    "13": 1,
+    "14": 1,
+    "15": 1,
+    "21": 1,
+    "22": 1,
+    "24": 1,
+    "26": 1
+   },
+   "months": {
+    "0": 9
+   }
+  },
+  "seed-i030": {
+   "total": 8,
+   "days": {
+    "1": 1,
+    "2": 1,
+    "4": 1,
+    "12": 2,
+    "14": 2,
+    "17": 1
+   },
+   "months": {
+    "0": 8
+   }
+  },
+  "seed-i031": {
+   "total": 14,
+   "days": {
+    "0": 1,
+    "1": 2,
+    "3": 1,
+    "6": 2,
+    "9": 2,
+    "10": 1,
+    "14": 1,
+    "18": 1,
+    "26": 2,
+    "28": 1
+   },
+   "months": {
+    "0": 14
+   }
+  },
+  "seed-i032": {
+   "total": 10,
+   "days": {
+    "0": 1,
+    "2": 1,
+    "4": 1,
+    "6": 1,
+    "9": 1,
+    "15": 1,
+    "19": 1,
+    "22": 1,
+    "28": 1,
+    "30": 1
+   },
+   "months": {
+    "0": 9,
+    "1": 1
+   }
+  },
+  "seed-i033": {
+   "total": 6,
+   "days": {
+    "21": 1
+   },
+   "months": {
+    "0": 1,
+    "1": 1,
+    "2": 1,
+    "3": 3
+   }
+  },
+  "seed-i034": {
+   "total": 11,
+   "days": {
+    "21": 1
+   },
+   "months": {
+    "0": 1,
+    "1": 4,
+    "2": 5,
+    "3": 1
+   }
+  },
+  "seed-i035": {
+   "total": 14,
+   "days": {
+    "12": 1,
+    "22": 1,
+    "24": 1
+   },
+   "months": {
+    "0": 3,
+    "1": 4,
+    "2": 7
+   }
+  },
+  "seed-i036": {
+   "total": 18,
+   "days": {
+    "0": 1,
+    "7": 1,
+    "8": 1,
+    "14": 1,
+    "18": 1,
+    "19": 1,
+    "26": 1
+   },
+   "months": {
+    "0": 7,
+    "1": 5,
+    "2": 4,
+    "3": 2
+   }
+  },
+  "seed-i037": {
+   "total": 5,
+   "days": {
+    "1": 1,
+    "2": 1,
+    "9": 2,
+    "27": 1
+   },
+   "months": {
+    "0": 5
+   }
+  },
+  "seed-i038": {
+   "total": 20,
+   "days": {
+    "0": 1,
+    "1": 1,
+    "5": 1,
+    "6": 1,
+    "7": 1,
+    "9": 2,
+    "12": 1,
+    "13": 1,
+    "19": 1,
+    "20": 1,
+    "23": 1,
+    "24": 1
+   },
+   "months": {
+    "0": 13,
+    "1": 7
+   }
+  },
+  "seed-i039": {
+   "total": 3,
+   "days": {
+    "27": 1,
+    "30": 1
+   },
+   "months": {
+    "0": 1,
+    "1": 2
+   }
+  },
+  "seed-i040": {
+   "total": 7,
+   "days": {
+    "0": 6,
+    "1": 1
+   },
+   "months": {
+    "0": 7
+   }
+  },
+  "seed-i041": {
+   "total": 15,
+   "days": {
+    "0": 10,
+    "1": 5
+   },
+   "months": {
+    "0": 15
+   }
+  },
+  "seed-i042": {
+   "total": 17,
+   "days": {
+    "0": 11,
+    "1": 6
+   },
+   "months": {
+    "0": 17
+   }
+  },
+  "seed-i043": {
+   "total": 14,
+   "days": {
+    "0": 14
+   },
+   "months": {
+    "0": 14
+   }
+  },
+  "seed-i044": {
+   "total": 5,
+   "days": {
+    "2": 1,
+    "8": 1
+   },
+   "months": {
+    "0": 2,
+    "1": 3
+   }
+  },
+  "seed-i045": {
+   "total": 11,
+   "days": {
+    "15": 1,
+    "17": 1,
+    "18": 1,
+    "23": 1,
+    "29": 1,
+    "30": 1
+   },
+   "months": {
+    "0": 5,
+    "1": 3,
+    "2": 3
+   }
+  },
+  "seed-i046": {
+   "total": 2,
+   "days": {},
+   "months": {
+    "1": 2
+   }
+  },
+  "seed-i047": {
+   "total": 9,
+   "days": {
+    "8": 2,
+    "9": 1,
+    "16": 1,
+    "18": 1,
+    "25": 1,
+    "30": 1
+   },
+   "months": {
+    "0": 7,
+    "1": 2
+   }
+  },
+  "seed-i048": {
+   "total": 11,
+   "days": {
+    "3": 1,
+    "4": 1,
+    "5": 1,
+    "8": 1,
+    "12": 2,
+    "15": 1,
+    "24": 1
+   },
+   "months": {
+    "0": 8,
+    "1": 2,
+    "2": 1
+   }
+  },
+  "seed-i049": {
+   "total": 12,
+   "days": {
+    "6": 1,
+    "8": 1,
+    "11": 2,
+    "30": 1
+   },
+   "months": {
+    "0": 5,
+    "1": 2,
+    "2": 1,
+    "4": 4
+   }
+  },
+  "seed-i050": {
+   "total": 24,
+   "days": {
+    "0": 1,
+    "1": 2,
+    "8": 1,
+    "19": 1,
+    "22": 1,
+    "23": 2
+   },
+   "months": {
+    "0": 8,
+    "1": 6,
+    "2": 4,
+    "3": 4,
+    "4": 1,
+    "6": 1
+   }
+  },
+  "seed-i051": {
+   "total": 6,
+   "days": {
+    "23": 1
+   },
+   "months": {
+    "0": 1,
+    "1": 2,
+    "2": 1,
+    "3": 1,
+    "6": 1
+   }
+  },
+  "seed-i052": {
+   "total": 2,
+   "days": {},
+   "months": {
+    "3": 1,
+    "4": 1
+   }
+  },
+  "seed-i053": {
+   "total": 18,
+   "days": {
+    "6": 1,
+    "12": 2,
+    "22": 1,
+    "26": 1,
+    "29": 1
+   },
+   "months": {
+    "0": 6,
+    "1": 7,
+    "2": 5
+   }
+  },
+  "seed-i054": {
+   "total": 6,
+   "days": {
+    "18": 1,
+    "20": 1,
+    "26": 1
+   },
+   "months": {
+    "0": 3,
+    "2": 3
+   }
+  },
+  "seed-i055": {
+   "total": 24,
+   "days": {
+    "0": 5,
+    "1": 4,
+    "2": 3,
+    "3": 3,
+    "5": 3,
+    "6": 3,
+    "12": 3
+   },
+   "months": {
+    "0": 24
+   }
+  },
+  "seed-i056": {
+   "total": 30,
+   "days": {
+    "0": 1,
+    "1": 1,
+    "7": 1,
+    "10": 1,
+    "11": 1,
+    "12": 1,
+    "13": 2,
+    "15": 2,
+    "18": 2,
+    "20": 1,
+    "22": 1,
+    "24": 1,
+    "25": 1,
+    "29": 1
+   },
+   "months": {
+    "0": 17,
+    "1": 8,
+    "2": 5
+   }
+  },
+  "seed-i057": {
+   "total": 18,
+   "days": {
+    "0": 4,
+    "1": 2,
+    "2": 2,
+    "4": 1,
+    "5": 2,
+    "6": 1,
+    "7": 2,
+    "9": 3,
+    "11": 1
+   },
+   "months": {
+    "0": 18
+   }
+  },
+  "seed-i058": {
+   "total": 6,
+   "days": {
+    "3": 1,
+    "4": 1,
+    "6": 1,
+    "7": 3
+   },
+   "months": {
+    "0": 6
+   }
+  },
+  "seed-i059": {
+   "total": 3,
+   "days": {
+    "0": 2,
+    "1": 1
+   },
+   "months": {
+    "0": 3
+   }
+  },
+  "seed-i060": {
+   "total": 19,
+   "days": {
+    "0": 4,
+    "1": 1,
+    "2": 1,
+    "3": 2,
+    "5": 3,
+    "7": 2,
+    "9": 2,
+    "10": 4
+   },
+   "months": {
+    "0": 19
+   }
+  },
+  "seed-i061": {
+   "total": 14,
+   "days": {
+    "0": 7,
+    "1": 2,
+    "2": 1,
+    "3": 3,
+    "4": 1
+   },
+   "months": {
+    "0": 14
+   }
+  },
+  "seed-i062": {
+   "total": 14,
+   "days": {
+    "0": 12,
+    "1": 2
+   },
+   "months": {
+    "0": 14
+   }
+  },
+  "seed-i063": {
+   "total": 18,
+   "days": {
+    "0": 2,
+    "1": 7,
+    "2": 3,
+    "3": 4,
+    "4": 1,
+    "6": 1
+   },
+   "months": {
+    "0": 18
+   }
+  },
+  "seed-i064": {
+   "total": 11,
+   "days": {
+    "15": 1,
+    "24": 1,
+    "26": 1
+   },
+   "months": {
+    "0": 3,
+    "1": 2,
+    "2": 2,
+    "3": 3,
+    "4": 1
+   }
+  },
+  "seed-i065": {
+   "total": 12,
+   "days": {
+    "5": 1,
+    "24": 1,
+    "28": 1
+   },
+   "months": {
+    "0": 3,
+    "1": 1,
+    "2": 5,
+    "3": 1,
+    "4": 1,
+    "5": 1
+   }
+  },
+  "seed-i066": {
+   "total": 20,
+   "days": {
+    "11": 1,
+    "25": 1,
+    "28": 1,
+    "29": 1
+   },
+   "months": {
+    "0": 4,
+    "1": 7,
+    "2": 3,
+    "3": 4,
+    "4": 2
+   }
+  },
+  "seed-i067": {
+   "total": 6,
+   "days": {
+    "11": 1,
+    "12": 1
+   },
+   "months": {
+    "0": 2,
+    "1": 1,
+    "2": 1,
+    "3": 2
+   }
+  },
+  "seed-i068": {
+   "total": 6,
+   "days": {
+    "1": 2,
+    "18": 1,
+    "28": 1
+   },
+   "months": {
+    "0": 4,
+    "1": 2
+   }
+  },
+  "seed-i069": {
+   "total": 6,
+   "days": {
+    "8": 1,
+    "16": 1,
+    "17": 2,
+    "20": 1,
+    "22": 1
+   },
+   "months": {
+    "0": 6
+   }
+  },
+  "seed-i070": {
+   "total": 8,
+   "days": {
+    "0": 1,
+    "2": 1,
+    "9": 1,
+    "11": 1,
+    "24": 1
+   },
+   "months": {
+    "0": 5,
+    "1": 3
+   }
+  },
+  "seed-i071": {
+   "total": 15,
+   "days": {
+    "2": 1,
+    "4": 2,
+    "8": 1,
+    "13": 1,
+    "14": 2,
+    "17": 1,
+    "22": 1,
+    "24": 1,
+    "27": 1,
+    "29": 1
+   },
+   "months": {
+    "0": 12,
+    "1": 3
+   }
+  },
+  "seed-i072": {
+   "total": 13,
+   "days": {
+    "3": 1,
+    "4": 1,
+    "7": 1,
+    "9": 1,
+    "14": 1,
+    "16": 1,
+    "17": 1,
+    "18": 1,
+    "23": 1,
+    "24": 1
+   },
+   "months": {
+    "0": 10,
+    "1": 3
+   }
+  },
+  "seed-i073": {
+   "total": 5,
+   "days": {
+    "0": 3,
+    "3": 1,
+    "4": 1
+   },
+   "months": {
+    "0": 5
+   }
+  },
+  "seed-i074": {
+   "total": 13,
+   "days": {
+    "0": 9,
+    "1": 3,
+    "2": 1
+   },
+   "months": {
+    "0": 13
+   }
+  },
+  "seed-i075": {
+   "total": 18,
+   "days": {
+    "13": 1,
+    "15": 1,
+    "17": 1,
+    "19": 1,
+    "20": 1,
+    "22": 1,
+    "27": 1,
+    "29": 3
+   },
+   "months": {
+    "0": 10,
+    "1": 4,
+    "2": 3,
+    "3": 1
+   }
+  },
+  "seed-i076": {
+   "total": 2,
+   "days": {
+    "28": 1
+   },
+   "months": {
+    "0": 1,
+    "1": 1
+   }
+  },
+  "seed-i077": {
+   "total": 9,
+   "days": {
+    "17": 1,
+    "26": 2
+   },
+   "months": {
+    "0": 3,
+    "1": 3,
+    "2": 3
+   }
+  },
+  "seed-i078": {
+   "total": 5,
+   "days": {
+    "0": 1,
+    "4": 1,
+    "9": 1
+   },
+   "months": {
+    "0": 3,
+    "2": 2
+   }
+  },
+  "seed-i079": {
+   "total": 12,
+   "days": {
+    "1": 2,
+    "3": 1,
+    "5": 1,
+    "7": 1,
+    "9": 1,
+    "10": 1,
+    "25": 1
+   },
+   "months": {
+    "0": 8,
+    "1": 1,
+    "2": 3
+   }
+  },
+  "seed-i080": {
+   "total": 21,
+   "days": {
+    "0": 1,
+    "1": 2,
+    "2": 1,
+    "3": 1,
+    "5": 1,
+    "6": 2,
+    "7": 1,
+    "9": 1,
+    "10": 1,
+    "14": 1,
+    "18": 1,
+    "19": 1,
+    "23": 1,
+    "28": 1,
+    "30": 1
+   },
+   "months": {
+    "0": 17,
+    "1": 4
+   }
+  },
+  "seed-i081": {
+   "total": 7,
+   "days": {
+    "1": 1,
+    "5": 1,
+    "22": 2,
+    "25": 1,
+    "26": 1
+   },
+   "months": {
+    "0": 6,
+    "1": 1
+   }
+  },
+  "seed-i082": {
+   "total": 9,
+   "days": {
+    "7": 1,
+    "19": 1
+   },
+   "months": {
+    "0": 2,
+    "1": 1,
+    "2": 2,
+    "3": 1,
+    "4": 2,
+    "5": 1
+   }
+  },
+  "seed-i083": {
+   "total": 6,
+   "days": {
+    "11": 1,
+    "22": 1
+   },
+   "months": {
+    "0": 2,
+    "1": 2,
+    "3": 2
+   }
+  },
+  "seed-i084": {
+   "total": 19,
+   "days": {
+    "0": 1,
+    "3": 1,
+    "4": 1,
+    "10": 1,
+    "13": 1,
+    "17": 1,
+    "20": 1,
+    "22": 1,
+    "28": 1
+   },
+   "months": {
+    "0": 9,
+    "1": 2,
+    "2": 3,
+    "3": 5
+   }
+  },
+  "seed-i085": {
+   "total": 21,
+   "days": {
+    "2": 1,
+    "8": 2,
+    "12": 1,
+    "13": 1,
+    "17": 1,
+    "21": 1,
+    "24": 1
+   },
+   "months": {
+    "0": 8,
+    "1": 6,
+    "2": 4,
+    "3": 3
+   }
+  },
+  "seed-i086": {
+   "total": 19,
+   "days": {
+    "6": 1,
+    "7": 1,
+    "12": 1,
+    "17": 1,
+    "18": 1,
+    "30": 1
+   },
+   "months": {
+    "0": 6,
+    "1": 6,
+    "2": 5,
+    "3": 2
+   }
+  },
+  "seed-i087": {
+   "total": 1,
+   "days": {
+    "1": 1
+   },
+   "months": {
+    "0": 1
+   }
+  },
+  "seed-i088": {
+   "total": 3,
+   "days": {
+    "7": 1,
+    "8": 1,
+    "14": 1
+   },
+   "months": {
+    "0": 3
+   }
+  },
+  "seed-i089": {
+   "total": 6,
+   "days": {
+    "0": 6
+   },
+   "months": {
+    "0": 6
+   }
+  },
+  "seed-i090": {
+   "total": 10,
+   "days": {
+    "0": 3,
+    "1": 2,
+    "2": 2,
+    "4": 3
+   },
+   "months": {
+    "0": 10
+   }
+  },
+  "seed-i091": {
+   "total": 20,
+   "days": {
+    "0": 4,
+    "1": 5,
+    "2": 5,
+    "4": 3,
+    "5": 1,
+    "6": 1,
+    "7": 1
+   },
+   "months": {
+    "0": 20
+   }
+  },
+  "seed-i092": {
+   "total": 8,
+   "days": {
+    "0": 4,
+    "1": 1,
+    "2": 1,
+    "3": 1,
+    "4": 1
+   },
+   "months": {
+    "0": 8
+   }
+  },
+  "seed-i093": {
+   "total": 13,
+   "days": {
+    "0": 13
+   },
+   "months": {
+    "0": 13
+   }
+  },
+  "seed-i094": {
+   "total": 1,
+   "days": {
+    "15": 1
+   },
+   "months": {
+    "0": 1
+   }
+  },
+  "seed-i095": {
+   "total": 14,
+   "days": {
+    "0": 2,
+    "1": 1,
+    "2": 2,
+    "4": 1,
+    "5": 1,
+    "8": 3,
+    "9": 1,
+    "10": 1,
+    "11": 1,
+    "13": 1
+   },
+   "months": {
+    "0": 14
+   }
+  },
+  "seed-i096": {
+   "total": 9,
+   "days": {
+    "0": 1,
+    "2": 1,
+    "4": 1,
+    "5": 3,
+    "14": 1,
+    "22": 1,
+    "23": 1
+   },
+   "months": {
+    "0": 9
+   }
+  },
+  "seed-i097": {
+   "total": 9,
+   "days": {
+    "1": 2,
+    "2": 1,
+    "3": 1,
+    "5": 1,
+    "6": 1,
+    "11": 1,
+    "14": 1,
+    "15": 1
+   },
+   "months": {
+    "0": 9
+   }
+  },
+  "seed-i098": {
+   "total": 0,
+   "days": {},
+   "months": {}
+  },
+  "seed-i099": {
+   "total": 1,
+   "days": {
+    "0": 1
+   },
+   "months": {
+    "0": 1
+   }
+  },
+  "seed-i100": {
+   "total": 7,
+   "days": {
+    "0": 7
+   },
+   "months": {
+    "0": 7
+   }
+  },
+  "seed-i101": {
+   "total": 8,
+   "days": {
+    "0": 8
+   },
+   "months": {
+    "0": 8
+   }
+  },
+  "seed-i102": {
+   "total": 3,
+   "days": {
+    "7": 1,
+    "17": 1,
+    "25": 1
+   },
+   "months": {
+    "0": 3
+   }
+  },
+  "seed-i103": {
+   "total": 7,
+   "days": {
+    "0": 1,
+    "7": 1,
+    "12": 1,
+    "17": 1,
+    "20": 2,
+    "21": 1
+   },
+   "months": {
+    "0": 7
+   }
+  },
+  "seed-i104": {
+   "total": 5,
+   "days": {
+    "1": 1,
+    "5": 1,
+    "8": 1,
+    "9": 1,
+    "15": 1
+   },
+   "months": {
+    "0": 5
+   }
+  },
+  "seed-i105": {
+   "total": 3,
+   "days": {
+    "20": 1,
+    "23": 1
+   },
+   "months": {
+    "0": 2,
+    "1": 1
+   }
+  },
+  "seed-i106": {
+   "total": 4,
+   "days": {
+    "4": 1,
+    "7": 1,
+    "8": 1,
+    "9": 1
+   },
+   "months": {
+    "0": 4
+   }
+  },
+  "seed-i107": {
+   "total": 1,
+   "days": {
+    "1": 1
+   },
+   "months": {
+    "0": 1
+   }
+  }
+ }
+};
