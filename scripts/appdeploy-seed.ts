@@ -56,7 +56,6 @@ async function renderImage(id: string, style: ArtStyle) {
   const base = sharp(Buffer.from(artSvg(style, seed, w, h)));
   const png = await base.png().toBuffer();
   await sharp(png).webp({ quality: 86 }).toFile(path.join(SEED_DIR, `${id}.webp`));
-  await sharp(png).resize({ width: 480 }).webp({ quality: 76 }).toFile(path.join(SEED_DIR, `${id}-t.webp`));
   const { dominant } = await sharp(png).resize(32, 32, { fit: "cover" }).stats();
   const hex = (n: number) => n.toString(16).padStart(2, "0");
   return { w, h, seed, color: `#${hex(dominant.r)}${hex(dominant.g)}${hex(dominant.b)}` };
@@ -141,7 +140,8 @@ async function main() {
       modelId: o.modelId,
       versionId: o.versionId,
       file: `seed/${id}.webp`,
-      thumb: `seed/${id}-t.webp`,
+      // 배포 파일 수 제한(바이너리 200개) 때문에 샘플은 썸네일을 따로 두지 않고 원본을 쓴다
+      thumb: `seed/${id}.webp`,
       width: r.w,
       height: r.h,
       color: r.color,
