@@ -1,6 +1,6 @@
 [
   {
-    "name": "Filter models and read a sample image's generation info",
+    "name": "Filter models and open a model detail page",
     "sanity": true,
     "viewport": "desktop",
     "covers": [
@@ -8,38 +8,35 @@
       "tag multi-select filter",
       "sort and period selection",
       "model detail page",
-      "generation info lightbox",
+      "empty sample gallery state",
       "GET /api/models",
-      "GET /api/models/:id",
-      "GET /api/images",
-      "GET /api/images/:id"
+      "GET /api/models/:id"
     ],
-    "description": "Verifies the Civitai-style browse flow: filtering cards by category, tag, sort and period, opening a model and seeing prompt, sampler and seed for a sample image.",
+    "description": "Verifies the Civitai-style browse flow: filtering cards by category, tag, sort and period, then opening a model whose sample gallery is empty.",
     "steps": [
       "On the home page click the 'LoRA' category chip",
       "Click the '#스타일' tag chip",
       "Click '다운로드순' and then '주간'",
-      "Open the first model card in the grid",
-      "Click the first image in the sample image strip"
+      "Open the first model card in the grid"
     ],
-    "expected": "After filtering every card shows the 'LoRA' badge; the model page shows the model name and a '다운로드' button; the image dialog shows a '프롬프트' section with text and a '시드 (Seed)' value."
+    "expected": "After filtering every card shows the 'LoRA' badge; the model page shows the model name, a '다운로드' button and the message '이 버전에는 샘플 이미지가 없어요.'"
   },
   {
-    "name": "Show prompt overlay on the image feed on mobile",
+    "name": "Browse the image feed and a model on mobile",
     "viewport": "mobile",
     "covers": [
       "image feed",
-      "touch info overlay",
-      "masonry gallery",
-      "lightbox navigation"
+      "empty feed state",
+      "mobile layout",
+      "mobile model detail"
     ],
-    "description": "Verifies touch users can reveal the prompt overlay with the info button and open the full-size viewer.",
+    "description": "Verifies the image feed and model pages work on a phone-sized screen when no images have been posted yet.",
     "steps": [
       "Open the '이미지' page from the header navigation",
-      "Tap the '생성 정보 보기' info button on the first image",
-      "Tap the image itself"
+      "Open the '모델' page from the header navigation",
+      "Open the first model card"
     ],
-    "expected": "After tapping the info button the card shows Sampler, Steps, CFG and Seed values over the image; tapping the image opens a dialog with the image, a '네거티브 프롬프트' or '프롬프트' section and a close button."
+    "expected": "The image page shows either the message '아직 올라온 이미지가 없어요' or image cards, without horizontal scrolling; the model page shows the model name and a '다운로드' button."
   },
   {
     "name": "Block uploads for signed-out visitors",
@@ -66,6 +63,7 @@
       "POST /api/uploads",
       "POST /api/models",
       "model detail rendering of uploaded content",
+      "image lightbox",
       "DELETE /api/models/:id",
       "destructive-action confirmation",
       "persistence after reload"
@@ -79,10 +77,11 @@
       "In the 모델 파일 section enter the external link 'https://huggingface.co/test/qa-model'",
       "Add one PNG or JPEG image as a sample image",
       "Click '모델 올리기'",
+      "On the new model page click the uploaded sample image, then close the dialog",
       "On the new model page click '삭제' and confirm the dialog",
       "Refresh the home page"
     ],
-    "expected": "The empty submit shows the error '모델 이름을 2자 이상 입력해 주세요.'; after the real submit the model page shows 'QA 테스트 LoRA' with the uploaded image; after deleting and refreshing, 'QA 테스트 LoRA' is no longer listed on the home page."
+    "expected": "The empty submit shows the error '모델 이름을 2자 이상 입력해 주세요.'; after the real submit the model page shows 'QA 테스트 LoRA' with the uploaded image; clicking the image opens a dialog showing it large; after deleting and refreshing, 'QA 테스트 LoRA' is no longer listed on the home page."
   },
   {
     "name": "Like a model and keep it after reload",

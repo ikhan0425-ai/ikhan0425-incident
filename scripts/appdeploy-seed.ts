@@ -25,6 +25,9 @@ import {
 const ROOT = path.resolve(__dirname, "..", "appdeploy");
 const SEED_DIR = path.join(ROOT, "public", "seed");
 const R = rng(20261010);
+// 샘플 그림은 넣지 않는다 (요청으로 모두 뺐다). true 로 바꾸면 그림과 그림 좋아요 수가 다시 생긴다.
+// false 여도 그림 생성 과정은 그대로 돌려서 난수 순서, 즉 모델 다운로드·좋아요 수가 바뀌지 않게 한다.
+const SAMPLE_IMAGES = false;
 
 interface Stat {
   total: number;
@@ -55,7 +58,7 @@ async function renderImage(id: string, style: ArtStyle) {
   const seed = R.int(1, 2 ** 32 - 1);
   const base = sharp(Buffer.from(artSvg(style, seed, w, h)));
   const png = await base.png().toBuffer();
-  await sharp(png).webp({ quality: 86 }).toFile(path.join(SEED_DIR, `${id}.webp`));
+  if (SAMPLE_IMAGES) await sharp(png).webp({ quality: 86 }).toFile(path.join(SEED_DIR, `${id}.webp`));
   const { dominant } = await sharp(png).resize(32, 32, { fit: "cover" }).stats();
   const hex = (n: number) => n.toString(16).padStart(2, "0");
   return { w, h, seed, color: `#${hex(dominant.r)}${hex(dominant.g)}${hex(dominant.b)}` };
@@ -263,9 +266,16 @@ async function main() {
     });
   }
 
-  const data = { profiles, models, images, modelDownloads, modelLikes, imageLikes };
+  const data = {
+    profiles,
+    models,
+    images: SAMPLE_IMAGES ? images : [],
+    modelDownloads,
+    modelLikes,
+    imageLikes: SAMPLE_IMAGES ? imageLikes : {},
+  };
   const out = `// 자동 생성 파일 (scripts/appdeploy-seed.ts). 직접 고치지 마세요.
-// 샘플 그림은 SVG 로 절차적으로 만든 것이고, 모델 파일은 실제 모델이 아닌 빈 파일입니다.
+// 샘플 그림은 넣지 않았고, 모델 파일은 실제 모델이 아닌 빈 파일입니다.
 // 시간은 "며칠 전" 상대값이라 언제 봐도 최근 활동이 있는 것처럼 보입니다.
 
 import type { SeedData } from './lib/seed-types';
@@ -277,7 +287,7 @@ export const SEED: SeedData = ${JSON.stringify(data, null, 1)};
     const p = path.join(SEED_DIR, f);
     return n + (fs.statSync(p).isFile() ? fs.statSync(p).size : 0);
   }, 0);
-  console.log(`\n이미지 ${images.length}장, 모델 ${models.length}개, 정적 파일 ${(bytes / 1024 / 1024).toFixed(1)}MB`);
+  console.log(`\n이미지 ${data.images.length}장, 모델 ${models.length}개, 정적 파일 ${(bytes / 1024 / 1024).toFixed(1)}MB`);
 }
 
 main().catch((e) => {

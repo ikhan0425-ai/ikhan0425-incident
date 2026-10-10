@@ -51,10 +51,17 @@ export function ImageFeed({ filters }: { filters: ImageFilters }) {
           key={query}
           endpoint={`/api/images${query ? `?${query}` : ''}`}
           empty={
-            <div className="card px-6 py-16 text-center">
-              <p className="text-lg font-bold">조건에 맞는 이미지가 없어요</p>
-              <p className="mt-1 text-sm text-muted">기간을 넓히거나 다른 검색어를 써 보세요.</p>
-            </div>
+            filters.q || filters.period !== 'all' ? (
+              <div className="card px-6 py-16 text-center">
+                <p className="text-lg font-bold">조건에 맞는 이미지가 없어요</p>
+                <p className="mt-1 text-sm text-muted">기간을 넓히거나 다른 검색어를 써 보세요.</p>
+              </div>
+            ) : (
+              <div className="card px-6 py-16 text-center">
+                <p className="text-lg font-bold">아직 올라온 이미지가 없어요</p>
+                <p className="mt-1 text-sm text-muted">위의 버튼으로 첫 이미지를 올려 보세요.</p>
+              </div>
+            )
           }
         />
       </div>
