@@ -184,7 +184,22 @@ export function ModelBrowser({ filters }: { filters: ModelFilters }) {
       )}
 
       <div className="mt-5">
-        <ModelResults key={query} query={query} onTags={onTags} />
+        <ModelResults
+          key={query}
+          query={query}
+          onTags={onTags}
+          empty={
+            activeCount === 0 && filters.period === 'all' ? (
+              <div className="card flex flex-col items-center gap-3 px-6 py-16 text-center">
+                <p className="text-lg font-bold">아직 올라온 모델이 없어요</p>
+                <p className="text-sm text-muted">직접 만든 모델이 있다면 첫 번째로 올려 주세요!</p>
+                <Link to="/models/new" className="btn btn-primary mt-2">
+                  모델 업로드
+                </Link>
+              </div>
+            ) : undefined
+          }
+        />
       </div>
     </div>
   );

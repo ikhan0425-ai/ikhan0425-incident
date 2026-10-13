@@ -25,8 +25,11 @@ import {
 const ROOT = path.resolve(__dirname, "..", "appdeploy");
 const SEED_DIR = path.join(ROOT, "public", "seed");
 const R = rng(20261010);
-// 샘플 그림은 넣지 않는다 (요청으로 모두 뺐다). true 로 바꾸면 그림과 그림 좋아요 수가 다시 생긴다.
-// false 여도 그림 생성 과정은 그대로 돌려서 난수 순서, 즉 모델 다운로드·좋아요 수가 바뀌지 않게 한다.
+// 샘플 데이터는 넣지 않는다 (요청으로 빈 사이트가 됐다). true 로 바꾸면 다시 생긴다.
+// SAMPLE_MODELS: 샘플 제작자·모델·모델 파일·모델 다운로드/좋아요 수
+// SAMPLE_IMAGES: 샘플 그림과 그림 좋아요 수 (모델이 있어야 의미가 있다)
+// false 여도 생성 과정은 그대로 돌려서 난수 순서, 즉 다른 값이 바뀌지 않게 한다.
+const SAMPLE_MODELS = false;
 const SAMPLE_IMAGES = false;
 
 interface Stat {
@@ -168,7 +171,7 @@ async function main() {
         def.type === "WORKFLOW"
           ? Buffer.from(JSON.stringify({ note: "그림터 샘플 데이터 - 실제 워크플로가 아닙니다" }))
           : sampleSafetensors(`그림터 샘플 데이터 - 실제 모델이 아닙니다 (${fileName})`);
-      fs.writeFileSync(path.join(SEED_DIR, "files", fileName), content);
+      if (SAMPLE_MODELS) fs.writeFileSync(path.join(SEED_DIR, "files", fileName), content);
       return {
         id: `${modelId}-v${vi + 1}`,
         name: v.name,
@@ -266,16 +269,17 @@ async function main() {
     });
   }
 
+  const withImages = SAMPLE_MODELS && SAMPLE_IMAGES;
   const data = {
-    profiles,
-    models,
-    images: SAMPLE_IMAGES ? images : [],
-    modelDownloads,
-    modelLikes,
-    imageLikes: SAMPLE_IMAGES ? imageLikes : {},
+    profiles: SAMPLE_MODELS ? profiles : [],
+    models: SAMPLE_MODELS ? models : [],
+    images: withImages ? images : [],
+    modelDownloads: SAMPLE_MODELS ? modelDownloads : {},
+    modelLikes: SAMPLE_MODELS ? modelLikes : {},
+    imageLikes: withImages ? imageLikes : {},
   };
   const out = `// 자동 생성 파일 (scripts/appdeploy-seed.ts). 직접 고치지 마세요.
-// 샘플 그림은 넣지 않았고, 모델 파일은 실제 모델이 아닌 빈 파일입니다.
+// 지금은 샘플 데이터를 넣지 않아 빈 사이트로 시작합니다 (SAMPLE_MODELS, SAMPLE_IMAGES).
 // 시간은 "며칠 전" 상대값이라 언제 봐도 최근 활동이 있는 것처럼 보입니다.
 
 import type { SeedData } from './lib/seed-types';
@@ -287,7 +291,7 @@ export const SEED: SeedData = ${JSON.stringify(data, null, 1)};
     const p = path.join(SEED_DIR, f);
     return n + (fs.statSync(p).isFile() ? fs.statSync(p).size : 0);
   }, 0);
-  console.log(`\n이미지 ${data.images.length}장, 모델 ${models.length}개, 정적 파일 ${(bytes / 1024 / 1024).toFixed(1)}MB`);
+  console.log(`\n이미지 ${data.images.length}장, 모델 ${data.models.length}개, 정적 파일 ${(bytes / 1024 / 1024).toFixed(1)}MB`);
 }
 
 main().catch((e) => {

@@ -1,42 +1,42 @@
 [
   {
-    "name": "Filter models and open a model detail page",
+    "name": "Empty site shows clear empty states and filters still work",
     "sanity": true,
     "viewport": "desktop",
     "covers": [
+      "model list empty state",
       "model category filter",
       "tag multi-select filter",
       "sort and period selection",
-      "model detail page",
-      "empty sample gallery state",
+      "image feed empty state",
       "GET /api/models",
-      "GET /api/models/:id"
+      "GET /api/images"
     ],
-    "description": "Verifies the Civitai-style browse flow: filtering cards by category, tag, sort and period, then opening a model whose sample gallery is empty.",
+    "description": "Verifies a fresh site with no uploads explains that nothing has been posted yet and that the browse filters still respond.",
     "steps": [
-      "On the home page click the 'LoRA' category chip",
+      "Open the home page",
+      "Click the 'LoRA' category chip",
       "Click the '#스타일' tag chip",
       "Click '다운로드순' and then '주간'",
-      "Open the first model card in the grid"
+      "Open the '이미지' page from the header navigation"
     ],
-    "expected": "After filtering every card shows the 'LoRA' badge; the model page shows the model name, a '다운로드' button and the message '이 버전에는 샘플 이미지가 없어요.'"
+    "expected": "Before filtering the home page shows '아직 올라온 모델이 없어요' with a '모델 업로드' button; after filtering it shows '조건에 맞는 모델이 없어요'; the 이미지 page shows '아직 올라온 이미지가 없어요'."
   },
   {
-    "name": "Browse the image feed and a model on mobile",
+    "name": "Browse the empty site on mobile",
     "viewport": "mobile",
     "covers": [
-      "image feed",
-      "empty feed state",
       "mobile layout",
-      "mobile model detail"
+      "mobile navigation",
+      "empty states on mobile"
     ],
-    "description": "Verifies the image feed and model pages work on a phone-sized screen when no images have been posted yet.",
+    "description": "Verifies the model and image pages fit a phone-sized screen when nothing has been posted yet.",
     "steps": [
+      "Open the home page",
       "Open the '이미지' page from the header navigation",
-      "Open the '모델' page from the header navigation",
-      "Open the first model card"
+      "Open the '모델' page from the header navigation"
     ],
-    "expected": "The image page shows either the message '아직 올라온 이미지가 없어요' or image cards, without horizontal scrolling; the model page shows the model name and a '다운로드' button."
+    "expected": "Each page shows its empty message ('아직 올라온 모델이 없어요' or '아직 올라온 이미지가 없어요') or cards, and none of the pages scrolls horizontally."
   },
   {
     "name": "Block uploads for signed-out visitors",
@@ -54,7 +54,7 @@
     "expected": "Both pages show a '로그인이 필요해요' card with a '로그인' button and no upload form fields are shown."
   },
   {
-    "name": "Upload a model with a sample image, then delete it",
+    "name": "Upload a model, view and like it, then delete it",
     "viewport": "desktop",
     "covers": [
       "sign-in",
@@ -64,11 +64,13 @@
       "POST /api/models",
       "model detail rendering of uploaded content",
       "image lightbox",
+      "POST /api/models/:id/like",
+      "liked state persistence",
       "DELETE /api/models/:id",
       "destructive-action confirmation",
       "persistence after reload"
     ],
-    "description": "Verifies a signed-in user can publish a model with an uploaded sample image and remove it again.",
+    "description": "Verifies a signed-in user can publish a model with an uploaded sample image, like it, and remove it again so the site is left empty.",
     "steps": [
       "Sign in",
       "Open '만들기' in the header and choose '모델 업로드'",
@@ -78,26 +80,25 @@
       "Add one PNG or JPEG image as a sample image",
       "Click '모델 올리기'",
       "On the new model page click the uploaded sample image, then close the dialog",
-      "On the new model page click '삭제' and confirm the dialog",
+      "Click the heart like button next to the model title, then refresh the page",
+      "Click '삭제' and confirm the dialog",
       "Refresh the home page"
     ],
-    "expected": "The empty submit shows the error '모델 이름을 2자 이상 입력해 주세요.'; after the real submit the model page shows 'QA 테스트 LoRA' with the uploaded image; clicking the image opens a dialog showing it large; after deleting and refreshing, 'QA 테스트 LoRA' is no longer listed on the home page."
+    "expected": "The empty submit shows the error '모델 이름을 2자 이상 입력해 주세요.'; after the real submit the model page shows 'QA 테스트 LoRA' with the uploaded image; clicking the image opens a dialog showing it large; after liking and refreshing, the like button is still highlighted with the count 1; after deleting and refreshing, 'QA 테스트 LoRA' is no longer listed on the home page."
   },
   {
-    "name": "Like a model and keep it after reload",
+    "name": "Reject an image post without an image",
     "viewport": "desktop",
     "covers": [
-      "POST /api/models/:id/like",
-      "liked state persistence",
-      "like count"
+      "image upload form validation",
+      "invalid-write guardrail"
     ],
-    "description": "Verifies the like toggle is saved per user.",
+    "description": "Verifies the image posting form blocks a submission that has no image attached.",
     "steps": [
       "Sign in",
-      "Open the model '한복 스타일 LoRA' from the home page",
-      "Note the number on the heart like button and click it",
-      "Refresh the page"
+      "Open the URL path '#/images/new'",
+      "Click '이미지 게시하기' without adding an image"
     ],
-    "expected": "After the click the like button is highlighted and its number increased by one; after the refresh it is still highlighted with the increased number."
+    "expected": "The form shows the error '이미지를 1장 이상 선택해 주세요.' and stays on the upload page."
   }
 ]
